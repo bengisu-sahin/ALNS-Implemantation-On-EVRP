@@ -1,2 +1,4 @@
 # Adaptive-Large-Neighborhood-Search-Algorithm-Implementation-for-EVRP
-ALNS Algorithm Implementation on EVRP
+
+## INTRODUCTION
+This repository is opened for our graduation project. Our projecet subject is implementation ALNS algroithm for Electrical Vehicle Problems. This problem will be based on Eskişehir Osmangazi University Campus. However, first of all, the general solution of the problem will be applied according to the data sets in the articles read, and additional requirements of this European-supported project are being tried to be fulfilled, apart from the original ALNS application. 
