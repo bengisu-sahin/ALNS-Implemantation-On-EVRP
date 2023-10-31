@@ -63,6 +63,12 @@ def initial_solution(depot,customers,problem_instance):
                         if(initial_route.tank_capacity_constraint_violated()==False):
                             served_customers.append(next_position)
                             unserved_customers.remove(next_position)
+                        else:
+                            initial_route.route.remove(next_position)
+                            initial_route.route.remove(closest_charge_station)
+                            initial_route.route.append(depot)
+                            routes.append(initial_route)
+                            break
                         
                 else:
                     initial_route.route.remove(next_position)
