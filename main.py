@@ -1,3 +1,4 @@
+from initialsolution import initial_solution
 from readProblemInstances import readProblemInstances
 
 def getCustomersInfo(customers):
@@ -38,11 +39,12 @@ def getConfig(config):
         print("---")
 
 def main(): 
-    problemFile = readProblemInstances('SchinederData/c101_21.txt')  # Değişken atama işlemi düzeltilmiş ve parantez eklendi.
-    #getCustomersInfo(problemFile.customers)
+    problemFile = readProblemInstances('SchneiderData/c103_21.txt')  # Değişken atama işlemi düzeltilmiş ve parantez eklendi.
+    getCustomersInfo(problemFile.customers)
+    initial_solution(problemFile.depot,problemFile.customers,problemFile)
     #getStationInfo(problemFile.charging_stations)
     #getDepotInfo(problemFile.depot)
-    getConfig(problemFile.config)
+    #getConfig(problemFile.config)
 
 
 if __name__ == "__main__":
