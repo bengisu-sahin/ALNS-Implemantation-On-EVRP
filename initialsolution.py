@@ -11,9 +11,12 @@ def getFeasibleCustomers(unserved_customers,route:Route):
     feasibleCustomers=[]
     for customer in unserved_customers:
         route.route.append(customer)
+        route.route.append(route.depot)
         if route.is_feasible()==True:
             feasibleCustomers.append(customer)
+        route.route.pop()
         route.route.remove(customer)
+        
     #sort feasible customers based on total power required to serve them
     
     return feasibleCustomers
@@ -29,6 +32,7 @@ def initial_solution(depot,customers,problem_instance):
         
     
     while len(served_customers)!=len(customers):
+        last_position=depot
         initial_route = Route(problem_instance.config,problem_instance.depot)
         
        
@@ -50,16 +54,18 @@ def initial_solution(depot,customers,problem_instance):
             else: 
                 sorted_feasibleCustomers=sorted(feasibleCustomers, key=lambda n: n.distance_to(last_position))
                 next_position=sorted_feasibleCustomers[0]
+                last_position=next_position
                 initial_route.route.append(next_position)
-                if(initial_route.is_feasible()==True):
-                    closest_charge_station=min(problem_instance.charging_stations, key=lambda n: n.distance_to(next_position))
-                    if(initial_route.tank_capacity_constraint_violated()==False):
-                        served_customers.append(next_position)
-                        unserved_customers.remove(next_position)
-                    else:
-                        initial_route.route.remove(next_position)
-                        initial_route.route.append(closest_charge_station)
-                        initial_route.route.append(next_position)
+               
+                closest_charge_station=min(problem_instance.charging_stations, key=lambda n: n.distance_to(next_position))
+                if(initial_route.tank_capacity_constraint_violated()==False):
+                    served_customers.append(next_position)
+                    unserved_customers.remove(next_position)
+                else:
+                    initial_route.route.remove(next_position)
+                    initial_route.route.append(closest_charge_station)
+                    initial_route.route.append(next_position)
+                    if(initial_route.is_feasible()==True):
                         if(initial_route.tank_capacity_constraint_violated()==False):
                             served_customers.append(next_position)
                             unserved_customers.remove(next_position)
@@ -69,14 +75,19 @@ def initial_solution(depot,customers,problem_instance):
                             initial_route.route.append(depot)
                             routes.append(initial_route)
                             break
+                    else:
+                        initial_route.route.remove(next_position)
+                        initial_route.route.append(depot)
+                        routes.append(initial_route)
+                        break
                         
-                else:
-                    initial_route.route.remove(next_position)
-                    initial_route.route.append(depot)
-                    routes.append(initial_route)
         
-
-
-
+    total_distance=0
+    for route in routes:
+        if(route.is_feasible_all()==True):
+            print(route.route)
+        else:
+            print("Infeasible Route")
+    print("Total Distance: ",total_distance)
     return routes
     
