@@ -16,6 +16,14 @@ class Route:
     def is_feasible(self):
         if self.tw_constraint_violated():
             return False
+        elif self.payload_capacity_constraint_violated():
+            return False
+        else:
+            return True
+    
+    def is_feasible_all(self):
+        if self.tw_constraint_violated():
+            return False
         elif self.tank_capacity_constraint_violated():
             return False
         elif self.payload_capacity_constraint_violated():
@@ -84,12 +92,13 @@ class Route:
                 "tank_capacity" değeri negatifse, bu, yakıt tankının kapasitesini aştığı anlamına gelir ve bir kısıtlama ihlali vardır. Bu durumda, metot "True" döner ve kısıtlama ihlali olduğu bildirilir.
                 """
                 if tank_capacity < 0: #
-                    return True
+                    return True  
                 """
                 Eğer şu anki nokta bir şarj istasyonu (ChargeStation) ise, şoförün yakıtı şarj ettiği ve yakıt kapasitesinin yenilendiği kabul edilir. Bu nedenle, "tank_capacity" tekrar maksimum yakıt kapasitesine (self.config.tank_capacity) ayarlanır.
                 """
                 if type(t) is ChargeStation:
                     tank_capacity = self.config.tank_capacity
+                  
 
             last = t #En son olarak, "last" değişkeni güncellenir ve bir sonraki noktaya geçilir. Bu, döngünün bir sonraki adımında önceki noktanın şu anki nokta olması için gereklidir.
 
@@ -109,6 +118,12 @@ class Route:
         """
         return total_demand > self.config.payload_capacity
 
+    def get_last_customer(self):
+        for t in reversed(self.route):
+            if type(t) is Customer:
+                return t
+    def get_last_object(self):
+        return self.route[-1]
     # STATUS CALCULATION METHODS
 
     """
@@ -198,6 +213,8 @@ class Route:
                 if reverse:
                     self.route.reverse()
                 return t
+    def get_charge_stations(self):
+        return [t for t in self.route if type(t) is ChargeStation]
 
     """
     Sonuç olarak, bu metot, "self" nesnesi ile "new_route" nesnesini birleştirerek yeni bir rota oluşturur. Bu, lojistik ve taşıma problemleri gibi alanlarda, farklı rotaları birleştirerek daha etkili ve optimize edilmiş rota planlaması yapmak için kullanışlı
