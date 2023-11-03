@@ -134,6 +134,7 @@ def initial_solution(depot,customers,problem_instance):
                                     initial_route.route.pop()
                                     served_customers.append(customer)
                                     unserved_customers.remove(customer)
+                                    break
                                 else:
                           
                                     break
@@ -203,6 +204,7 @@ def initial_solution(depot,customers,problem_instance):
                                                     initial_route.route.pop()
                                                     served_customers.append(customer)
                                                     unserved_customers.remove(customer)
+                                                    break
                                                 else:
                           
                                                     break
@@ -214,7 +216,10 @@ def initial_solution(depot,customers,problem_instance):
                 else:
                     initial_route.route.pop()
                     initial_route.route.pop()           
-                
+        
+    initial_route.route.append(depot)
+    routes.append(initial_route)
+        
 
 
         
@@ -323,15 +328,23 @@ def initial_solution(depot,customers,problem_instance):
         
     for route in routes:
         if(route.is_feasible_all()==True):
+            charge_stations=route.get_charge_stations()
+            total_distance+=route.calculate_total_distance()
+            for customer in route.route:
+                if(customer!=route.depot and charge_stations.count(customer)==0):
+                    print(customer.id)
+    total_distance=0
+    for route in routes:
+        if(route.is_feasible_all()==True):
             print("Route is feasible",routes.index(route))
             total_distance+=route.calculate_total_distance()
-            
+               
         else:
-            total_distance+=route.calculate_total_distance()
             print("Infeasible Route",routes.index(route))
-            routetext=""
-            for customer in route.route:
-                routetext+=str(customer.id)+", "
-            print(routetext)
+            total_distance+=route.calculate_total_distance()
+
+    
+
+    
     print("Total Distance: ",total_distance)
     return routes

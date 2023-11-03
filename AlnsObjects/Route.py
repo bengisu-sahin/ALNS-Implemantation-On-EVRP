@@ -213,6 +213,8 @@ class Route:
                 if reverse:
                     self.route.reverse()
                 return t
+    def get_charge_stations(self):
+        return [t for t in self.route if type(t) is ChargeStation]
 
     """
     Sonuç olarak, bu metot, "self" nesnesi ile "new_route" nesnesini birleştirerek yeni bir rota oluşturur. Bu, lojistik ve taşıma problemleri gibi alanlarda, farklı rotaları birleştirerek daha etkili ve optimize edilmiş rota planlaması yapmak için kullanışlı

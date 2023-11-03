@@ -38,7 +38,7 @@ def getConfig(config):
         print("---")
 
 def main(): 
-    problemFile = readProblemInstances('SchneiderData/c103_21.txt')  # Değişken atama işlemi düzeltilmiş ve parantez eklendi.
+    problemFile = readProblemInstances('SchneiderData/c101_21.txt')  # Değişken atama işlemi düzeltilmiş ve parantez eklendi.
     #getCustomersInfo(problemFile.customers)
     initial_solution(problemFile.depot,problemFile.customers,problemFile)
     #getStationInfo(problemFile.charging_stations)
