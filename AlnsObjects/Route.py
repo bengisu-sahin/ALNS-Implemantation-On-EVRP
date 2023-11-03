@@ -118,6 +118,12 @@ class Route:
         """
         return total_demand > self.config.payload_capacity
 
+    def get_last_customer(self):
+        for t in reversed(self.route):
+            if type(t) is Customer:
+                return t
+    def get_last_object(self):
+        return self.route[-1]
     # STATUS CALCULATION METHODS
 
     """
