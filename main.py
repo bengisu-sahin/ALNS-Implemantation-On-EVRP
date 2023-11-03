@@ -1,4 +1,4 @@
-from initialsolution import initial_solution
+from initialSolution import initial_solution
 from readProblemInstances import readProblemInstances
 def getCustomersInfo(customers):
     for customer in customers:
@@ -44,7 +44,6 @@ def main():
     #getStationInfo(problemFile.charging_stations)
     #getDepotInfo(problemFile.depot)
     #getConfig(problemFile.config)
-
 
 if __name__ == "__main__":
     main()
