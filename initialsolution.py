@@ -3,9 +3,31 @@ from DataObjects.ChargeStation import ChargeStation
 from mathmodels import calculate_remaining_tank_capacity
 from AlnsObjects.Route import Route
 
+def writeSolution(routes,problem_instance):
+    filePath="/SolutionFiles"
+    dosya_adı = "solution.txt"
+    # Dosyayı açıp içeriği yazma
+    with open(dosya_adı, 'w') as dosya:
+        # Her bir liste için döngü
+        for i, route in enumerate(routes, start=1):
+            dosya.write(f"Route {i}: ")  # Her rotanın başlığı
+            for location in route.route:
+                dosya.write(f"{location.id} ({location.x}, {location.y}) -> ")  # Her lokasyonun ID'si
+            
+            dosya.write("D0\n\n")  # Her rotanın sonu ve başlangıç noktası
 
 
+    print(f"Dosya '{dosya_adı}' başarıyla oluşturuldu.")
 
+def visualizeAllRoutes(routes,problem_instance):
+    route_manager = Route(problem_instance.config,problem_instance.depot) 
+    route_manager.route = routes
+    route_manager.visualizeAllRoutes()
+
+def visualizeRoutesSeperately(routes,problem_instance):
+    route_manager = Route(problem_instance.config,problem_instance.depot) 
+    route_manager.route = routes
+    route_manager.visualizeRoute()
 
 def getFeasibleCustomers(unserved_customers,route:Route):
     feasibleCustomers=[]
@@ -218,111 +240,7 @@ def initial_solution(depot,customers,problem_instance):
                     initial_route.route.pop()           
         
     initial_route.route.append(depot)
-    routes.append(initial_route)
-        
-
-
-        
-        
-    """    
-        if(len(feasibleCustomers)==0):
-            closest_charge_station=min(problem_instance.charging_stations, key=lambda n: n.distance_to(initial_route.get_last_object()))
-            initial_route.route.append(closest_charge_station)
-            initial_route.route.append(depot)
-            if(initial_route.is_feasible_all()==True):
-                
-                initial_route.route.pop()
-                last_position=initial_route.get_last_customer()
-                
-                
-                
-            else:
-                initial_route.route.pop()
-                initial_route.route.remove(closest_charge_station)
-                initial_route.route.append(depot)
-                routes.append(initial_route)
-                last_position=min(unserved_customers, key=lambda n: n.distance_to(depot))
-                unserved_customers.remove(last_position)
-                served_customers.append(last_position)
-                initial_route = Route(problem_instance.config,problem_instance.depot)    
-                initial_route.route.append(last_position)
-                
-            
-        else:
-            
-            for customer in sorted_feasibleCustomers:
-                initial_route.route.append(customer)
-                initial_route.route.append(depot)
-                if(initial_route.is_feasible_all()==True):
-                    initial_route.route.pop()
-                    served_customers.append(customer)
-                    unserved_customers.remove(customer)
-                    break
-                else:
-                    initial_route.route.pop()
-                    initial_route.route.remove(customer)
-                    closest_charge_station=min(problem_instance.charging_stations, key=lambda n: n.distance_to(initial_route.get_last_customer()))
-                    initial_route.route.append(closest_charge_station)
-                    initial_route.route.append(customer)
-                    initial_route.route.append(depot)
-                    if(initial_route.is_feasible_all()==True):
-                        initial_route.route.pop()
-                        served_customers.append(customer)
-                        unserved_customers.remove(customer)
-                        break
-                    else:
-                        
-                        initial_route.route.pop()
-                        initial_route.route.pop()
-                        initial_route.route.pop()
-                        initial_route.route.append(depot)
-                        routes.append(initial_route)
-                        last_position=min(unserved_customers, key=lambda n: n.distance_to(depot))
-                        unserved_customers.remove(last_position)
-                        served_customers.append(last_position)
-                        initial_route = Route(problem_instance.config,problem_instance.depot)    
-                        initial_route.route.append(last_position)
-                        break
-                    
-                    
-                
-                
-                
-                
-                
-                
-             
-            
-            else: 
-                sorted_feasibleCustomers=sorted(feasibleCustomers, key=lambda n: n.distance_to(last_position))
-                next_position=sorted_feasibleCustomers[0]
-                last_position=next_position
-                initial_route.route.append(next_position)
-               
-                closest_charge_station=min(problem_instance.charging_stations, key=lambda n: n.distance_to(next_position))
-                if(initial_route.tank_capacity_constraint_violated()==False):
-                    served_customers.append(next_position)
-                    unserved_customers.remove(next_position)
-                else:
-                    initial_route.route.remove(next_position)
-                    initial_route.route.append(closest_charge_station)
-                    initial_route.route.append(next_position)
-                    if(initial_route.is_feasible()==True):
-                        if(initial_route.tank_capacity_constraint_violated()==False):
-                            served_customers.append(next_position)
-                            unserved_customers.remove(next_position)
-                        else:
-                            initial_route.route.remove(next_position)
-                            initial_route.route.remove(closest_charge_station)
-                            initial_route.route.append(depot)
-                            routes.append(initial_route)
-                            break
-                    else:
-                        initial_route.route.remove(next_position)
-                        initial_route.route.append(depot)
-                        routes.append(initial_route)
-                        break
-    """       
+    routes.append(initial_route)     
         
     total_distance=0 
         
@@ -342,9 +260,10 @@ def initial_solution(depot,customers,problem_instance):
         else:
             print("Infeasible Route",routes.index(route))
             total_distance+=route.calculate_total_distance()
-
-    
-
     
     print("Total Distance: ",total_distance)
+    visualizeAllRoutes(routes,problem_instance)
+    visualizeRoutesSeperately(routes,problem_instance)
+    writeSolution(routes,problem_instance)
     return routes
+

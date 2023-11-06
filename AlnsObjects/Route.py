@@ -1,6 +1,6 @@
 from DataObjects.ChargeStation import ChargeStation
 from DataObjects.Customer import Customer
-
+import matplotlib.pyplot as plt
 
 class Route:
     def __init__(self, config, depot):
@@ -246,3 +246,108 @@ class Route:
 
         route_str += ']'
         return route_str
+    
+    """
+    Tüm rotaları tek bir grafikte görselleştirmek için kullanılır.
+    """
+    def visualizeAllRoutes(self):
+        coordinates=[]
+        rotaC=[]
+        depot=[]
+        for route in self.route:
+            for location in route.route:
+                coord=[]
+                coord.append(location.x)
+                coord.append(location.y)
+                coordinates.append(coord)
+            rotaC.append(coordinates)
+            coordinates=[]
+        print(rotaC)
+
+        # Bir figure oluşturun
+        # Grafik boyutunu ayarla
+        fig, ax = plt.subplots(figsize=(10, 8))  # Genişlik: 10 birim, Yükseklik: 8 birim
+
+        for route in rotaC:
+            x, y = zip(*route)
+            ax.plot(x, y, marker='o', linestyle='-')
+
+            # Depot noktasına daire eklemek
+            depot_x, depot_y = route[0]
+            ax.plot(depot_x, depot_y, marker='o', markersize=10, markeredgecolor='r', markerfacecolor='none')
+
+        # [40, 50] noktasına bir işaret eklemek
+        ax.annotate('[40, 50]', (40, 50), textcoords="offset points", xytext=(0, 10), ha='center')
+
+        # Eksenlerin kesişimi 0,0 olacak şekilde düzenleme
+        ax.spines['left'].set_position('zero')
+        ax.spines['bottom'].set_position('zero')
+        ax.spines['right'].set_color('none')
+        ax.spines['top'].set_color('none')
+
+        # Eksenlerdeki noktaların yerleşimini ayarlama
+        ax.xaxis.set_major_locator(plt.MultipleLocator(5))
+        ax.yaxis.set_major_locator(plt.MultipleLocator(5))
+
+        ax.set_xlabel('X Koordinatı')
+        ax.set_ylabel('Y Koordinatı')
+        ax.set_title('Tüm Rotaların Birleştirilmiş Grafiği')
+
+        ax.grid(True)
+        plt.show()
+
+    """
+    Her bir rotayı ayrı ayrı görselleştirmek için kullanılır.
+    """
+    def visualizeRoute(self):
+        depot_x = 0
+        depot_y = 0
+        id = 1
+        for route in self.route:
+            fig, ax = plt.subplots(figsize=(10, 8))
+            x_points = []
+            y_points = []
+            labels = []
+            content = []
+            for location in route.route:
+                x, y = location.x, location.y
+                label = f'{location.id}({x}, {y})'  # Display location ID with coordinates
+                x_points.append(x)
+                y_points.append(y)
+                labels.append(location.id)  # Display only location ID
+                content.append(label)
+
+            # Determine the marker style based on the location type
+            markers = ['o' if isinstance(location, Customer) else 's' if isinstance(location, ChargeStation) else 'D' for location in route.route]
+
+            # Connect the points with lines
+            ax.plot(x_points, y_points, '-b', marker='o', markersize=8, markerfacecolor='blue', label='Customers')
+
+            # Plot charge stations with a different marker
+            charge_station_indices = [i for i, location in enumerate(route.route) if isinstance(location, ChargeStation)]
+            charge_station_x = [x_points[i] for i in charge_station_indices]
+            charge_station_y = [y_points[i] for i in charge_station_indices]
+            ax.plot(charge_station_x, charge_station_y, 'rs', label='Charge Stations')
+
+            # Plot depot locations (D0) with a different marker
+            depot_indices = [i for i, location in enumerate(route.route) if location.id == 'D0']
+            depot_x = [x_points[i] for i in depot_indices]
+            depot_y = [y_points[i] for i in depot_indices]
+            ax.plot(depot_x, depot_y, 'gD', markersize=8, markerfacecolor='green', label='Depot (D0)')
+
+            # Annotate each point with its label
+            for x, y, label in zip(x_points, y_points, labels):
+                ax.annotate(label, (x, y), textcoords="offset points", xytext=(0, 10), ha='center')
+
+            ax.set_xlabel('X-axis')
+            ax.set_ylabel('Y-axis')
+            ax.set_title(f'Route Visualization - Route {id}')
+            ax.legend()
+
+            plt.annotate(', '.join(content), xy=(0.5, -0.12), xycoords='axes fraction', fontsize=12, ha='center')
+
+            id += 1
+            plt.show()
+
+
+
