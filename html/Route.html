@@ -1,0 +1,1249 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>Route API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>Route</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from DataObjects.ChargeStation import ChargeStation
+from DataObjects.Customer import Customer
+import matplotlib.pyplot as plt
+
+class Route:
+    def __init__(self, config, depot):
+        self.config = config
+        self.route = [depot]
+        self.depot = depot
+
+    &#34;&#34;&#34;
+    Kısıtlamaları kontrol eder.
+    Eğer bir kısıtlama ihlali varsa false döndürür.
+    &#34;&#34;&#34;    
+
+    def is_feasible(self):
+        if self.tw_constraint_violated():
+            return False
+        elif self.payload_capacity_constraint_violated():
+            return False
+        else:
+            return True
+    
+    def is_feasible_all(self):
+        if self.tw_constraint_violated():
+            return False
+        elif self.tank_capacity_constraint_violated():
+            return False
+        elif self.payload_capacity_constraint_violated():
+            return False
+        else:
+            return True
+
+    def is_complete(self):
+        return self.route[0] == self.depot and self.route[-1] == self.depot and self.depot not in self.route[1:-1]
+
+    # CONSTRAINT VALIDATION METHODS
+
+    &#34;&#34;&#34;
+    &#34;tw_constraint_violated&#34; metodu, zaman penceresi (time window) kısıtlamalarını kontrol eder. Rota üzerindeki her müşterinin zaman penceresi içinde olup olmadığını kontrol eder. Ayrıca şarj istasyonlarına olan enerji eksikliğini ve beklemeyi hesaplar. İhlal durumunda &#34;True&#34; döner, aksi takdirde &#34;False&#34; döner.
+    &#34;&#34;&#34;
+    def tw_constraint_violated(self):
+        &#34;&#34;&#34;
+        İlk olarak, &#34;elapsed_time&#34; değişkeni başlangıç noktasının hazır olma süresi (ready_time) ve hizmet süresi (service_time) toplamı ile başlatılır. &#34;elapsed_time&#34;, rotanın ilk noktasını ziyaret ettikten sonraki geçen süreyi temsil eder.
+        &#34;&#34;&#34;
+        elapsed_time = self.route[0].ready_time + self.route[0].service_time #depodan başlıyoruz ilk olarak 0 gelir
+        &#34;&#34;&#34;
+        Daha sonra, bir döngü (for döngüsü) başlar. Bu döngü, rota üzerindeki her noktayı sırayla gezerek zaman penceresi kısıtlamalarını kontrol eder. Döngü, rota nesnesinin indekslerini kullanarak çalışır.
+        &#34;&#34;&#34;
+        for i in range(1, len(self.route)):
+            &#34;&#34;&#34;
+            Her adımda, &#34;elapsed_time&#34; değişkeni, önceki noktadan (route[i - 1]) şu anki noktaya (route[i]) gitmek için geçen süreyi hesaplar. Bu hesaplama, iki nokta arasındaki mesafeyi (&#34;distance_to&#34;) hız ile böler ve &#34;elapsed_time&#34; üzerine ekler. Bu, şoförün iki nokta arasında ne kadar süre geçirdiğini hesaplar
+            &#34;&#34;&#34;
+            elapsed_time = elapsed_time + self.route[i - 1].distance_to(self.route[i]) / self.config.velocity
+            &#34;&#34;&#34;
+            &#34;elapsed_time&#34;, şu anki noktanın son teslim tarihi (due_date) ile karşılaştırılır. Eğer &#34;elapsed_time&#34; son teslim tarihini aşarsa, bu, bir zaman penceresi ihlali anlamına gelir ve &#34;True&#34; döner. İhlal varsa, işlem sona erer.
+            &#34;&#34;&#34;
+            if elapsed_time &gt; self.route[i].due_date:
+                return True
+            &#34;&#34;&#34;
+            Eğer &#34;elapsed_time&#34; son teslim tarihini aşmıyorsa, bir başka kontrol yapılır. Eğer şu anki nokta bir şarj istasyonu (ChargeStation) ise, arabanın enerji eksikliği hesaplanır. Bu eksik enerji, mevcut yakıt kapasitesi ile hesaplanan kalan yakıt kapasitesi arasındaki farka dayanır. Ardından, bu eksik enerjiyi şarj etmek için harcanacak süre hesaplanır ve &#34;service_time&#34; olarak atanır.
+            &#34;&#34;&#34;
+            if type(self.route[i]) is ChargeStation:
+                missing_energy = self.config.tank_capacity - self.calculate_remaining_tank_capacity(self.route[i])
+                self.route[i].service_time = missing_energy * self.config.charging_rate
+            &#34;&#34;&#34;
+            Şarj istasyonuna harcanan süre (&#34;service_time&#34;) ile bekleme süresi (&#34;waiting_time&#34;) eklenir. Bekleme süresi, şu anki noktanın hazır olma zamanı ile &#34;elapsed_time&#34; arasındaki farktır. Bu, şoförün belirli bir noktada beklemesi gerektiğinde ne kadar süre beklemesi gerektiğini hesaplar.
+            &#34;&#34;&#34;
+            &#34;&#34;&#34;
+            Daha sonra, waiting_time hesaplanır. waiting_time, şoförün şu anki noktaya varmadan önce bekleme yapması gereken süreyi temsil eder. Bu, şoförün belirli bir noktaya ulaşmadan önce o noktanın hazır olma zamanına kadar beklemesi gerekebileceği anlamına gelir. max(self.route[i].ready_time - elapsed_time, 0) ifadesi, bu bekleme süresini hesaplar. self.route[i].ready_time belirli bir noktanın hazır olma zamanını temsil eder. &#34;elapsed_time&#34; ise o ana kadar geçen süreyi temsil eder. Bu ifade, şoförün gerektiği durumda beklemesini sağlar, ancak beklemenin negatif bir değere düşmesini önler (yani, şoför zaten beklemesi gerektiği bir zamanı kaçırmışsa, bekleme süresi sıfır olarak hesaplanır).
+            &#34;&#34;&#34;
+            waiting_time = max(self.route[i].ready_time - elapsed_time, 0)
+            elapsed_time += waiting_time
+            elapsed_time += self.route[i].service_time
+
+        return False
+    
+    &#34;&#34;&#34;
+    Bu metot, bir rota üzerindeki noktalar arasındaki yakıt tüketimini hesaplar ve yakıt tankının kapasitesini aşılıp aşılmadığını kontrol eder.
+    &#34;&#34;&#34;
+    def tank_capacity_constraint_violated(self):
+        last = None # Bu değişken, önceki noktanın tutulduğu bir referanstır. Başlangıçta herhangi bir önceki nokta olmadığı için None olarak ayarlanır.
+        tank_capacity = self.config.tank_capacity
+        for t in self.route: #Döngü, rota üzerindeki her bir noktayı sırayla gezerek yakıt tüketimini ve yakıt kapasitesini kontrol eder.
+            if last is not None:
+                distance = last.distance_to(t) #Her adımda, last değişkeni kullanılarak önceki noktadan şu anki noktaya giden mesafe hesaplanır ve &#34;distance&#34; değişkenine atanır.
+                consumption = distance * self.config.fuel_consumption_rate #&#34;consumption&#34; değişkeni hesaplanır. Bu değişken, &#34;distance&#34; ile yakıt tüketim oranı (&#34;fuel_consumption_rate&#34;) çarpılarak hesaplanır. Bu, şoförün bu mesafeyi kat etmek için ne kadar yakıt tükettiğini temsil eder.
+
+                tank_capacity -= consumption #Kalan tank kapasitesi hesaplanır/arabanın o noktaya ulaşırken kalan yakıt kapasitesini hesaplar.
+
+                &#34;&#34;&#34;
+                &#34;tank_capacity&#34; değeri negatifse, bu, yakıt tankının kapasitesini aştığı anlamına gelir ve bir kısıtlama ihlali vardır. Bu durumda, metot &#34;True&#34; döner ve kısıtlama ihlali olduğu bildirilir.
+                &#34;&#34;&#34;
+                if tank_capacity &lt; 0: #
+                    return True  
+                &#34;&#34;&#34;
+                Eğer şu anki nokta bir şarj istasyonu (ChargeStation) ise, şoförün yakıtı şarj ettiği ve yakıt kapasitesinin yenilendiği kabul edilir. Bu nedenle, &#34;tank_capacity&#34; tekrar maksimum yakıt kapasitesine (self.config.tank_capacity) ayarlanır.
+                &#34;&#34;&#34;
+                if type(t) is ChargeStation:
+                    tank_capacity = self.config.tank_capacity
+                  
+
+            last = t #En son olarak, &#34;last&#34; değişkeni güncellenir ve bir sonraki noktaya geçilir. Bu, döngünün bir sonraki adımında önceki noktanın şu anki nokta olması için gereklidir.
+
+        return False #Döngü tamamlandığında, tüm noktalar için yakıt tüketimi ve yakıt kapasitesi kontrol edilmiştir. Eğer hiçbir noktada yakıt kapasitesi aşılmamışsa, metot &#34;False&#34; döner ve yakıt kapasitesi kısıtlamalarına uyulur.
+
+    def payload_capacity_constraint_violated(self):
+        total_demand = 0 #İlk olarak, &#34;total_demand&#34; adında bir değişken başlatılır ve başlangıçta sıfır (0) değeri ile başlar. Bu değişken, rota üzerindeki müşterilerin toplam taleplerini tutar.
+        for t in self.route: #Bir döngü, rota üzerindeki her bir noktayı sırayla gezerek çalışır.
+            &#34;&#34;&#34;
+            Döngünün her adımında, &#34;t&#34; adlı bir nokta (müşteri veya diğer nokta) ele alınır ve tipi kontrol edilir (type(t)). Eğer &#34;t&#34; bir müşteriyse (Customer), o müşterinin talebi (demand) &#34;total_demand&#34; değişkenine eklenir.
+            Döngü tamamlandığında, &#34;total_demand&#34;, rota üzerindeki müşterilerin toplam talebini temsil eder.
+            &#34;&#34;&#34;
+            if type(t) is Customer: 
+                total_demand += t.demand
+        &#34;&#34;&#34;
+        Son olarak, &#34;total_demand&#34; ile aracın taşıma kapasitesi (self.config.payload_capacity) karşılaştırılır. Eğer toplam talep, aracın taşıma kapasitesini aşıyorsa, bu bir kısıtlama ihlali anlamına gelir ve metot &#34;True&#34; döner. Yani, aracın taşıma kapasitesi kısıtlamalarına uyulmamıştır.
+        &#34;&#34;&#34;
+        return total_demand &gt; self.config.payload_capacity
+
+    def get_last_customer(self):
+        for t in reversed(self.route):
+            if type(t) is Customer:
+                return t
+    def get_last_object(self):
+        return self.route[-1]
+    # STATUS CALCULATION METHODS
+
+    &#34;&#34;&#34;
+    Bu metodun temel amacı, bir rota üzerindeki toplam mesafeyi hesaplamaktır. Bu mesafe, belirli bir rotayı oluşturan noktalar arasındaki toplam yolculuk mesafesini verir.
+    &#34;&#34;&#34;
+    def calculate_total_distance(self):
+        last = None
+        dist = 0
+
+        for t in self.route:
+            if last is not None:
+                dist += last.distance_to(t)
+            last = t
+
+        return dist
+
+    &#34;&#34;&#34;
+    Bu kod parçası, rota üzerindeki belirli bir noktaya kadar olan kalan yakıt kapasitesini hesaplayan &#34;calculate_remaining_tank_capacity&#34; adlı bir metodu içerir. Bu metot, şoförün belirli bir noktaya ulaşmak için ne kadar yakıt kapasitesine ihtiyacı olduğunu hesaplar ve bu kapasitenin ne kadarının kaldığını kontrol eder
+    &#34;&#34;&#34;
+    def calculate_remaining_tank_capacity(self, until=None):
+        last = None
+        tank_capacity = self.config.tank_capacity
+        for t in self.route:
+            if last is not None:
+                distance = last.distance_to(t)
+                consumption = distance * self.config.fuel_consumption_rate
+                tank_capacity -= consumption
+
+                if until == t:
+                    return tank_capacity
+
+                if type(t) is ChargeStation:
+                    tank_capacity = self.config.tank_capacity
+
+            last = t
+        return tank_capacity
+
+    &#34;&#34;&#34;
+    Bu kod parçası, bir rota üzerindeki toplam süreyi (duration) hesaplayan &#34;calculate_total_duration&#34; adlı bir metodu içerir. Bu metot, rota üzerindeki her bir noktanın hizmet süresi, yolculuk süresi ve bekleme süresi dahil olmak üzere toplam süreyi hesaplar. 
+    &#34;&#34;&#34;
+    def calculate_total_duration(self):
+        elapsed_time = self.route[0].ready_time + self.route[0].service_time
+
+        for i in range(1, len(self.route)):
+            elapsed_time = elapsed_time + self.route[i - 1].distance_to(self.route[i]) / self.config.velocity
+
+            if type(self.route[i]) is ChargeStation:
+                missing_energy = self.config.tank_capacity - self.calculate_remaining_tank_capacity(self.route[i])
+                self.route[i] = missing_energy * self.config.charging_rate
+
+            waiting_time = max(self.route[i].ready_time - elapsed_time, 0)
+            elapsed_time += waiting_time
+            elapsed_time += self.route[i].service_time
+
+        return elapsed_time
+
+    &#34;&#34;&#34;
+    Bu metot, &#34;calculate_dist_to_first_customer&#34;, rotada bulunan ilk müşteriye olan mesafeyi hesaplamak için kullanılır. ?
+    &#34;&#34;&#34;
+    def calculate_dist_to_first_customer(self, reverse=False):
+        dist = 0
+        last = None
+
+        if reverse:
+            self.route.reverse()
+
+        for t in self.route:
+            if last is not None:
+                dist += last.distance_to(t)
+                if type(t) is Customer:
+                    if reverse:
+                        self.route.reverse()
+                    return dist
+            last = t
+
+        return dist
+
+    &#34;&#34;&#34;
+    Bu metot, bir rota üzerindeki ilk müşteriyi (Customer) bulmak için kullanılır. 
+    &#34;&#34;&#34;
+    def get_first_customer(self, reverse=False):
+        if reverse:
+            self.route.reverse()
+
+        for t in self.route:
+            if type(t) is Customer:
+                if reverse:
+                    self.route.reverse()
+                return t
+    def get_charge_stations(self):
+        return [t for t in self.route if type(t) is ChargeStation]
+
+    &#34;&#34;&#34;
+    Sonuç olarak, bu metot, &#34;self&#34; nesnesi ile &#34;new_route&#34; nesnesini birleştirerek yeni bir rota oluşturur. Bu, lojistik ve taşıma problemleri gibi alanlarda, farklı rotaları birleştirerek daha etkili ve optimize edilmiş rota planlaması yapmak için kullanışlı
+    &#34;&#34;&#34;
+    def append_route(self, new_route):
+        if new_route.route[0] == self.depot:
+            route_to_append = new_route[1:]
+
+        if self.route[-1] == self.depot:
+            self.route = self.route[0:-1]
+
+        self.route = self.route + route_to_append
+
+    #ROTAYI YAZDIRMA FONKSİYONLARI
+    def __str__(self):
+        route_str = &#39;[&#39;
+
+        for t in self.route:
+            route_str += t.id + &#39;, &#39;
+
+        route_str += &#39;]&#39;
+        return route_str
+
+    def __repr__(self):
+        route_str = &#39;[&#39;
+
+        for t in self.route:
+            route_str += t.id + &#39;, &#39;
+
+        route_str += &#39;]&#39;
+        return route_str
+    
+    &#34;&#34;&#34;
+    Tüm rotaları tek bir grafikte görselleştirmek için kullanılır.
+    &#34;&#34;&#34;
+    def visualizeAllRoutes(self):
+        coordinates=[]
+        rotaC=[]
+        depot=[]
+        for route in self.route:
+            for location in route.route:
+                coord=[]
+                coord.append(location.x)
+                coord.append(location.y)
+                coordinates.append(coord)
+            rotaC.append(coordinates)
+            coordinates=[]
+        print(rotaC)
+
+        # Bir figure oluşturun
+        # Grafik boyutunu ayarla
+        fig, ax = plt.subplots(figsize=(10, 8))  # Genişlik: 10 birim, Yükseklik: 8 birim
+
+        for route in rotaC:
+            x, y = zip(*route)
+            ax.plot(x, y, marker=&#39;o&#39;, linestyle=&#39;-&#39;)
+
+            # Depot noktasına daire eklemek
+            depot_x, depot_y = route[0]
+            ax.plot(depot_x, depot_y, marker=&#39;o&#39;, markersize=10, markeredgecolor=&#39;r&#39;, markerfacecolor=&#39;none&#39;)
+
+        # [40, 50] noktasına bir işaret eklemek
+        ax.annotate(&#39;[40, 50]&#39;, (40, 50), textcoords=&#34;offset points&#34;, xytext=(0, 10), ha=&#39;center&#39;)
+
+        # Eksenlerin kesişimi 0,0 olacak şekilde düzenleme
+        ax.spines[&#39;left&#39;].set_position(&#39;zero&#39;)
+        ax.spines[&#39;bottom&#39;].set_position(&#39;zero&#39;)
+        ax.spines[&#39;right&#39;].set_color(&#39;none&#39;)
+        ax.spines[&#39;top&#39;].set_color(&#39;none&#39;)
+
+        # Eksenlerdeki noktaların yerleşimini ayarlama
+        ax.xaxis.set_major_locator(plt.MultipleLocator(5))
+        ax.yaxis.set_major_locator(plt.MultipleLocator(5))
+
+        ax.set_xlabel(&#39;X Koordinatı&#39;)
+        ax.set_ylabel(&#39;Y Koordinatı&#39;)
+        ax.set_title(&#39;Tüm Rotaların Birleştirilmiş Grafiği&#39;)
+
+        ax.grid(True)
+        plt.show()
+
+    &#34;&#34;&#34;
+    Her bir rotayı ayrı ayrı görselleştirmek için kullanılır.
+    &#34;&#34;&#34;
+    def visualizeRoute(self):
+        depot_x = 0
+        depot_y = 0
+        id = 1
+        for route in self.route:
+            fig, ax = plt.subplots(figsize=(10, 8))
+            x_points = []
+            y_points = []
+            labels = []
+            content = []
+            for location in route.route:
+                x, y = location.x, location.y
+                label = f&#39;{location.id}({x}, {y})&#39;  # Display location ID with coordinates
+                x_points.append(x)
+                y_points.append(y)
+                labels.append(location.id)  # Display only location ID
+                content.append(label)
+
+            # Determine the marker style based on the location type
+            markers = [&#39;o&#39; if isinstance(location, Customer) else &#39;s&#39; if isinstance(location, ChargeStation) else &#39;D&#39; for location in route.route]
+
+            # Connect the points with lines
+            ax.plot(x_points, y_points, &#39;-b&#39;, marker=&#39;o&#39;, markersize=8, markerfacecolor=&#39;blue&#39;, label=&#39;Customers&#39;)
+
+            # Plot charge stations with a different marker
+            charge_station_indices = [i for i, location in enumerate(route.route) if isinstance(location, ChargeStation)]
+            charge_station_x = [x_points[i] for i in charge_station_indices]
+            charge_station_y = [y_points[i] for i in charge_station_indices]
+            ax.plot(charge_station_x, charge_station_y, &#39;rs&#39;, label=&#39;Charge Stations&#39;)
+
+            # Plot depot locations (D0) with a different marker
+            depot_indices = [i for i, location in enumerate(route.route) if location.id == &#39;D0&#39;]
+            depot_x = [x_points[i] for i in depot_indices]
+            depot_y = [y_points[i] for i in depot_indices]
+            ax.plot(depot_x, depot_y, &#39;gD&#39;, markersize=8, markerfacecolor=&#39;green&#39;, label=&#39;Depot (D0)&#39;)
+
+            # Annotate each point with its label
+            for x, y, label in zip(x_points, y_points, labels):
+                ax.annotate(label, (x, y), textcoords=&#34;offset points&#34;, xytext=(0, 10), ha=&#39;center&#39;)
+
+            ax.set_xlabel(&#39;X-axis&#39;)
+            ax.set_ylabel(&#39;Y-axis&#39;)
+            ax.set_title(f&#39;Route Visualization - Route {id}&#39;)
+            ax.legend()
+
+            plt.annotate(&#39;, &#39;.join(content), xy=(0.5, -0.12), xycoords=&#39;axes fraction&#39;, fontsize=12, ha=&#39;center&#39;)
+
+            id += 1
+            plt.show()</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="Route.Route"><code class="flex name class">
+<span>class <span class="ident">Route</span></span>
+<span>(</span><span>config, depot)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Route:
+    def __init__(self, config, depot):
+        self.config = config
+        self.route = [depot]
+        self.depot = depot
+
+    &#34;&#34;&#34;
+    Kısıtlamaları kontrol eder.
+    Eğer bir kısıtlama ihlali varsa false döndürür.
+    &#34;&#34;&#34;    
+
+    def is_feasible(self):
+        if self.tw_constraint_violated():
+            return False
+        elif self.payload_capacity_constraint_violated():
+            return False
+        else:
+            return True
+    
+    def is_feasible_all(self):
+        if self.tw_constraint_violated():
+            return False
+        elif self.tank_capacity_constraint_violated():
+            return False
+        elif self.payload_capacity_constraint_violated():
+            return False
+        else:
+            return True
+
+    def is_complete(self):
+        return self.route[0] == self.depot and self.route[-1] == self.depot and self.depot not in self.route[1:-1]
+
+    # CONSTRAINT VALIDATION METHODS
+
+    &#34;&#34;&#34;
+    &#34;tw_constraint_violated&#34; metodu, zaman penceresi (time window) kısıtlamalarını kontrol eder. Rota üzerindeki her müşterinin zaman penceresi içinde olup olmadığını kontrol eder. Ayrıca şarj istasyonlarına olan enerji eksikliğini ve beklemeyi hesaplar. İhlal durumunda &#34;True&#34; döner, aksi takdirde &#34;False&#34; döner.
+    &#34;&#34;&#34;
+    def tw_constraint_violated(self):
+        &#34;&#34;&#34;
+        İlk olarak, &#34;elapsed_time&#34; değişkeni başlangıç noktasının hazır olma süresi (ready_time) ve hizmet süresi (service_time) toplamı ile başlatılır. &#34;elapsed_time&#34;, rotanın ilk noktasını ziyaret ettikten sonraki geçen süreyi temsil eder.
+        &#34;&#34;&#34;
+        elapsed_time = self.route[0].ready_time + self.route[0].service_time #depodan başlıyoruz ilk olarak 0 gelir
+        &#34;&#34;&#34;
+        Daha sonra, bir döngü (for döngüsü) başlar. Bu döngü, rota üzerindeki her noktayı sırayla gezerek zaman penceresi kısıtlamalarını kontrol eder. Döngü, rota nesnesinin indekslerini kullanarak çalışır.
+        &#34;&#34;&#34;
+        for i in range(1, len(self.route)):
+            &#34;&#34;&#34;
+            Her adımda, &#34;elapsed_time&#34; değişkeni, önceki noktadan (route[i - 1]) şu anki noktaya (route[i]) gitmek için geçen süreyi hesaplar. Bu hesaplama, iki nokta arasındaki mesafeyi (&#34;distance_to&#34;) hız ile böler ve &#34;elapsed_time&#34; üzerine ekler. Bu, şoförün iki nokta arasında ne kadar süre geçirdiğini hesaplar
+            &#34;&#34;&#34;
+            elapsed_time = elapsed_time + self.route[i - 1].distance_to(self.route[i]) / self.config.velocity
+            &#34;&#34;&#34;
+            &#34;elapsed_time&#34;, şu anki noktanın son teslim tarihi (due_date) ile karşılaştırılır. Eğer &#34;elapsed_time&#34; son teslim tarihini aşarsa, bu, bir zaman penceresi ihlali anlamına gelir ve &#34;True&#34; döner. İhlal varsa, işlem sona erer.
+            &#34;&#34;&#34;
+            if elapsed_time &gt; self.route[i].due_date:
+                return True
+            &#34;&#34;&#34;
+            Eğer &#34;elapsed_time&#34; son teslim tarihini aşmıyorsa, bir başka kontrol yapılır. Eğer şu anki nokta bir şarj istasyonu (ChargeStation) ise, arabanın enerji eksikliği hesaplanır. Bu eksik enerji, mevcut yakıt kapasitesi ile hesaplanan kalan yakıt kapasitesi arasındaki farka dayanır. Ardından, bu eksik enerjiyi şarj etmek için harcanacak süre hesaplanır ve &#34;service_time&#34; olarak atanır.
+            &#34;&#34;&#34;
+            if type(self.route[i]) is ChargeStation:
+                missing_energy = self.config.tank_capacity - self.calculate_remaining_tank_capacity(self.route[i])
+                self.route[i].service_time = missing_energy * self.config.charging_rate
+            &#34;&#34;&#34;
+            Şarj istasyonuna harcanan süre (&#34;service_time&#34;) ile bekleme süresi (&#34;waiting_time&#34;) eklenir. Bekleme süresi, şu anki noktanın hazır olma zamanı ile &#34;elapsed_time&#34; arasındaki farktır. Bu, şoförün belirli bir noktada beklemesi gerektiğinde ne kadar süre beklemesi gerektiğini hesaplar.
+            &#34;&#34;&#34;
+            &#34;&#34;&#34;
+            Daha sonra, waiting_time hesaplanır. waiting_time, şoförün şu anki noktaya varmadan önce bekleme yapması gereken süreyi temsil eder. Bu, şoförün belirli bir noktaya ulaşmadan önce o noktanın hazır olma zamanına kadar beklemesi gerekebileceği anlamına gelir. max(self.route[i].ready_time - elapsed_time, 0) ifadesi, bu bekleme süresini hesaplar. self.route[i].ready_time belirli bir noktanın hazır olma zamanını temsil eder. &#34;elapsed_time&#34; ise o ana kadar geçen süreyi temsil eder. Bu ifade, şoförün gerektiği durumda beklemesini sağlar, ancak beklemenin negatif bir değere düşmesini önler (yani, şoför zaten beklemesi gerektiği bir zamanı kaçırmışsa, bekleme süresi sıfır olarak hesaplanır).
+            &#34;&#34;&#34;
+            waiting_time = max(self.route[i].ready_time - elapsed_time, 0)
+            elapsed_time += waiting_time
+            elapsed_time += self.route[i].service_time
+
+        return False
+    
+    &#34;&#34;&#34;
+    Bu metot, bir rota üzerindeki noktalar arasındaki yakıt tüketimini hesaplar ve yakıt tankının kapasitesini aşılıp aşılmadığını kontrol eder.
+    &#34;&#34;&#34;
+    def tank_capacity_constraint_violated(self):
+        last = None # Bu değişken, önceki noktanın tutulduğu bir referanstır. Başlangıçta herhangi bir önceki nokta olmadığı için None olarak ayarlanır.
+        tank_capacity = self.config.tank_capacity
+        for t in self.route: #Döngü, rota üzerindeki her bir noktayı sırayla gezerek yakıt tüketimini ve yakıt kapasitesini kontrol eder.
+            if last is not None:
+                distance = last.distance_to(t) #Her adımda, last değişkeni kullanılarak önceki noktadan şu anki noktaya giden mesafe hesaplanır ve &#34;distance&#34; değişkenine atanır.
+                consumption = distance * self.config.fuel_consumption_rate #&#34;consumption&#34; değişkeni hesaplanır. Bu değişken, &#34;distance&#34; ile yakıt tüketim oranı (&#34;fuel_consumption_rate&#34;) çarpılarak hesaplanır. Bu, şoförün bu mesafeyi kat etmek için ne kadar yakıt tükettiğini temsil eder.
+
+                tank_capacity -= consumption #Kalan tank kapasitesi hesaplanır/arabanın o noktaya ulaşırken kalan yakıt kapasitesini hesaplar.
+
+                &#34;&#34;&#34;
+                &#34;tank_capacity&#34; değeri negatifse, bu, yakıt tankının kapasitesini aştığı anlamına gelir ve bir kısıtlama ihlali vardır. Bu durumda, metot &#34;True&#34; döner ve kısıtlama ihlali olduğu bildirilir.
+                &#34;&#34;&#34;
+                if tank_capacity &lt; 0: #
+                    return True  
+                &#34;&#34;&#34;
+                Eğer şu anki nokta bir şarj istasyonu (ChargeStation) ise, şoförün yakıtı şarj ettiği ve yakıt kapasitesinin yenilendiği kabul edilir. Bu nedenle, &#34;tank_capacity&#34; tekrar maksimum yakıt kapasitesine (self.config.tank_capacity) ayarlanır.
+                &#34;&#34;&#34;
+                if type(t) is ChargeStation:
+                    tank_capacity = self.config.tank_capacity
+                  
+
+            last = t #En son olarak, &#34;last&#34; değişkeni güncellenir ve bir sonraki noktaya geçilir. Bu, döngünün bir sonraki adımında önceki noktanın şu anki nokta olması için gereklidir.
+
+        return False #Döngü tamamlandığında, tüm noktalar için yakıt tüketimi ve yakıt kapasitesi kontrol edilmiştir. Eğer hiçbir noktada yakıt kapasitesi aşılmamışsa, metot &#34;False&#34; döner ve yakıt kapasitesi kısıtlamalarına uyulur.
+
+    def payload_capacity_constraint_violated(self):
+        total_demand = 0 #İlk olarak, &#34;total_demand&#34; adında bir değişken başlatılır ve başlangıçta sıfır (0) değeri ile başlar. Bu değişken, rota üzerindeki müşterilerin toplam taleplerini tutar.
+        for t in self.route: #Bir döngü, rota üzerindeki her bir noktayı sırayla gezerek çalışır.
+            &#34;&#34;&#34;
+            Döngünün her adımında, &#34;t&#34; adlı bir nokta (müşteri veya diğer nokta) ele alınır ve tipi kontrol edilir (type(t)). Eğer &#34;t&#34; bir müşteriyse (Customer), o müşterinin talebi (demand) &#34;total_demand&#34; değişkenine eklenir.
+            Döngü tamamlandığında, &#34;total_demand&#34;, rota üzerindeki müşterilerin toplam talebini temsil eder.
+            &#34;&#34;&#34;
+            if type(t) is Customer: 
+                total_demand += t.demand
+        &#34;&#34;&#34;
+        Son olarak, &#34;total_demand&#34; ile aracın taşıma kapasitesi (self.config.payload_capacity) karşılaştırılır. Eğer toplam talep, aracın taşıma kapasitesini aşıyorsa, bu bir kısıtlama ihlali anlamına gelir ve metot &#34;True&#34; döner. Yani, aracın taşıma kapasitesi kısıtlamalarına uyulmamıştır.
+        &#34;&#34;&#34;
+        return total_demand &gt; self.config.payload_capacity
+
+    def get_last_customer(self):
+        for t in reversed(self.route):
+            if type(t) is Customer:
+                return t
+    def get_last_object(self):
+        return self.route[-1]
+    # STATUS CALCULATION METHODS
+
+    &#34;&#34;&#34;
+    Bu metodun temel amacı, bir rota üzerindeki toplam mesafeyi hesaplamaktır. Bu mesafe, belirli bir rotayı oluşturan noktalar arasındaki toplam yolculuk mesafesini verir.
+    &#34;&#34;&#34;
+    def calculate_total_distance(self):
+        last = None
+        dist = 0
+
+        for t in self.route:
+            if last is not None:
+                dist += last.distance_to(t)
+            last = t
+
+        return dist
+
+    &#34;&#34;&#34;
+    Bu kod parçası, rota üzerindeki belirli bir noktaya kadar olan kalan yakıt kapasitesini hesaplayan &#34;calculate_remaining_tank_capacity&#34; adlı bir metodu içerir. Bu metot, şoförün belirli bir noktaya ulaşmak için ne kadar yakıt kapasitesine ihtiyacı olduğunu hesaplar ve bu kapasitenin ne kadarının kaldığını kontrol eder
+    &#34;&#34;&#34;
+    def calculate_remaining_tank_capacity(self, until=None):
+        last = None
+        tank_capacity = self.config.tank_capacity
+        for t in self.route:
+            if last is not None:
+                distance = last.distance_to(t)
+                consumption = distance * self.config.fuel_consumption_rate
+                tank_capacity -= consumption
+
+                if until == t:
+                    return tank_capacity
+
+                if type(t) is ChargeStation:
+                    tank_capacity = self.config.tank_capacity
+
+            last = t
+        return tank_capacity
+
+    &#34;&#34;&#34;
+    Bu kod parçası, bir rota üzerindeki toplam süreyi (duration) hesaplayan &#34;calculate_total_duration&#34; adlı bir metodu içerir. Bu metot, rota üzerindeki her bir noktanın hizmet süresi, yolculuk süresi ve bekleme süresi dahil olmak üzere toplam süreyi hesaplar. 
+    &#34;&#34;&#34;
+    def calculate_total_duration(self):
+        elapsed_time = self.route[0].ready_time + self.route[0].service_time
+
+        for i in range(1, len(self.route)):
+            elapsed_time = elapsed_time + self.route[i - 1].distance_to(self.route[i]) / self.config.velocity
+
+            if type(self.route[i]) is ChargeStation:
+                missing_energy = self.config.tank_capacity - self.calculate_remaining_tank_capacity(self.route[i])
+                self.route[i] = missing_energy * self.config.charging_rate
+
+            waiting_time = max(self.route[i].ready_time - elapsed_time, 0)
+            elapsed_time += waiting_time
+            elapsed_time += self.route[i].service_time
+
+        return elapsed_time
+
+    &#34;&#34;&#34;
+    Bu metot, &#34;calculate_dist_to_first_customer&#34;, rotada bulunan ilk müşteriye olan mesafeyi hesaplamak için kullanılır. ?
+    &#34;&#34;&#34;
+    def calculate_dist_to_first_customer(self, reverse=False):
+        dist = 0
+        last = None
+
+        if reverse:
+            self.route.reverse()
+
+        for t in self.route:
+            if last is not None:
+                dist += last.distance_to(t)
+                if type(t) is Customer:
+                    if reverse:
+                        self.route.reverse()
+                    return dist
+            last = t
+
+        return dist
+
+    &#34;&#34;&#34;
+    Bu metot, bir rota üzerindeki ilk müşteriyi (Customer) bulmak için kullanılır. 
+    &#34;&#34;&#34;
+    def get_first_customer(self, reverse=False):
+        if reverse:
+            self.route.reverse()
+
+        for t in self.route:
+            if type(t) is Customer:
+                if reverse:
+                    self.route.reverse()
+                return t
+    def get_charge_stations(self):
+        return [t for t in self.route if type(t) is ChargeStation]
+
+    &#34;&#34;&#34;
+    Sonuç olarak, bu metot, &#34;self&#34; nesnesi ile &#34;new_route&#34; nesnesini birleştirerek yeni bir rota oluşturur. Bu, lojistik ve taşıma problemleri gibi alanlarda, farklı rotaları birleştirerek daha etkili ve optimize edilmiş rota planlaması yapmak için kullanışlı
+    &#34;&#34;&#34;
+    def append_route(self, new_route):
+        if new_route.route[0] == self.depot:
+            route_to_append = new_route[1:]
+
+        if self.route[-1] == self.depot:
+            self.route = self.route[0:-1]
+
+        self.route = self.route + route_to_append
+
+    #ROTAYI YAZDIRMA FONKSİYONLARI
+    def __str__(self):
+        route_str = &#39;[&#39;
+
+        for t in self.route:
+            route_str += t.id + &#39;, &#39;
+
+        route_str += &#39;]&#39;
+        return route_str
+
+    def __repr__(self):
+        route_str = &#39;[&#39;
+
+        for t in self.route:
+            route_str += t.id + &#39;, &#39;
+
+        route_str += &#39;]&#39;
+        return route_str
+    
+    &#34;&#34;&#34;
+    Tüm rotaları tek bir grafikte görselleştirmek için kullanılır.
+    &#34;&#34;&#34;
+    def visualizeAllRoutes(self):
+        coordinates=[]
+        rotaC=[]
+        depot=[]
+        for route in self.route:
+            for location in route.route:
+                coord=[]
+                coord.append(location.x)
+                coord.append(location.y)
+                coordinates.append(coord)
+            rotaC.append(coordinates)
+            coordinates=[]
+        print(rotaC)
+
+        # Bir figure oluşturun
+        # Grafik boyutunu ayarla
+        fig, ax = plt.subplots(figsize=(10, 8))  # Genişlik: 10 birim, Yükseklik: 8 birim
+
+        for route in rotaC:
+            x, y = zip(*route)
+            ax.plot(x, y, marker=&#39;o&#39;, linestyle=&#39;-&#39;)
+
+            # Depot noktasına daire eklemek
+            depot_x, depot_y = route[0]
+            ax.plot(depot_x, depot_y, marker=&#39;o&#39;, markersize=10, markeredgecolor=&#39;r&#39;, markerfacecolor=&#39;none&#39;)
+
+        # [40, 50] noktasına bir işaret eklemek
+        ax.annotate(&#39;[40, 50]&#39;, (40, 50), textcoords=&#34;offset points&#34;, xytext=(0, 10), ha=&#39;center&#39;)
+
+        # Eksenlerin kesişimi 0,0 olacak şekilde düzenleme
+        ax.spines[&#39;left&#39;].set_position(&#39;zero&#39;)
+        ax.spines[&#39;bottom&#39;].set_position(&#39;zero&#39;)
+        ax.spines[&#39;right&#39;].set_color(&#39;none&#39;)
+        ax.spines[&#39;top&#39;].set_color(&#39;none&#39;)
+
+        # Eksenlerdeki noktaların yerleşimini ayarlama
+        ax.xaxis.set_major_locator(plt.MultipleLocator(5))
+        ax.yaxis.set_major_locator(plt.MultipleLocator(5))
+
+        ax.set_xlabel(&#39;X Koordinatı&#39;)
+        ax.set_ylabel(&#39;Y Koordinatı&#39;)
+        ax.set_title(&#39;Tüm Rotaların Birleştirilmiş Grafiği&#39;)
+
+        ax.grid(True)
+        plt.show()
+
+    &#34;&#34;&#34;
+    Her bir rotayı ayrı ayrı görselleştirmek için kullanılır.
+    &#34;&#34;&#34;
+    def visualizeRoute(self):
+        depot_x = 0
+        depot_y = 0
+        id = 1
+        for route in self.route:
+            fig, ax = plt.subplots(figsize=(10, 8))
+            x_points = []
+            y_points = []
+            labels = []
+            content = []
+            for location in route.route:
+                x, y = location.x, location.y
+                label = f&#39;{location.id}({x}, {y})&#39;  # Display location ID with coordinates
+                x_points.append(x)
+                y_points.append(y)
+                labels.append(location.id)  # Display only location ID
+                content.append(label)
+
+            # Determine the marker style based on the location type
+            markers = [&#39;o&#39; if isinstance(location, Customer) else &#39;s&#39; if isinstance(location, ChargeStation) else &#39;D&#39; for location in route.route]
+
+            # Connect the points with lines
+            ax.plot(x_points, y_points, &#39;-b&#39;, marker=&#39;o&#39;, markersize=8, markerfacecolor=&#39;blue&#39;, label=&#39;Customers&#39;)
+
+            # Plot charge stations with a different marker
+            charge_station_indices = [i for i, location in enumerate(route.route) if isinstance(location, ChargeStation)]
+            charge_station_x = [x_points[i] for i in charge_station_indices]
+            charge_station_y = [y_points[i] for i in charge_station_indices]
+            ax.plot(charge_station_x, charge_station_y, &#39;rs&#39;, label=&#39;Charge Stations&#39;)
+
+            # Plot depot locations (D0) with a different marker
+            depot_indices = [i for i, location in enumerate(route.route) if location.id == &#39;D0&#39;]
+            depot_x = [x_points[i] for i in depot_indices]
+            depot_y = [y_points[i] for i in depot_indices]
+            ax.plot(depot_x, depot_y, &#39;gD&#39;, markersize=8, markerfacecolor=&#39;green&#39;, label=&#39;Depot (D0)&#39;)
+
+            # Annotate each point with its label
+            for x, y, label in zip(x_points, y_points, labels):
+                ax.annotate(label, (x, y), textcoords=&#34;offset points&#34;, xytext=(0, 10), ha=&#39;center&#39;)
+
+            ax.set_xlabel(&#39;X-axis&#39;)
+            ax.set_ylabel(&#39;Y-axis&#39;)
+            ax.set_title(f&#39;Route Visualization - Route {id}&#39;)
+            ax.legend()
+
+            plt.annotate(&#39;, &#39;.join(content), xy=(0.5, -0.12), xycoords=&#39;axes fraction&#39;, fontsize=12, ha=&#39;center&#39;)
+
+            id += 1
+            plt.show()</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="Route.Route.append_route"><code class="name flex">
+<span>def <span class="ident">append_route</span></span>(<span>self, new_route)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def append_route(self, new_route):
+    if new_route.route[0] == self.depot:
+        route_to_append = new_route[1:]
+
+    if self.route[-1] == self.depot:
+        self.route = self.route[0:-1]
+
+    self.route = self.route + route_to_append</code></pre>
+</details>
+</dd>
+<dt id="Route.Route.calculate_dist_to_first_customer"><code class="name flex">
+<span>def <span class="ident">calculate_dist_to_first_customer</span></span>(<span>self, reverse=False)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def calculate_dist_to_first_customer(self, reverse=False):
+    dist = 0
+    last = None
+
+    if reverse:
+        self.route.reverse()
+
+    for t in self.route:
+        if last is not None:
+            dist += last.distance_to(t)
+            if type(t) is Customer:
+                if reverse:
+                    self.route.reverse()
+                return dist
+        last = t
+
+    return dist</code></pre>
+</details>
+</dd>
+<dt id="Route.Route.calculate_remaining_tank_capacity"><code class="name flex">
+<span>def <span class="ident">calculate_remaining_tank_capacity</span></span>(<span>self, until=None)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def calculate_remaining_tank_capacity(self, until=None):
+    last = None
+    tank_capacity = self.config.tank_capacity
+    for t in self.route:
+        if last is not None:
+            distance = last.distance_to(t)
+            consumption = distance * self.config.fuel_consumption_rate
+            tank_capacity -= consumption
+
+            if until == t:
+                return tank_capacity
+
+            if type(t) is ChargeStation:
+                tank_capacity = self.config.tank_capacity
+
+        last = t
+    return tank_capacity</code></pre>
+</details>
+</dd>
+<dt id="Route.Route.calculate_total_distance"><code class="name flex">
+<span>def <span class="ident">calculate_total_distance</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def calculate_total_distance(self):
+    last = None
+    dist = 0
+
+    for t in self.route:
+        if last is not None:
+            dist += last.distance_to(t)
+        last = t
+
+    return dist</code></pre>
+</details>
+</dd>
+<dt id="Route.Route.calculate_total_duration"><code class="name flex">
+<span>def <span class="ident">calculate_total_duration</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def calculate_total_duration(self):
+    elapsed_time = self.route[0].ready_time + self.route[0].service_time
+
+    for i in range(1, len(self.route)):
+        elapsed_time = elapsed_time + self.route[i - 1].distance_to(self.route[i]) / self.config.velocity
+
+        if type(self.route[i]) is ChargeStation:
+            missing_energy = self.config.tank_capacity - self.calculate_remaining_tank_capacity(self.route[i])
+            self.route[i] = missing_energy * self.config.charging_rate
+
+        waiting_time = max(self.route[i].ready_time - elapsed_time, 0)
+        elapsed_time += waiting_time
+        elapsed_time += self.route[i].service_time
+
+    return elapsed_time</code></pre>
+</details>
+</dd>
+<dt id="Route.Route.get_charge_stations"><code class="name flex">
+<span>def <span class="ident">get_charge_stations</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_charge_stations(self):
+    return [t for t in self.route if type(t) is ChargeStation]</code></pre>
+</details>
+</dd>
+<dt id="Route.Route.get_first_customer"><code class="name flex">
+<span>def <span class="ident">get_first_customer</span></span>(<span>self, reverse=False)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_first_customer(self, reverse=False):
+    if reverse:
+        self.route.reverse()
+
+    for t in self.route:
+        if type(t) is Customer:
+            if reverse:
+                self.route.reverse()
+            return t</code></pre>
+</details>
+</dd>
+<dt id="Route.Route.get_last_customer"><code class="name flex">
+<span>def <span class="ident">get_last_customer</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_last_customer(self):
+    for t in reversed(self.route):
+        if type(t) is Customer:
+            return t</code></pre>
+</details>
+</dd>
+<dt id="Route.Route.get_last_object"><code class="name flex">
+<span>def <span class="ident">get_last_object</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_last_object(self):
+    return self.route[-1]</code></pre>
+</details>
+</dd>
+<dt id="Route.Route.is_complete"><code class="name flex">
+<span>def <span class="ident">is_complete</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def is_complete(self):
+    return self.route[0] == self.depot and self.route[-1] == self.depot and self.depot not in self.route[1:-1]</code></pre>
+</details>
+</dd>
+<dt id="Route.Route.is_feasible"><code class="name flex">
+<span>def <span class="ident">is_feasible</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def is_feasible(self):
+    if self.tw_constraint_violated():
+        return False
+    elif self.payload_capacity_constraint_violated():
+        return False
+    else:
+        return True</code></pre>
+</details>
+</dd>
+<dt id="Route.Route.is_feasible_all"><code class="name flex">
+<span>def <span class="ident">is_feasible_all</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def is_feasible_all(self):
+    if self.tw_constraint_violated():
+        return False
+    elif self.tank_capacity_constraint_violated():
+        return False
+    elif self.payload_capacity_constraint_violated():
+        return False
+    else:
+        return True</code></pre>
+</details>
+</dd>
+<dt id="Route.Route.payload_capacity_constraint_violated"><code class="name flex">
+<span>def <span class="ident">payload_capacity_constraint_violated</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def payload_capacity_constraint_violated(self):
+    total_demand = 0 #İlk olarak, &#34;total_demand&#34; adında bir değişken başlatılır ve başlangıçta sıfır (0) değeri ile başlar. Bu değişken, rota üzerindeki müşterilerin toplam taleplerini tutar.
+    for t in self.route: #Bir döngü, rota üzerindeki her bir noktayı sırayla gezerek çalışır.
+        &#34;&#34;&#34;
+        Döngünün her adımında, &#34;t&#34; adlı bir nokta (müşteri veya diğer nokta) ele alınır ve tipi kontrol edilir (type(t)). Eğer &#34;t&#34; bir müşteriyse (Customer), o müşterinin talebi (demand) &#34;total_demand&#34; değişkenine eklenir.
+        Döngü tamamlandığında, &#34;total_demand&#34;, rota üzerindeki müşterilerin toplam talebini temsil eder.
+        &#34;&#34;&#34;
+        if type(t) is Customer: 
+            total_demand += t.demand
+    &#34;&#34;&#34;
+    Son olarak, &#34;total_demand&#34; ile aracın taşıma kapasitesi (self.config.payload_capacity) karşılaştırılır. Eğer toplam talep, aracın taşıma kapasitesini aşıyorsa, bu bir kısıtlama ihlali anlamına gelir ve metot &#34;True&#34; döner. Yani, aracın taşıma kapasitesi kısıtlamalarına uyulmamıştır.
+    &#34;&#34;&#34;
+    return total_demand &gt; self.config.payload_capacity</code></pre>
+</details>
+</dd>
+<dt id="Route.Route.tank_capacity_constraint_violated"><code class="name flex">
+<span>def <span class="ident">tank_capacity_constraint_violated</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def tank_capacity_constraint_violated(self):
+    last = None # Bu değişken, önceki noktanın tutulduğu bir referanstır. Başlangıçta herhangi bir önceki nokta olmadığı için None olarak ayarlanır.
+    tank_capacity = self.config.tank_capacity
+    for t in self.route: #Döngü, rota üzerindeki her bir noktayı sırayla gezerek yakıt tüketimini ve yakıt kapasitesini kontrol eder.
+        if last is not None:
+            distance = last.distance_to(t) #Her adımda, last değişkeni kullanılarak önceki noktadan şu anki noktaya giden mesafe hesaplanır ve &#34;distance&#34; değişkenine atanır.
+            consumption = distance * self.config.fuel_consumption_rate #&#34;consumption&#34; değişkeni hesaplanır. Bu değişken, &#34;distance&#34; ile yakıt tüketim oranı (&#34;fuel_consumption_rate&#34;) çarpılarak hesaplanır. Bu, şoförün bu mesafeyi kat etmek için ne kadar yakıt tükettiğini temsil eder.
+
+            tank_capacity -= consumption #Kalan tank kapasitesi hesaplanır/arabanın o noktaya ulaşırken kalan yakıt kapasitesini hesaplar.
+
+            &#34;&#34;&#34;
+            &#34;tank_capacity&#34; değeri negatifse, bu, yakıt tankının kapasitesini aştığı anlamına gelir ve bir kısıtlama ihlali vardır. Bu durumda, metot &#34;True&#34; döner ve kısıtlama ihlali olduğu bildirilir.
+            &#34;&#34;&#34;
+            if tank_capacity &lt; 0: #
+                return True  
+            &#34;&#34;&#34;
+            Eğer şu anki nokta bir şarj istasyonu (ChargeStation) ise, şoförün yakıtı şarj ettiği ve yakıt kapasitesinin yenilendiği kabul edilir. Bu nedenle, &#34;tank_capacity&#34; tekrar maksimum yakıt kapasitesine (self.config.tank_capacity) ayarlanır.
+            &#34;&#34;&#34;
+            if type(t) is ChargeStation:
+                tank_capacity = self.config.tank_capacity
+              
+
+        last = t #En son olarak, &#34;last&#34; değişkeni güncellenir ve bir sonraki noktaya geçilir. Bu, döngünün bir sonraki adımında önceki noktanın şu anki nokta olması için gereklidir.
+
+    return False #Döngü tamamlandığında, tüm noktalar için yakıt tüketimi ve yakıt kapasitesi kontrol edilmiştir. Eğer hiçbir noktada yakıt kapasitesi aşılmamışsa, metot &#34;False&#34; döner ve yakıt kapasitesi kısıtlamalarına uyulur.</code></pre>
+</details>
+</dd>
+<dt id="Route.Route.tw_constraint_violated"><code class="name flex">
+<span>def <span class="ident">tw_constraint_violated</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>İlk olarak, "elapsed_time" değişkeni başlangıç noktasının hazır olma süresi (ready_time) ve hizmet süresi (service_time) toplamı ile başlatılır. "elapsed_time", rotanın ilk noktasını ziyaret ettikten sonraki geçen süreyi temsil eder.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def tw_constraint_violated(self):
+    &#34;&#34;&#34;
+    İlk olarak, &#34;elapsed_time&#34; değişkeni başlangıç noktasının hazır olma süresi (ready_time) ve hizmet süresi (service_time) toplamı ile başlatılır. &#34;elapsed_time&#34;, rotanın ilk noktasını ziyaret ettikten sonraki geçen süreyi temsil eder.
+    &#34;&#34;&#34;
+    elapsed_time = self.route[0].ready_time + self.route[0].service_time #depodan başlıyoruz ilk olarak 0 gelir
+    &#34;&#34;&#34;
+    Daha sonra, bir döngü (for döngüsü) başlar. Bu döngü, rota üzerindeki her noktayı sırayla gezerek zaman penceresi kısıtlamalarını kontrol eder. Döngü, rota nesnesinin indekslerini kullanarak çalışır.
+    &#34;&#34;&#34;
+    for i in range(1, len(self.route)):
+        &#34;&#34;&#34;
+        Her adımda, &#34;elapsed_time&#34; değişkeni, önceki noktadan (route[i - 1]) şu anki noktaya (route[i]) gitmek için geçen süreyi hesaplar. Bu hesaplama, iki nokta arasındaki mesafeyi (&#34;distance_to&#34;) hız ile böler ve &#34;elapsed_time&#34; üzerine ekler. Bu, şoförün iki nokta arasında ne kadar süre geçirdiğini hesaplar
+        &#34;&#34;&#34;
+        elapsed_time = elapsed_time + self.route[i - 1].distance_to(self.route[i]) / self.config.velocity
+        &#34;&#34;&#34;
+        &#34;elapsed_time&#34;, şu anki noktanın son teslim tarihi (due_date) ile karşılaştırılır. Eğer &#34;elapsed_time&#34; son teslim tarihini aşarsa, bu, bir zaman penceresi ihlali anlamına gelir ve &#34;True&#34; döner. İhlal varsa, işlem sona erer.
+        &#34;&#34;&#34;
+        if elapsed_time &gt; self.route[i].due_date:
+            return True
+        &#34;&#34;&#34;
+        Eğer &#34;elapsed_time&#34; son teslim tarihini aşmıyorsa, bir başka kontrol yapılır. Eğer şu anki nokta bir şarj istasyonu (ChargeStation) ise, arabanın enerji eksikliği hesaplanır. Bu eksik enerji, mevcut yakıt kapasitesi ile hesaplanan kalan yakıt kapasitesi arasındaki farka dayanır. Ardından, bu eksik enerjiyi şarj etmek için harcanacak süre hesaplanır ve &#34;service_time&#34; olarak atanır.
+        &#34;&#34;&#34;
+        if type(self.route[i]) is ChargeStation:
+            missing_energy = self.config.tank_capacity - self.calculate_remaining_tank_capacity(self.route[i])
+            self.route[i].service_time = missing_energy * self.config.charging_rate
+        &#34;&#34;&#34;
+        Şarj istasyonuna harcanan süre (&#34;service_time&#34;) ile bekleme süresi (&#34;waiting_time&#34;) eklenir. Bekleme süresi, şu anki noktanın hazır olma zamanı ile &#34;elapsed_time&#34; arasındaki farktır. Bu, şoförün belirli bir noktada beklemesi gerektiğinde ne kadar süre beklemesi gerektiğini hesaplar.
+        &#34;&#34;&#34;
+        &#34;&#34;&#34;
+        Daha sonra, waiting_time hesaplanır. waiting_time, şoförün şu anki noktaya varmadan önce bekleme yapması gereken süreyi temsil eder. Bu, şoförün belirli bir noktaya ulaşmadan önce o noktanın hazır olma zamanına kadar beklemesi gerekebileceği anlamına gelir. max(self.route[i].ready_time - elapsed_time, 0) ifadesi, bu bekleme süresini hesaplar. self.route[i].ready_time belirli bir noktanın hazır olma zamanını temsil eder. &#34;elapsed_time&#34; ise o ana kadar geçen süreyi temsil eder. Bu ifade, şoförün gerektiği durumda beklemesini sağlar, ancak beklemenin negatif bir değere düşmesini önler (yani, şoför zaten beklemesi gerektiği bir zamanı kaçırmışsa, bekleme süresi sıfır olarak hesaplanır).
+        &#34;&#34;&#34;
+        waiting_time = max(self.route[i].ready_time - elapsed_time, 0)
+        elapsed_time += waiting_time
+        elapsed_time += self.route[i].service_time
+
+    return False</code></pre>
+</details>
+</dd>
+<dt id="Route.Route.visualizeAllRoutes"><code class="name flex">
+<span>def <span class="ident">visualizeAllRoutes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visualizeAllRoutes(self):
+    coordinates=[]
+    rotaC=[]
+    depot=[]
+    for route in self.route:
+        for location in route.route:
+            coord=[]
+            coord.append(location.x)
+            coord.append(location.y)
+            coordinates.append(coord)
+        rotaC.append(coordinates)
+        coordinates=[]
+    print(rotaC)
+
+    # Bir figure oluşturun
+    # Grafik boyutunu ayarla
+    fig, ax = plt.subplots(figsize=(10, 8))  # Genişlik: 10 birim, Yükseklik: 8 birim
+
+    for route in rotaC:
+        x, y = zip(*route)
+        ax.plot(x, y, marker=&#39;o&#39;, linestyle=&#39;-&#39;)
+
+        # Depot noktasına daire eklemek
+        depot_x, depot_y = route[0]
+        ax.plot(depot_x, depot_y, marker=&#39;o&#39;, markersize=10, markeredgecolor=&#39;r&#39;, markerfacecolor=&#39;none&#39;)
+
+    # [40, 50] noktasına bir işaret eklemek
+    ax.annotate(&#39;[40, 50]&#39;, (40, 50), textcoords=&#34;offset points&#34;, xytext=(0, 10), ha=&#39;center&#39;)
+
+    # Eksenlerin kesişimi 0,0 olacak şekilde düzenleme
+    ax.spines[&#39;left&#39;].set_position(&#39;zero&#39;)
+    ax.spines[&#39;bottom&#39;].set_position(&#39;zero&#39;)
+    ax.spines[&#39;right&#39;].set_color(&#39;none&#39;)
+    ax.spines[&#39;top&#39;].set_color(&#39;none&#39;)
+
+    # Eksenlerdeki noktaların yerleşimini ayarlama
+    ax.xaxis.set_major_locator(plt.MultipleLocator(5))
+    ax.yaxis.set_major_locator(plt.MultipleLocator(5))
+
+    ax.set_xlabel(&#39;X Koordinatı&#39;)
+    ax.set_ylabel(&#39;Y Koordinatı&#39;)
+    ax.set_title(&#39;Tüm Rotaların Birleştirilmiş Grafiği&#39;)
+
+    ax.grid(True)
+    plt.show()</code></pre>
+</details>
+</dd>
+<dt id="Route.Route.visualizeRoute"><code class="name flex">
+<span>def <span class="ident">visualizeRoute</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visualizeRoute(self):
+    depot_x = 0
+    depot_y = 0
+    id = 1
+    for route in self.route:
+        fig, ax = plt.subplots(figsize=(10, 8))
+        x_points = []
+        y_points = []
+        labels = []
+        content = []
+        for location in route.route:
+            x, y = location.x, location.y
+            label = f&#39;{location.id}({x}, {y})&#39;  # Display location ID with coordinates
+            x_points.append(x)
+            y_points.append(y)
+            labels.append(location.id)  # Display only location ID
+            content.append(label)
+
+        # Determine the marker style based on the location type
+        markers = [&#39;o&#39; if isinstance(location, Customer) else &#39;s&#39; if isinstance(location, ChargeStation) else &#39;D&#39; for location in route.route]
+
+        # Connect the points with lines
+        ax.plot(x_points, y_points, &#39;-b&#39;, marker=&#39;o&#39;, markersize=8, markerfacecolor=&#39;blue&#39;, label=&#39;Customers&#39;)
+
+        # Plot charge stations with a different marker
+        charge_station_indices = [i for i, location in enumerate(route.route) if isinstance(location, ChargeStation)]
+        charge_station_x = [x_points[i] for i in charge_station_indices]
+        charge_station_y = [y_points[i] for i in charge_station_indices]
+        ax.plot(charge_station_x, charge_station_y, &#39;rs&#39;, label=&#39;Charge Stations&#39;)
+
+        # Plot depot locations (D0) with a different marker
+        depot_indices = [i for i, location in enumerate(route.route) if location.id == &#39;D0&#39;]
+        depot_x = [x_points[i] for i in depot_indices]
+        depot_y = [y_points[i] for i in depot_indices]
+        ax.plot(depot_x, depot_y, &#39;gD&#39;, markersize=8, markerfacecolor=&#39;green&#39;, label=&#39;Depot (D0)&#39;)
+
+        # Annotate each point with its label
+        for x, y, label in zip(x_points, y_points, labels):
+            ax.annotate(label, (x, y), textcoords=&#34;offset points&#34;, xytext=(0, 10), ha=&#39;center&#39;)
+
+        ax.set_xlabel(&#39;X-axis&#39;)
+        ax.set_ylabel(&#39;Y-axis&#39;)
+        ax.set_title(f&#39;Route Visualization - Route {id}&#39;)
+        ax.legend()
+
+        plt.annotate(&#39;, &#39;.join(content), xy=(0.5, -0.12), xycoords=&#39;axes fraction&#39;, fontsize=12, ha=&#39;center&#39;)
+
+        id += 1
+        plt.show()</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="Route.Route" href="#Route.Route">Route</a></code></h4>
+<ul class="">
+<li><code><a title="Route.Route.append_route" href="#Route.Route.append_route">append_route</a></code></li>
+<li><code><a title="Route.Route.calculate_dist_to_first_customer" href="#Route.Route.calculate_dist_to_first_customer">calculate_dist_to_first_customer</a></code></li>
+<li><code><a title="Route.Route.calculate_remaining_tank_capacity" href="#Route.Route.calculate_remaining_tank_capacity">calculate_remaining_tank_capacity</a></code></li>
+<li><code><a title="Route.Route.calculate_total_distance" href="#Route.Route.calculate_total_distance">calculate_total_distance</a></code></li>
+<li><code><a title="Route.Route.calculate_total_duration" href="#Route.Route.calculate_total_duration">calculate_total_duration</a></code></li>
+<li><code><a title="Route.Route.get_charge_stations" href="#Route.Route.get_charge_stations">get_charge_stations</a></code></li>
+<li><code><a title="Route.Route.get_first_customer" href="#Route.Route.get_first_customer">get_first_customer</a></code></li>
+<li><code><a title="Route.Route.get_last_customer" href="#Route.Route.get_last_customer">get_last_customer</a></code></li>
+<li><code><a title="Route.Route.get_last_object" href="#Route.Route.get_last_object">get_last_object</a></code></li>
+<li><code><a title="Route.Route.is_complete" href="#Route.Route.is_complete">is_complete</a></code></li>
+<li><code><a title="Route.Route.is_feasible" href="#Route.Route.is_feasible">is_feasible</a></code></li>
+<li><code><a title="Route.Route.is_feasible_all" href="#Route.Route.is_feasible_all">is_feasible_all</a></code></li>
+<li><code><a title="Route.Route.payload_capacity_constraint_violated" href="#Route.Route.payload_capacity_constraint_violated">payload_capacity_constraint_violated</a></code></li>
+<li><code><a title="Route.Route.tank_capacity_constraint_violated" href="#Route.Route.tank_capacity_constraint_violated">tank_capacity_constraint_violated</a></code></li>
+<li><code><a title="Route.Route.tw_constraint_violated" href="#Route.Route.tw_constraint_violated">tw_constraint_violated</a></code></li>
+<li><code><a title="Route.Route.visualizeAllRoutes" href="#Route.Route.visualizeAllRoutes">visualizeAllRoutes</a></code></li>
+<li><code><a title="Route.Route.visualizeRoute" href="#Route.Route.visualizeRoute">visualizeRoute</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>

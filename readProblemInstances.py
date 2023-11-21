@@ -1,14 +1,20 @@
-# READ PROBLEM INSTANCES
-
 from DataObjects.ChargeStation import ChargeStation
 from DataObjects.Customer import Customer
 from DataObjects.Target import Target
 from problemInstances import RoutingProblemConfiguration, RoutingProblemInstance
 
-
 def readProblemInstances(file):
+    """
+    Verilen dosyadan rota problemi örneklerini okuyan fonksiyon.
+
+    Args:
+        file (str): Okunacak dosyanın adı.
+
+    Returns:
+        RoutingProblemInstance: Okunan rota problemi örneği.
+    """
     with open(file) as f:
-        f.readline()  # ignore header
+        f.readline()  # başlık satırını atla
 
         target_line = f.readline()
 
@@ -17,13 +23,12 @@ def readProblemInstances(file):
         depot = None
 
         while target_line != '\n':
-            stl = target_line.split()  # splitted target_line
+            stl = target_line.split()  # bölünmüş target_line
             idx = int(stl[0][1:])
 
             if stl[1] == 'd':
                 depot = Target(stl[0], idx, int(float(stl[2])), int(float(stl[3])), int(float(stl[5])),
-                               int(float(stl[6])),
-                               int(float(stl[7])))
+                               int(float(stl[6])), int(float(stl[7])))
             elif stl[1] == 'f':
                 new_target = ChargeStation(stl[0], idx, int(float(stl[2])), int(float(stl[3])), int(float(stl[5])),
                                             int(float(stl[6])), int(float(stl[7])))
