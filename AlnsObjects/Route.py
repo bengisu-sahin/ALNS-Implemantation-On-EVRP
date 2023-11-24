@@ -75,6 +75,9 @@ class Route:
 
         return False
     
+    def node_count_in_route(self):
+        return len(self.route)
+    
     """
     Bu metot, bir rota üzerindeki noktalar arasındaki yakıt tüketimini hesaplar ve yakıt tankının kapasitesini aşılıp aşılmadığını kontrol eder.
     """
@@ -104,6 +107,20 @@ class Route:
 
         return False #Döngü tamamlandığında, tüm noktalar için yakıt tüketimi ve yakıt kapasitesi kontrol edilmiştir. Eğer hiçbir noktada yakıt kapasitesi aşılmamışsa, metot "False" döner ve yakıt kapasitesi kısıtlamalarına uyulur.
 
+
+    def calculate_time_between_nodes(self, from_node, to_node):
+        """
+                İki düğüm arasında seyahat etmek için geçen süreyi hesaplar.
+
+                Args:
+                    from_node (Node): Başlangıç düğümü.
+                    to_node (Node): Hedef düğüm.
+
+                Returns:
+                    float: İki düğüm arasında seyahat etmek için geçen süre.
+        """
+        return from_node.distance_to(to_node) / self.config.velocity
+    
     def payload_capacity_constraint_violated(self):
         total_demand = 0 #İlk olarak, "total_demand" adında bir değişken başlatılır ve başlangıçta sıfır (0) değeri ile başlar. Bu değişken, rota üzerindeki müşterilerin toplam taleplerini tutar.
         for t in self.route: #Bir döngü, rota üzerindeki her bir noktayı sırayla gezerek çalışır.
@@ -215,6 +232,26 @@ class Route:
                 return t
     def get_charge_stations(self):
         return [t for t in self.route if type(t) is ChargeStation]
+
+    def remove_customer_from_route(self, customer):
+        self.route.remove(customer)
+        
+    def calculate_energy_consumption(self):
+        #TODO: Implement this method
+        return 0
+
+    def calculate_obj_function(self):
+        #TODO: Implement this method
+        e=0.8
+        p=1.2041
+        g=9.81
+        alpha=(0.5*Cd*p*A*(self.config.velocity**3))/(1000* e)
+        beta=(g*Cr*self.config.velocity)/(1000* e)
+        
+        return 0
+    
+    def appendcustomer_at_certain_point(self, customer, index):
+        self.route.insert(index, customer)
 
     """
     Sonuç olarak, bu metot, "self" nesnesi ile "new_route" nesnesini birleştirerek yeni bir rota oluşturur. Bu, lojistik ve taşıma problemleri gibi alanlarda, farklı rotaları birleştirerek daha etkili ve optimize edilmiş rota planlaması yapmak için kullanışlı
