@@ -3,25 +3,51 @@ from DataObjects.Customer import Customer
 import matplotlib.pyplot as plt
 
 class Route:
+    """
+    Represents a route in the EVRP problem.
+    """
+
     def __init__(self, config, depot):
+        """
+        Initializes a Route object.
+
+        Args:
+            config (Config): The configuration object containing the parameters for the EVRP problem.
+            depot (Node): The depot node where the route starts and ends.
+        """
+        e = 0.8
+        p = 1.2041
+        g = 9.81
+        Cd = 0.4
+        Cr = 0.015
+        A = 7
         self.config = config
         self.route = [depot]
         self.depot = depot
-
-    """
-    Kısıtlamaları kontrol eder.
-    Eğer bir kısıtlama ihlali varsa false döndürür.
-    """    
+        self.alpha = (0.5 * Cd * p * A * (self.config.velocity ** 3)) / (1000 * e)
+        self.beta = (g * Cr * self.config.velocity) / (1000 * e)
 
     def is_feasible(self):
+        """
+        Checks if the route satisfies all the constraints.
+
+        Returns:
+            bool: True if the route is feasible, False otherwise.
+        """
         if self.tw_constraint_violated():
             return False
         elif self.payload_capacity_constraint_violated():
             return False
         else:
             return True
-    
+
     def is_feasible_all(self):
+        """
+        Checks if the route satisfies all the constraints, including the tank capacity constraint.
+
+        Returns:
+            bool: True if the route is feasible, False otherwise.
+        """
         if self.tw_constraint_violated():
             return False
         elif self.tank_capacity_constraint_violated():
@@ -32,54 +58,56 @@ class Route:
             return True
 
     def is_complete(self):
+        """
+        Checks if the route is complete, i.e., it starts and ends at the depot and the depot is not visited in between.
+
+        Returns:
+            bool: True if the route is complete, False otherwise.
+        """
         return self.route[0] == self.depot and self.route[-1] == self.depot and self.depot not in self.route[1:-1]
 
-    # CONSTRAINT VALIDATION METHODS
-
-    """
-    "tw_constraint_violated" metodu, zaman penceresi (time window) kısıtlamalarını kontrol eder. Rota üzerindeki her müşterinin zaman penceresi içinde olup olmadığını kontrol eder. Ayrıca şarj istasyonlarına olan enerji eksikliğini ve beklemeyi hesaplar. İhlal durumunda "True" döner, aksi takdirde "False" döner.
-    """
     def tw_constraint_violated(self):
         """
-        İlk olarak, "elapsed_time" değişkeni başlangıç noktasının hazır olma süresi (ready_time) ve hizmet süresi (service_time) toplamı ile başlatılır. "elapsed_time", rotanın ilk noktasını ziyaret ettikten sonraki geçen süreyi temsil eder.
+        Checks if the time window constraints are violated in the route.
+
+        Returns:
+            bool: True if the time window constraints are violated, False otherwise.
         """
-        elapsed_time = self.route[0].ready_time + self.route[0].service_time #depodan başlıyoruz ilk olarak 0 gelir
-        """
-        Daha sonra, bir döngü (for döngüsü) başlar. Bu döngü, rota üzerindeki her noktayı sırayla gezerek zaman penceresi kısıtlamalarını kontrol eder. Döngü, rota nesnesinin indekslerini kullanarak çalışır.
-        """
+        elapsed_time = self.route[0].ready_time + self.route[0].service_time
+
         for i in range(1, len(self.route)):
-            """
-            Her adımda, "elapsed_time" değişkeni, önceki noktadan (route[i - 1]) şu anki noktaya (route[i]) gitmek için geçen süreyi hesaplar. Bu hesaplama, iki nokta arasındaki mesafeyi ("distance_to") hız ile böler ve "elapsed_time" üzerine ekler. Bu, şoförün iki nokta arasında ne kadar süre geçirdiğini hesaplar
-            """
             elapsed_time = elapsed_time + self.route[i - 1].distance_to(self.route[i]) / self.config.velocity
-            """
-            "elapsed_time", şu anki noktanın son teslim tarihi (due_date) ile karşılaştırılır. Eğer "elapsed_time" son teslim tarihini aşarsa, bu, bir zaman penceresi ihlali anlamına gelir ve "True" döner. İhlal varsa, işlem sona erer.
-            """
+
             if elapsed_time > self.route[i].due_date:
                 return True
-            """
-            Eğer "elapsed_time" son teslim tarihini aşmıyorsa, bir başka kontrol yapılır. Eğer şu anki nokta bir şarj istasyonu (ChargeStation) ise, arabanın enerji eksikliği hesaplanır. Bu eksik enerji, mevcut yakıt kapasitesi ile hesaplanan kalan yakıt kapasitesi arasındaki farka dayanır. Ardından, bu eksik enerjiyi şarj etmek için harcanacak süre hesaplanır ve "service_time" olarak atanır.
-            """
+
             if type(self.route[i]) is ChargeStation:
                 missing_energy = self.config.tank_capacity - self.calculate_remaining_tank_capacity(self.route[i])
                 self.route[i].service_time = missing_energy * self.config.charging_rate
-            """
-            Şarj istasyonuna harcanan süre ("service_time") ile bekleme süresi ("waiting_time") eklenir. Bekleme süresi, şu anki noktanın hazır olma zamanı ile "elapsed_time" arasındaki farktır. Bu, şoförün belirli bir noktada beklemesi gerektiğinde ne kadar süre beklemesi gerektiğini hesaplar.
-            """
-            """
-            Daha sonra, waiting_time hesaplanır. waiting_time, şoförün şu anki noktaya varmadan önce bekleme yapması gereken süreyi temsil eder. Bu, şoförün belirli bir noktaya ulaşmadan önce o noktanın hazır olma zamanına kadar beklemesi gerekebileceği anlamına gelir. max(self.route[i].ready_time - elapsed_time, 0) ifadesi, bu bekleme süresini hesaplar. self.route[i].ready_time belirli bir noktanın hazır olma zamanını temsil eder. "elapsed_time" ise o ana kadar geçen süreyi temsil eder. Bu ifade, şoförün gerektiği durumda beklemesini sağlar, ancak beklemenin negatif bir değere düşmesini önler (yani, şoför zaten beklemesi gerektiği bir zamanı kaçırmışsa, bekleme süresi sıfır olarak hesaplanır).
-            """
+
             waiting_time = max(self.route[i].ready_time - elapsed_time, 0)
             elapsed_time += waiting_time
             elapsed_time += self.route[i].service_time
 
         return False
-    
-    """
-    Bu metot, bir rota üzerindeki noktalar arasındaki yakıt tüketimini hesaplar ve yakıt tankının kapasitesini aşılıp aşılmadığını kontrol eder.
-    """
+
+    def node_count_in_route(self):
+        """
+        Returns the number of nodes in the route.
+
+        Returns:
+            int: The number of nodes in the route.
+        """
+        return len(self.route)
+
     def tank_capacity_constraint_violated(self):
-        last = None # Bu değişken, önceki noktanın tutulduğu bir referanstır. Başlangıçta herhangi bir önceki nokta olmadığı için None olarak ayarlanır.
+        """
+        Checks if the tank capacity constraint is violated in the route.
+
+        Returns:
+            bool: True if the tank capacity constraint is violated, False otherwise.
+        """
+        last = None
         tank_capacity = self.config.tank_capacity
         for t in self.route: #Döngü, rota üzerindeki her bir noktayı sırayla gezerek yakıt tüketimini ve yakıt kapasitesini kontrol eder.
             if last is not None:
@@ -104,6 +132,20 @@ class Route:
 
         return False #Döngü tamamlandığında, tüm noktalar için yakıt tüketimi ve yakıt kapasitesi kontrol edilmiştir. Eğer hiçbir noktada yakıt kapasitesi aşılmamışsa, metot "False" döner ve yakıt kapasitesi kısıtlamalarına uyulur.
 
+
+    def calculate_time_between_nodes(self, from_node, to_node):
+        """
+                İki düğüm arasında seyahat etmek için geçen süreyi hesaplar.
+
+                Args:
+                    from_node (Node): Başlangıç düğümü.
+                    to_node (Node): Hedef düğüm.
+
+                Returns:
+                    float: İki düğüm arasında seyahat etmek için geçen süre.
+        """
+        return from_node.distance_to(to_node) / self.config.velocity
+    
     def payload_capacity_constraint_violated(self):
         total_demand = 0 #İlk olarak, "total_demand" adında bir değişken başlatılır ve başlangıçta sıfır (0) değeri ile başlar. Bu değişken, rota üzerindeki müşterilerin toplam taleplerini tutar.
         for t in self.route: #Bir döngü, rota üzerindeki her bir noktayı sırayla gezerek çalışır.
@@ -125,6 +167,18 @@ class Route:
     def get_last_object(self):
         return self.route[-1]
     # STATUS CALCULATION METHODS
+    def calculate_load_carried_until_customer(self, customer):
+        """
+        Bu metot, bir müşteriye kadar olan toplam yükü hesaplamak için kullanılır. Bu yük, müşteriye kadar olan tüm müşterilerin taleplerinin toplamıdır.
+        """
+        total_demand = 0
+        for t in self.route:
+            if t == customer:
+                break
+            if type(t) is Customer:
+                total_demand += t.demand
+
+        return total_demand
 
     """
     Bu metodun temel amacı, bir rota üzerindeki toplam mesafeyi hesaplamaktır. Bu mesafe, belirli bir rotayı oluşturan noktalar arasındaki toplam yolculuk mesafesini verir.
@@ -215,6 +269,28 @@ class Route:
                 return t
     def get_charge_stations(self):
         return [t for t in self.route if type(t) is ChargeStation]
+
+    def remove_customer_from_route(self, customer):
+        self.route.remove(customer)
+        
+    def calculate_energy_consumption(self,from_node,to_node):
+        #TODO: Implement this method
+        
+        return (self.alpha*1+self.beta*(self.calculate_load_carried_until_customer(to_node)+3000))*self.calculate_time_between_nodes(from_node,to_node)
+
+    def calculate_obj_function(self):
+        #TODO: Implement this method
+        route_length = len(self.route)
+        total_energy_used = 0
+        for i in range(route_length - 1):
+            from_node = self.route[i]
+            to_node = self.route[i + 1]
+            total_energy_used += self.calculate_energy_consumption(from_node, to_node)
+
+        return total_energy_used
+    
+    def appendcustomer_at_certain_point(self, customer, index):
+        self.route.insert(index, customer)
 
     """
     Sonuç olarak, bu metot, "self" nesnesi ile "new_route" nesnesini birleştirerek yeni bir rota oluşturur. Bu, lojistik ve taşıma problemleri gibi alanlarda, farklı rotaları birleştirerek daha etkili ve optimize edilmiş rota planlaması yapmak için kullanışlı
