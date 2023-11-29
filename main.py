@@ -5,15 +5,19 @@ from visualize_solution import visualizeAllRoutes
 
 
 def main(): 
-    problemFile = readProblemInstances('SchneiderData/r103_21.txt')  # Değişken atama işlemi düzeltilmiş ve parantez eklendi.
-
+    problemFile = readProblemInstances('SchneiderData/c101_21.txt')  # Değişken atama işlemi düzeltilmiş ve parantez eklendi.
+    routes=initial_solution(problemFile.depot,problemFile.customers,problemFile)
+    total_energy_consumption=0
+    for route in routes:
+        total_energy_consumption+=route.calculate_obj_function()
+        
+    print("total energy consumption : ",total_energy_consumption)
+    visualizeAllRoutes(routes,problemFile)    
     
-    dir_list=test_files_in_directory('SchneiderData')
-    
-    for test in dir_list:
-        print(test)
-        problemFile = readProblemInstances(test)
-        routes=initial_solution(problemFile.depot,problemFile.customers,problemFile)
+    # for test in dir_list:
+    #     print(test)
+    #     problemFile = readProblemInstances(test)
+    #     routes=initial_solution(problemFile.depot,problemFile.customers,problemFile)
         
 
     

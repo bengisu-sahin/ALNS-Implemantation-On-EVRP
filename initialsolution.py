@@ -67,6 +67,7 @@ def initial_solution(depot, customers, problem_instance):
     Returns:
         list: Oluşturulan rotaların listesi.
     """
+    
     routes = []
     served_customers = []
     unserved_customers = customers.copy()
