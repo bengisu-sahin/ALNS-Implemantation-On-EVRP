@@ -1,3 +1,4 @@
+from AlnsObjects.Solution import Solution
 from DataObjects.Customer import Customer
 from DataObjects.ChargeStation import ChargeStation
 from AlnsObjects.Route import Route
@@ -67,7 +68,7 @@ def initial_solution(depot, customers, problem_instance):
     Returns:
         list: Oluşturulan rotaların listesi.
     """
-    
+   
     routes = []
     served_customers = []
     unserved_customers = customers.copy()
@@ -263,7 +264,7 @@ def initial_solution(depot, customers, problem_instance):
     initial_route.route.append(depot)
     routes.append(initial_route)     
     
-    
+    solution=Solution(unserved_customers,served_customers,routes)
     
     total_distance=0 
         
@@ -286,5 +287,5 @@ def initial_solution(depot, customers, problem_instance):
     
     print("Total Distance: ",total_distance)
     
-    return routes
+    return solution
 
