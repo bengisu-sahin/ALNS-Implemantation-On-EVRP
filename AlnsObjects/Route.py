@@ -270,9 +270,21 @@ class Route:
     def get_charge_stations(self):
         return [t for t in self.route if type(t) is ChargeStation]
 
+    def get_customers(self):
+        return [t for t in self.route if type(t) is Customer]
+
     def remove_customer_from_route(self, customer):
         self.route.remove(customer)
-        
+
+    def remove_charge_station_from_route(self, charge_station):
+        self.route.remove(charge_station)
+
+    def find_item_index_in_solution(self, item):
+        # Müşteriyi çözüm içinde ara ve indeksini bul
+        for i in range(len(self.route)):
+            if self.route[i] == item:
+                return i
+
     def calculate_energy_consumption(self,from_node,to_node):
         #TODO: Implement this method
         
