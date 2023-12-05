@@ -264,7 +264,7 @@ def initial_solution(depot, customers, problem_instance):
     initial_route.route.append(depot)
     routes.append(initial_route)     
     
-    solution=Solution(unserved_customers,served_customers,routes)
+    solution=Solution(unserved_customers,served_customers,routes,problem_instance)
     
     total_distance=0 
         
