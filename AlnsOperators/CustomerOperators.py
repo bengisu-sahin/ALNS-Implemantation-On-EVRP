@@ -136,9 +136,14 @@ class greedyCustomerInsertionOperator(CustomerOperator):
 
         for i in range(1, len(route.route) ):
             temp_route.route = route.route[:i] + [customer] + route.route[i:]
-            if(temp_route.is_feasible_all() == False):
+            if(temp_route.is_feasible() == False): # time window ve payload constraint'lerini kontrol et bunlar okeyse ekleme yap tank capacity de sorun çıkarsa şarj istasyonu ekleme yapılacak zaten
                 continue
             else:
+                if(temp_route.tank_capacity_constraint_violated() == True): # tank capacity constraint'ini kontrol et
+                    closest_charge_station = min(stations, key=lambda n: n.distance_to(temp_route.get_last_object))
+                    temp_route.route.append_charge_station_at_certain_point(closest_charge_station,i-1)
+                    if temp_route.is_feasible_all() == True:
+                        continue
                 # Energy consumption'ı hesapla
                 energy_consumption = temp_route.calculate_obj_function()
                 
@@ -151,25 +156,42 @@ class greedyCustomerInsertionOperator(CustomerOperator):
     
     def insert(self, solution):
         customers = solution.unserved_customers
+        stations = solution.getAllStations()
         random_customer = random.choice(customers)
         best_insertion_info = {}
 
         for i, route in enumerate(solution.routes):
             best_insertion_point, min_energy_consumption = self.find_best_insertion_point(route, random_customer)
-            best_insertion_info[i] = {"point": best_insertion_point, "energy_consumption": min_energy_consumption}
+            best_insertion_info[i] = {"point": best_insertion_point, "energy_consumption": min_energy_consumption} #burada random seçilen müşteri için her bir rotaya göre en uygun ekleme noktası ve bu noktada oluşan energy consumption bilgileri tutuluyor. 
 
         # En düşük enerji tüketimine sahip rota ve ekleme noktasını bul
         min_energy_route_index = min(best_insertion_info, key=lambda x: best_insertion_info[x]["energy_consumption"])
         best_insertion_point = best_insertion_info[min_energy_route_index]["point"]
 
-        # En uygun rota ve noktaya müşteriyi ekleyin
-        best_route = solution.routes[min_energy_route_index]
+        # En uygun rota ve noktaya müşteriyi ekle
         solution.routes[min_energy_route_index].appendcustomer_at_certain_point(random_customer, best_insertion_point)
-        
+        tempRoute=Route(solution.routes.config,solution.routes.depot)
+        if solution.routes[min_energy_route_index].tank_capacity_constraint_violated() == True:
+            for index, item in enumerate(solution.routes[min_energy_route_index]):
+                            tempRoute.route.append(item)                           
+                            if route.calculate_remaining_tank_capacity(item)<0:
+                                tempRoute.route.pop()
+                                closest_charge_station = min(stations, key=lambda n: n.distance_to(tempRoute.get_last_object))
+                                tempRoute.route.append(closest_charge_station)
+                                tempRoute.route.append(item)
+                                if tempRoute.is_feasible_all() == True:
+                                    continue   #d0 c1 c2 c3 -> d0 c1 c2 s1 c3
+                                else:
+                                    tempRoute.route.pop()
+                                    tempRoute.route.pop()
+                                    tempRoute.route.append(item)
+                                    continue
+                                for
+                                tempRoute.route.append_charge_station_at_certain_point(closest_charge_station,index-1)
 
-        solution.routes[min_energy_route_index] = best_route
-        return solution.routes
-    
+                                
+        
+        return solution  
 
 class greedyCustomerInsertionPerturbationOperator(CustomerOperator):
     def __init__(self):

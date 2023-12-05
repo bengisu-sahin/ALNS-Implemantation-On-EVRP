@@ -304,6 +304,9 @@ class Route:
     def appendcustomer_at_certain_point(self, customer, index):
         self.route.insert(index, customer)
 
+    def append_charge_station_at_certain_point(self, charge_station, index):
+        self.route.insert(index, charge_station)
+
     """
     Sonuç olarak, bu metot, "self" nesnesi ile "new_route" nesnesini birleştirerek yeni bir rota oluşturur. Bu, lojistik ve taşıma problemleri gibi alanlarda, farklı rotaları birleştirerek daha etkili ve optimize edilmiş rota planlaması yapmak için kullanışlı
     """
@@ -437,5 +440,21 @@ class Route:
             id += 1
             plt.show()
 
+    def number_of_customers(self):
+        """
+        Returns the number of customers in the route.
 
+        Returns:
+            int: The number of customers in the route.
+        """
+        return len(self.get_customers())
+    
+    def number_of_charge_stations(self):
+        """
+        Returns the number of charge stations in the route.
+
+        Returns:
+            int: The number of charge stations in the route.
+        """
+        return len(self.get_charge_stations())
 

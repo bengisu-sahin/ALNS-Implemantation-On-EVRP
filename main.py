@@ -4,7 +4,7 @@ from readProblemInstances import readProblemInstances
 from test_funcs import test_files_in_directory
 from visualize_solution import visualizeAllRoutes
 from AlnsOperators.CustomerOperators import removeRandomCustomerOperator, leastTimeWindowCustomerRemovalOperator, relatedCustomerRemovalOperator,greedyCustomerInsertionOperator,greedyCustomerInsertionPerturbationOperator, worstDistanceCustomerRemovalOperator
-from AlnsOperators.StationOperators import randomStationRemovalOperator, worstChargeUsageStationRemovalOperator, worstStationRemovalOperator
+from AlnsOperators.StationOperators import bestStationInsertionOperator, randomStationRemovalOperator, worstChargeUsageStationRemovalOperator, worstStationRemovalOperator
 
 def main(): 
     problemFile = readProblemInstances('SchneiderData/c101_21.txt')  # Değişken atama işlemi düzeltilmiş ve parantez eklendi.
@@ -40,6 +40,7 @@ def main():
     worstDistanceCustomerRemovalOp=worstDistanceCustomerRemovalOperator()
     greedyRouteRemovalOp=greedyRouteRemovalOperator()
     randomRouteRemovalOp=randomRouteRemovalOperator()
-    print(greedyRouteRemovalOp.remove(solution))
+    bestStationInsertionOp=bestStationInsertionOperator()
+    print(bestStationInsertionOp.insertStation(solution))
 if __name__ == "__main__":
     main()
