@@ -207,6 +207,8 @@ class greedyCustomerInsertionOperator(CustomerOperator):
         first_route_key, first_route_data = next(iter(sorted_best_insertion_info.items()))
         best_route = first_route_data["route"]
         solution.routes[first_route_key].route = best_route
+        solution.unserved_customers.remove(random_customer)
+        solution.served_customers.append(random_customer)
         return solution
 
 class greedyCustomerInsertionPerturbationOperator(CustomerOperator):
