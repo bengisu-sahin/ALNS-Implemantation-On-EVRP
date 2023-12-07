@@ -138,7 +138,8 @@ class greedyCustomerInsertionOperator(CustomerOperator):
         best_insertion_point = -1
         temp_route = copy.copy(route.route)
         energy_consumption_wihout_insertion = route.calculate_obj_function()
-        self
+        newRoute=Route(route.config,route.depot)
+        
         for i in range(1, len(route.route) ):
             route.appendcustomer_at_certain_point(customer,i) #sırayla müşterileri rotaya ekleyerek en uygun ekleme noktasını bulmaya çalışıyoruz.
             if (route.is_feasible() == False): # time window ve payload constraint'lerini kontrol et bunlarda sorun varsa yapılacak bir şey yok zaten yani zaman sınırını ya da yük sınırını değiştirebileceğimiz bir durum yok o sebeple eğer bu if bloğuna girerse müşteriyi rotaya eklemiyoruz. Yeni indeks için tekrar döngüye giriyoruz.
@@ -146,21 +147,33 @@ class greedyCustomerInsertionOperator(CustomerOperator):
                 continue
             else:
                 if(route.tank_capacity_constraint_violated() == True): # buraya girdiyse bu şu demek load ve time kısıtlarında sıkıntı yok ama tank capacity kısıtlarında sıkıntı var. Bu durumda en yakın şarj istasyonunu bulup rotaya ekleyip bu durumu düzeltmeye çalışıyoruz. Eğer bu durumda da rotanın feasible olması için bir şey yapamıyorsak yani şarj istasyonu ekledikten sonra da feasible olmuyorsa o zaman müşteriyi rotaya eklemiyoruz ve yeni indeks için tekrar döngüye giriyoruz.
-                    charging_stations_sorted = sorted(self.stations, key=lambda station: station.distance_to(route.route[i-1]))
-                    for station in charging_stations_sorted:
-                        route.append_charge_station_at_certain_point(station,i)
-                        if route.is_feasible_all() == False:
-                            route.remove_charge_station_from_route(station)#burası şey demek oluyor. Şarj istasyonu ekledikten sonra da feasible olmuyor. Bu durumda müşteriyi rotaya eklemiyoruz ve yeni indeks için tekrar döngüye giriyoruz. Rotayı da eski haline çeviriyoruz
+                    
+                    newRoute.route=route.route[:i]
+                    k=i
+                    for index, item in enumerate(route.route[i:], start=i):
+                        newRoute.route.append(item)
+                        if newRoute.is_feasible_all() == True:
                             continue
-                        if route.is_feasible_all() == True: #buraya girdiyse şarj istasyonu ekledikten sonra feasible oldu demek. mim değerle kıyaslıyoruz eğer daha küçükse onu alıyoruz.
-                            energy_consumption_with_insertion = route.calculate_obj_function()
-                            diff = energy_consumption_with_insertion - energy_consumption_wihout_insertion
-                            if diff < min_energy_consumption:
-                                min_energy_consumption = diff
-                                best_insertion_point = i
-                            temp_route = copy.copy(route.route)    
-                            route.remove_charge_station_from_route(station) 
-                    route.remove_customer_from_route(customer)              
+                        else:
+                            if newRoute.is_feasible()==True and newRoute.tank_capacity_constraint_violated() == True:
+                                charging_stations_sorted = sorted(self.stations, key=lambda station: station.distance_to(newRoute.route[index-1]))
+                                for station in charging_stations_sorted:
+                                    newRoute.append_charge_station_at_certain_point(station,index)
+                                    if newRoute.is_feasible_all() == True:
+                                        break
+                                    else:
+                                        newRoute.remove_charge_station_from_route_at_certain_point(index)
+                                        continue
+                                if newRoute.is_feasible_all() == False:
+                                    break
+                    if newRoute.is_feasible_all() == True and len(newRoute.route) >= len(route.route):
+                        energy_consumption_with_insertion = newRoute.calculate_obj_function()
+                        diff = energy_consumption_with_insertion - energy_consumption_wihout_insertion
+                        if diff < min_energy_consumption:
+                            min_energy_consumption = diff
+                            best_insertion_point = i
+                        temp_route = copy.copy(newRoute.route)
+                        route.remove_customer_from_route(customer)              
                 else:
                     # Energy consumption'ı hesapla
                     energy_consumption_with_insertion = route.calculate_obj_function()
@@ -190,19 +203,10 @@ class greedyCustomerInsertionOperator(CustomerOperator):
         # En düşük enerji tüketimine sahip rota ve ekleme noktasını bul
         sorted_best_insertion_info = {k: v for k, v in sorted(best_insertion_info.items(), key=lambda item: item[1]["energy_consumption"])}
 
-
-
-
-        # En uygun rota ve noktaya müşteriyi ekleyin
+        # En uygun rota ve noktaya müşteriyi ekle
         first_route_key, first_route_data = next(iter(sorted_best_insertion_info.items()))
         best_route = first_route_data["route"]
-        for item in best_route:
-            print(item.id)
-        print("*********************************************************************************")
         solution.routes[first_route_key].route = best_route
-        for item in solution.routes[first_route_key].route:
-            print(item.id)
-        print("*********************************************************************************")
         return solution
 
 class greedyCustomerInsertionPerturbationOperator(CustomerOperator):

@@ -279,6 +279,9 @@ class Route:
     def remove_charge_station_from_route(self, charge_station):
         self.route.remove(charge_station)
 
+    def remove_charge_station_from_route_at_certain_point(self, index):
+        self.route.pop(index)
+
     def find_item_index_in_solution(self, item):
         # Müşteriyi çözüm içinde ara ve indeksini bul
         for i in range(len(self.route)):
@@ -306,6 +309,9 @@ class Route:
 
     def append_charge_station_at_certain_point(self, charge_station, index):
         self.route.insert(index, charge_station)
+
+    def remove_charge_station_from_route_by_index(self, index):
+        self.route.remove(self.route[index])
 
     """
     Sonuç olarak, bu metot, "self" nesnesi ile "new_route" nesnesini birleştirerek yeni bir rota oluşturur. Bu, lojistik ve taşıma problemleri gibi alanlarda, farklı rotaları birleştirerek daha etkili ve optimize edilmiş rota planlaması yapmak için kullanışlı
