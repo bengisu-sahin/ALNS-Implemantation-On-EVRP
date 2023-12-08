@@ -41,5 +41,6 @@ def main():
     greedyRouteRemovalOp=greedyRouteRemovalOperator()
     randomRouteRemovalOp=randomRouteRemovalOperator()
     bestStationInsertionOp=bestStationInsertionOperator()
+    bestStationInsertionOp.insert(solution)
 if __name__ == "__main__":
     main()

@@ -50,5 +50,5 @@ class Solution:
     
     def removeEmptyRoutes(self):
         for route in self.routes:
-            if len(route.route) == 0:
+            if len(route.route) < 3 or not any(isinstance(item, Customer) for item in route.route):
                 self.routes.remove(route)

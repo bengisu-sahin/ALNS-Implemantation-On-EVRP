@@ -11,7 +11,7 @@ class randomStationRemovalOperator(StationOperator):
     def __init__(self):
         super().__init__()
 
-    def removeStation(self,solution):
+    def remove(self,solution):
         Q = self.stationToBeRemoved(solution)
         charge_stations=solution.getAllStations()
         stations_to_remove = random.sample(charge_stations, int(Q))
@@ -19,6 +19,7 @@ class randomStationRemovalOperator(StationOperator):
                 for station in stations_to_remove:
                     if station in route.route:
                         route.remove_customer_from_route(station)
+        solution.removeEmptyRoutes()
         return solution.routes
     
 class  worstChargeUsageStationRemovalOperator(StationOperator):
@@ -34,7 +35,7 @@ class  worstChargeUsageStationRemovalOperator(StationOperator):
         newRoute.route = selectedRoute.route[:station_index]
         return newRoute.calculate_remaining_tank_capacity()
 
-    def removeStation(self,solution):
+    def remove(self,solution):
         charge_dict = {}
         Q = self.stationToBeRemoved(solution)
         for route_index, route in enumerate(solution.routes):
@@ -60,7 +61,7 @@ class  worstChargeUsageStationRemovalOperator(StationOperator):
         # Remove the selected stations from the routes
         for charge_station_id, (charge_remaining, route_index) in stations_to_remove:
             solution.routes[route_index].remove_charge_station_from_route(charge_station_id)
-            
+        solution.removeEmptyRoutes()    
         return solution.routes
 
 #power required removal will be implemented
@@ -74,7 +75,7 @@ class bestStationInsertionOperator(StationOperator):
     def __init__(self):
         super().__init__()
 
-    def insertStation(self,solution):
+    def insert(self,solution):
         charge_stations=solution.getAllStations()
         min_distance =[]
         for route in solution.routes: 
@@ -98,7 +99,7 @@ class bestStationInsertionOperator(StationOperator):
                     route.append_charge_station_at_certain_point(min_distance[0],1)
                     """
                     Seçim yapılıp eklendikten sonra ise feasible olup olmadığı kontrol ediliyor. Eğer feasible değilse eklenen şarj istasyonu siliniyor. " Both operators check for feasibility of solution 
-                    after the station insertion. If no station can be inserted feasibly, the algorithm returns to the previous feasible solution." ifadesi makalede geçiyor diye bu şekilde kontrol ettim.
+                    after the station insertion. If no station can be inserted feasibly, the algorithm returns to the previous feasible solution." ifadesi makalede geçiyor diye bu şekilde kontrol ettim.
                     """
                     if route.is_feasible_all() == True:
                         continue    
@@ -125,4 +126,5 @@ class bestStationInsertionOperator(StationOperator):
                                     continue    
                                 else: #if the solution is not feasible, remove the charge station
                                     route.remove_charge_station_from_route(min_distance[0])
+        solution.removeEmptyRoutes()
         return solution

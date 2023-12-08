@@ -21,7 +21,8 @@ class removeRandomCustomerOperator(CustomerOperator):
         self.customerPool.extend(customers_to_remove)
         solution.unserved_customers.extend(self.customerPool)
         solution.served_customers = [customer for customer in solution.served_customers if customer not in self.customerPool]
-        return solution.routes
+        solution.removeEmptyRoutes()
+        return solution
     
 class relatedCustomerRemovalOperator(CustomerOperator):
     def __init__(self):
@@ -48,8 +49,8 @@ class relatedCustomerRemovalOperator(CustomerOperator):
             for customer in selected_customers:
                 if customer in route.route:
                     route.remove_customer_from_route(customer)
-
-        return solution.routes
+        solution.removeEmptyRoutes()
+        return solution
 
 
 class leastTimeWindowCustomerRemovalOperator(CustomerOperator):
@@ -77,7 +78,8 @@ class leastTimeWindowCustomerRemovalOperator(CustomerOperator):
         self.customerPool.extend(selected_customers)
         solution.unserved_customers.extend(selected_customers)
         solution.served_customers = [customer for customer in solution.served_customers if customer not in selected_customers]
-        return solution.routes
+        solution.removeEmptyRoutes()
+        return solution
 
 
 class worstDistanceCustomerRemovalOperator(CustomerOperator):
@@ -120,8 +122,8 @@ class worstDistanceCustomerRemovalOperator(CustomerOperator):
             for customer in removed_customers:
                 if customer in route.route:
                     route.remove_customer_from_route(customer)
-
-        return solution.routes
+        solution.removeEmptyRoutes()
+        return solution
 
 
 # Customer insertion operators
