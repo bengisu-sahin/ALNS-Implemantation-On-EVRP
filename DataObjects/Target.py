@@ -19,6 +19,9 @@ class Target:
 
     def distance_to(self, compared_target):
         return m.sqrt((self.x - compared_target.x) ** 2 + (self.y - compared_target.y) ** 2)
+    def distance_to_avg_of_two(self, compared_target1, compared_target2):
+        return m.sqrt((self.x - (compared_target1.x+compared_target2.x)/2) ** 2 + (self.y - (compared_target1.y+compared_target2.y)/2) ** 2)
+        
 
     def get_coordinates(self):
         return self.x, self.y

@@ -3,7 +3,7 @@ from initialsolution import initial_solution
 from readProblemInstances import readProblemInstances
 from test_funcs import test_files_in_directory
 from visualize_solution import visualizeAllRoutes
-from AlnsOperators.CustomerOperators import removeRandomCustomerOperator, leastTimeWindowCustomerRemovalOperator, relatedCustomerRemovalOperator,greedyCustomerInsertionOperator,greedyCustomerInsertionPerturbationOperator, worstDistanceCustomerRemovalOperator
+from AlnsOperators.CustomerOperators import Regret_K_Insertion, removeRandomCustomerOperator, leastTimeWindowCustomerRemovalOperator, relatedCustomerRemovalOperator,greedyCustomerInsertionOperator,greedyCustomerInsertionPerturbationOperator, worstDistanceCustomerRemovalOperator
 from AlnsOperators.StationOperators import bestStationInsertionOperator, randomStationRemovalOperator, worstChargeUsageStationRemovalOperator, worstStationRemovalOperator
 
 def main(): 
@@ -31,8 +31,8 @@ def main():
     leastTimeWindowCustomerRemovalOp=leastTimeWindowCustomerRemovalOperator()
     leastTimeWindowCustomerRemovalOp.remove(solution)
     #print("*********************************************************************************")
-    greedyCustomerInsertionOp=greedyCustomerInsertionOperator()
-    greedyCustomerInsertionOp.insert(solution)
+    regret=Regret_K_Insertion(2)
+    regret.insert(solution)
     # greedyCustomerInsertionPerturbationOp=greedyCustomerInsertionPerturbationOperator()
     # greedyCustomerInsertionPerturbationOp.insert(solution)
     randomStationRemovalOp=randomStationRemovalOperator()

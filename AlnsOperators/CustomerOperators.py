@@ -262,3 +262,92 @@ class greedyCustomerInsertionPerturbationOperator(CustomerOperator):
 
         solution.routes[min_energy_route_index] = best_route
         return solution.routes
+    
+class Regret_K_Insertion(CustomerOperator):
+    def __init__(self,k):
+        super().__init__()
+        self.k=k
+        
+        
+    def get_costs(self,customers,stations,solution):
+        costs=[]
+        route_index=0
+        for customer in customers:
+            route_index=0
+            for route in solution.routes:
+                for i in range(1,len(route.route)):
+
+                    route.appendcustomer_at_certain_point(customer,i)
+                    if(route.is_feasible() == False):
+                        route.remove_customer_from_route(customer)
+                        
+                        continue
+                    else:
+                        temp_route = copy.copy(route)
+                        temp_route.route = route.route.copy()
+                        
+                        if(temp_route.tank_capacity_constraint_violated() == True):
+                            get_closest_station = sorted(stations, key=lambda station: station.distance_to_avg_of_two(temp_route.route[i],temp_route.route[i-1]))
+                            route.append_charge_station_at_certain_point(get_closest_station[0],i)
+                            temp_route = copy.copy(route)
+                            temp_route.route = route.route.copy()
+                            if(route.is_feasible_all() == False):
+                                route.remove_charge_station_from_route_at_certain_point(i)
+                                get_closest_station = sorted(stations, key=lambda station: station.distance_to_avg_of_two(temp_route.route[i+1],temp_route.route[i]))
+                                route.append_charge_station_at_certain_point(get_closest_station[0],i+1)
+                                temp_route = copy.copy(route)
+                                temp_route.route = route.route.copy()
+                                if(route.is_feasible_all() == False):
+                                    route.remove_charge_station_from_route_at_certain_point(i+1)
+                                    route.remove_customer_from_route(customer)
+                                    continue
+                                else:
+                                    costs.append((temp_route.calculate_obj_function(),temp_route,customer,route_index))
+                                    route.remove_customer_from_route(customer)
+                                    route.remove_charge_station_from_route_at_certain_point(i)
+                                    
+                                
+                                
+                                
+                            else:
+                                temp_route = copy.copy(route)
+                                temp_route.route = route.route.copy()
+                                route.remove_charge_station_from_route_at_certain_point(i)
+                                route.remove_customer_from_route(customer)
+                                costs.append((temp_route.calculate_obj_function(),temp_route,customer,route_index))  
+                                
+
+                            
+                        else:
+                            costs.append((temp_route.calculate_obj_function(),temp_route,customer,route_index))  
+                            route.remove_customer_from_route(customer)
+                route_index+=1
+
+                        
+        return costs
+                        
+
+    def insert(self, solution):
+        customers = solution.unserved_customers
+        stations=solution.problemFile.charging_stations
+        
+        costs=self.get_costs(customers,stations,solution)
+        
+
+        best_cost=min(costs, key=lambda x: x[0])
+
+        regret_values=[]
+        for cost,route,customer,route_index in costs:        
+            regret_values.append((best_cost[0]-cost,route,customer,route_index))
+        #get the 2nd best regret value
+        best_regret_customer_sorted = sorted(regret_values, key=lambda x: x[0], reverse=True)
+        k_value = self.k
+        to_be_added_route_index=best_regret_customer_sorted[k_value][3]
+        solution.routes[to_be_added_route_index].route=best_regret_customer_sorted[k_value][1].route
+        solution.unserved_customers.remove(best_regret_customer_sorted[k_value][2])
+        solution.served_customers.append(best_regret_customer_sorted[k_value][2])
+
+
+        return solution.routes
+                       
+    
