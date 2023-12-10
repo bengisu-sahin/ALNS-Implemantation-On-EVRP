@@ -1,10 +1,11 @@
+from AlnsOperators.Operators import CustomerInsertionOperator
 from AlnsOperators.RouteOperators import greedyRouteRemovalOperator, randomRouteRemovalOperator
 from initialsolution import initial_solution
 from readProblemInstances import readProblemInstances
 from test_funcs import test_files_in_directory
 from visualize_solution import visualizeAllRoutes
-from AlnsOperators.CustomerOperators import removeRandomCustomerOperator, leastTimeWindowCustomerRemovalOperator, relatedCustomerRemovalOperator,greedyCustomerInsertionOperator,greedyCustomerInsertionPerturbationOperator, worstDistanceCustomerRemovalOperator
-from AlnsOperators.StationOperators import randomStationRemovalOperator, worstChargeUsageStationRemovalOperator, worstStationRemovalOperator
+from AlnsOperators.CustomerOperators import Regret_K_Insertion, removeRandomCustomerOperator, leastTimeWindowCustomerRemovalOperator, relatedCustomerRemovalOperator,greedyCustomerInsertionOperator,greedyCustomerInsertionPerturbationOperator, worstDistanceCustomerRemovalOperator
+from AlnsOperators.StationOperators import bestStationInsertionOperator, randomStationRemovalOperator, worstChargeUsageStationRemovalOperator, worstStationRemovalOperator
 
 def main(): 
     problemFile = readProblemInstances('SchneiderData/c101_21.txt')  # Değişken atama işlemi düzeltilmiş ve parantez eklendi.
@@ -29,17 +30,21 @@ def main():
     
     relatedCustomerRemovalOp=relatedCustomerRemovalOperator()
     leastTimeWindowCustomerRemovalOp=leastTimeWindowCustomerRemovalOperator()
-    #print(leastTimeWindowCustomerRemovalOp.remove(solution))
+    leastTimeWindowCustomerRemovalOp.remove(solution)
     #print("*********************************************************************************")
-    greedyCustomerInsertionOp=greedyCustomerInsertionOperator()
-    #print(greedyCustomerInsertionOp.insert(solution))
-    greedyCustomerInsertionPerturbationOp=greedyCustomerInsertionPerturbationOperator()
-    #print(greedyCustomerInsertionPerturbationOp.insert(solution))
+    score=0.0
+    regret=Regret_K_Insertion(k=3,score=score)
+    regret.insert(solution)
+    # greedyCustomerInsertionPerturbationOp=greedyCustomerInsertionPerturbationOperator()
+    # greedyCustomerInsertionPerturbationOp.insert(solution)
     randomStationRemovalOp=randomStationRemovalOperator()
     worstChargeUsageStationRemovalOp=worstChargeUsageStationRemovalOperator()
     worstDistanceCustomerRemovalOp=worstDistanceCustomerRemovalOperator()
     greedyRouteRemovalOp=greedyRouteRemovalOperator()
     randomRouteRemovalOp=randomRouteRemovalOperator()
-    print(greedyRouteRemovalOp.remove(solution))
+    custop=CustomerInsertionOperator()
+    custop.selectOperator()
+
+    
 if __name__ == "__main__":
     main()

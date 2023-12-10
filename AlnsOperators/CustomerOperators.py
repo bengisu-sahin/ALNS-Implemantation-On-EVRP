@@ -1,12 +1,15 @@
 import copy
 import random
 from AlnsObjects.Route import Route
-from AlnsOperators.Operators import CustomerOperator
+from AlnsOperators.Operators import CustomerInsertionOperator, CustomerRemovalOperator
+
 
 # Customer removal operators
-class removeRandomCustomerOperator(CustomerOperator):
+class removeRandomCustomerOperator(CustomerRemovalOperator):
     def __init__(self):
         super().__init__()
+        self.score = 0.0
+
 
     def remove(self, solution):
         P = int(self.customerToBeRemoved(solution))
@@ -21,11 +24,13 @@ class removeRandomCustomerOperator(CustomerOperator):
         self.customerPool.extend(customers_to_remove)
         solution.unserved_customers.extend(self.customerPool)
         solution.served_customers = [customer for customer in solution.served_customers if customer not in self.customerPool]
-        return solution.routes
+        solution.removeEmptyRoutes()
+        return solution
     
-class relatedCustomerRemovalOperator(CustomerOperator):
+class relatedCustomerRemovalOperator(CustomerRemovalOperator):
     def __init__(self):
         super().__init__()
+        self.score = 0.0
 
     def remove(self, solution):
         P = int(self.customerToBeRemoved(solution))
@@ -48,13 +53,15 @@ class relatedCustomerRemovalOperator(CustomerOperator):
             for customer in selected_customers:
                 if customer in route.route:
                     route.remove_customer_from_route(customer)
+        solution.removeEmptyRoutes()
+        return solution
 
-        return solution.routes
 
-
-class leastTimeWindowCustomerRemovalOperator(CustomerOperator):
+class leastTimeWindowCustomerRemovalOperator(CustomerRemovalOperator):
     def __init__(self):
         super().__init__()
+        self.score = 0.0
+
 
     def remove(self, solution):
         P = int(self.customerToBeRemoved(solution))
@@ -77,12 +84,15 @@ class leastTimeWindowCustomerRemovalOperator(CustomerOperator):
         self.customerPool.extend(selected_customers)
         solution.unserved_customers.extend(selected_customers)
         solution.served_customers = [customer for customer in solution.served_customers if customer not in selected_customers]
-        return solution.routes
+        solution.removeEmptyRoutes()
+        return solution
 
 
-class worstDistanceCustomerRemovalOperator(CustomerOperator):
+class worstDistanceCustomerRemovalOperator(CustomerRemovalOperator):
     def __init__(self):
         super().__init__()
+        self.score = 0.0
+
 
     def calculate_removal_gain(self,customer, current_solution):
         # Müşterinin çözümde olup olmamasının getirisini hesapla
@@ -120,61 +130,104 @@ class worstDistanceCustomerRemovalOperator(CustomerOperator):
             for customer in removed_customers:
                 if customer in route.route:
                     route.remove_customer_from_route(customer)
-
-        return solution.routes
+        solution.removeEmptyRoutes()
+        return solution
 
 
 # Customer insertion operators
-class greedyCustomerInsertionOperator(CustomerOperator):
-    def __init__(self):
+class greedyCustomerInsertionOperator(CustomerInsertionOperator):
+    def __init__(self,stations=[]):
         super().__init__()
+        self.stations = stations
+        self.score = 0.0
+    
+    def getStations(self,solution):
+        return solution.getAllStationInProblemFile()
 
     def find_best_insertion_point(self, route, customer):
         min_energy_consumption = float('inf')
         best_insertion_point = -1
-        temp_route = copy.copy(route)
-
+        temp_route = copy.copy(route.route)
+        energy_consumption_wihout_insertion = route.calculate_obj_function()
+        newRoute=Route(route.config,route.depot)
+        
         for i in range(1, len(route.route) ):
-            temp_route.route = route.route[:i] + [customer] + route.route[i:]
-            if(temp_route.is_feasible_all() == False):
+            route.appendcustomer_at_certain_point(customer,i) #sırayla müşterileri rotaya ekleyerek en uygun ekleme noktasını bulmaya çalışıyoruz.
+            if (route.is_feasible() == False): # time window ve payload constraint'lerini kontrol et bunlarda sorun varsa yapılacak bir şey yok zaten yani zaman sınırını ya da yük sınırını değiştirebileceğimiz bir durum yok o sebeple eğer bu if bloğuna girerse müşteriyi rotaya eklemiyoruz. Yeni indeks için tekrar döngüye giriyoruz.
+                route.remove_customer_from_route(customer)
                 continue
             else:
-                # Energy consumption'ı hesapla
-                energy_consumption = temp_route.calculate_obj_function()
-                
-                # Minimum energy consumption'ı kontrol et
-                if energy_consumption < min_energy_consumption:
-                    min_energy_consumption = energy_consumption
-                    best_insertion_point = i
+                if(route.tank_capacity_constraint_violated() == True): # buraya girdiyse bu şu demek load ve time kısıtlarında sıkıntı yok ama tank capacity kısıtlarında sıkıntı var. Bu durumda en yakın şarj istasyonunu bulup rotaya ekleyip bu durumu düzeltmeye çalışıyoruz. Eğer bu durumda da rotanın feasible olması için bir şey yapamıyorsak yani şarj istasyonu ekledikten sonra da feasible olmuyorsa o zaman müşteriyi rotaya eklemiyoruz ve yeni indeks için tekrar döngüye giriyoruz.
+                    
+                    newRoute.route=route.route[:i]
+                    k=i
+                    for index, item in enumerate(route.route[i:], start=i):
+                        newRoute.route.append(item)
+                        if newRoute.is_feasible_all() == True:
+                            continue
+                        else:
+                            if newRoute.is_feasible()==True and newRoute.tank_capacity_constraint_violated() == True:
+                                charging_stations_sorted = sorted(self.stations, key=lambda station: station.distance_to(newRoute.route[index-1]))
+                                for station in charging_stations_sorted:
+                                    newRoute.append_charge_station_at_certain_point(station,index)
+                                    if newRoute.is_feasible_all() == True:
+                                        break
+                                    else:
+                                        newRoute.remove_charge_station_from_route_at_certain_point(index)
+                                        continue
+                                if newRoute.is_feasible_all() == False:
+                                    break
+                    if newRoute.is_feasible_all() == True and len(newRoute.route) >= len(route.route):
+                        energy_consumption_with_insertion = newRoute.calculate_obj_function()
+                        diff = energy_consumption_with_insertion - energy_consumption_wihout_insertion
+                        if diff < min_energy_consumption:
+                            min_energy_consumption = diff
+                            best_insertion_point = i
+                        temp_route = copy.copy(newRoute.route)
+                        route.remove_customer_from_route(customer)              
+                else:
+                    # Energy consumption'ı hesapla
+                    energy_consumption_with_insertion = route.calculate_obj_function()
+                    diff = energy_consumption_with_insertion - energy_consumption_wihout_insertion
+                    # Minimum energy consumption'ı kontrol et
+                    if diff < min_energy_consumption:
+                        min_energy_consumption = energy_consumption_with_insertion
+                        best_insertion_point = i #en uygun ekleme noktasını bulduk. Bu noktaya müşteriyi ekleyeceğiz.
+                        temp_route = copy.copy(route.route) #en uygun ekleme noktasını bulduk. Bu noktaya müşteriyi ekleyeceğiz.
+                        route.remove_customer_from_route(customer)
 
-        return best_insertion_point, min_energy_consumption
+        return min_energy_consumption,temp_route #en uygun ekleme noktasını ve en düşük enerji tüketimini döndürüyoruz.
     
     def insert(self, solution):
-        customers = solution.unserved_customers
+        if len(solution.unserved_customers) == 0: #Bunu test ederken denemek için yaptım silinecek
+            customers = solution.served_customers
+        else:
+            customers = solution.unserved_customers
+
         random_customer = random.choice(customers)
         best_insertion_info = {}
-
+        self.stations=self.getStations(solution) #tüm şarj istasyonlarını problem veri setinden alıyoruz
         for i, route in enumerate(solution.routes):
-            best_insertion_point, min_energy_consumption = self.find_best_insertion_point(route, random_customer)
-            best_insertion_info[i] = {"point": best_insertion_point, "energy_consumption": min_energy_consumption}
+            min_energy_consumption,newRoute = self.find_best_insertion_point(route, random_customer)
+            best_insertion_info[i] = {"point": i, "energy_consumption": min_energy_consumption,"route":newRoute}
 
         # En düşük enerji tüketimine sahip rota ve ekleme noktasını bul
-        min_energy_route_index = min(best_insertion_info, key=lambda x: best_insertion_info[x]["energy_consumption"])
-        best_insertion_point = best_insertion_info[min_energy_route_index]["point"]
+        sorted_best_insertion_info = {k: v for k, v in sorted(best_insertion_info.items(), key=lambda item: item[1]["energy_consumption"])}
 
-        # En uygun rota ve noktaya müşteriyi ekleyin
-        best_route = solution.routes[min_energy_route_index]
-        solution.routes[min_energy_route_index].appendcustomer_at_certain_point(random_customer, best_insertion_point)
-        
+        # En uygun rota ve noktaya müşteriyi ekle
+        first_route_key, first_route_data = next(iter(sorted_best_insertion_info.items()))
+        best_route = first_route_data["route"]
+        solution.routes[first_route_key].route = best_route
+        solution.unserved_customers.remove(random_customer)
+        solution.served_customers.append(random_customer)
+        return solution
 
-        solution.routes[min_energy_route_index] = best_route
-        return solution.routes
-    
-
-class greedyCustomerInsertionPerturbationOperator(CustomerOperator):
+class greedyCustomerInsertionPerturbationOperator(CustomerInsertionOperator):
     def __init__(self):
         super().__init__()
         self.perturbation_factor = 0.0
+        self.score = 0.0
+
 
     def find_best_insertion_point(self, route, customer):
             min_energy_consumption = float('inf')
@@ -220,3 +273,93 @@ class greedyCustomerInsertionPerturbationOperator(CustomerOperator):
 
         solution.routes[min_energy_route_index] = best_route
         return solution.routes
+    
+class Regret_K_Insertion(CustomerInsertionOperator):
+    def __init__(self,k,score):
+        super().__init__()
+        self.k=k
+        self.score = score
+
+        
+    def get_costs(self,customers,stations,solution):
+        costs=[]
+        route_index=0
+        for customer in customers:
+            route_index=0
+            for route in solution.routes:
+                for i in range(1,len(route.route)):
+
+                    route.appendcustomer_at_certain_point(customer,i)
+                    if(route.is_feasible() == False):
+                        route.remove_customer_from_route(customer)
+                        
+                        continue
+                    else:
+                        temp_route = copy.copy(route)
+                        temp_route.route = route.route.copy()
+                        
+                        if(temp_route.tank_capacity_constraint_violated() == True):
+                            get_closest_station = sorted(stations, key=lambda station: station.distance_to_avg_of_two(temp_route.route[i],temp_route.route[i-1]))
+                            route.append_charge_station_at_certain_point(get_closest_station[0],i)
+                            temp_route = copy.copy(route)
+                            temp_route.route = route.route.copy()
+                            if(route.is_feasible_all() == False):
+                                route.remove_charge_station_from_route_at_certain_point(i)
+                                get_closest_station = sorted(stations, key=lambda station: station.distance_to_avg_of_two(temp_route.route[i+1],temp_route.route[i]))
+                                route.append_charge_station_at_certain_point(get_closest_station[0],i+1)
+                                temp_route = copy.copy(route)
+                                temp_route.route = route.route.copy()
+                                if(route.is_feasible_all() == False):
+                                    route.remove_charge_station_from_route_at_certain_point(i+1)
+                                    route.remove_customer_from_route(customer)
+                                    continue
+                                else:
+                                    costs.append((temp_route.calculate_obj_function(),temp_route,customer,route_index))
+                                    route.remove_customer_from_route(customer)
+                                    route.remove_charge_station_from_route_at_certain_point(i)
+                                    
+                                
+                                
+                                
+                            else:
+                                temp_route = copy.copy(route)
+                                temp_route.route = route.route.copy()
+                                route.remove_charge_station_from_route_at_certain_point(i)
+                                route.remove_customer_from_route(customer)
+                                costs.append((temp_route.calculate_obj_function(),temp_route,customer,route_index))  
+                                
+
+                            
+                        else:
+                            costs.append((temp_route.calculate_obj_function(),temp_route,customer,route_index))  
+                            route.remove_customer_from_route(customer)
+                route_index+=1
+
+                        
+        return costs
+                        
+
+    def insert(self, solution):
+        customers = solution.unserved_customers
+        stations=solution.problemFile.charging_stations
+        
+        costs=self.get_costs(customers,stations,solution)
+        
+
+        best_cost=min(costs, key=lambda x: x[0])
+
+        regret_values=[]
+        for cost,route,customer,route_index in costs:        
+            regret_values.append((best_cost[0]-cost,route,customer,route_index))
+        #get the 2nd best regret value
+        best_regret_customer_sorted = sorted(regret_values, key=lambda x: x[0], reverse=True)
+        k_value = self.k
+        to_be_added_route_index=best_regret_customer_sorted[k_value][3]
+        solution.routes[to_be_added_route_index].route=best_regret_customer_sorted[k_value][1].route
+        solution.unserved_customers.remove(best_regret_customer_sorted[k_value][2])
+        solution.served_customers.append(best_regret_customer_sorted[k_value][2])
+
+
+        return solution.routes
+                       
+    

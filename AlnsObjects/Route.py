@@ -279,6 +279,9 @@ class Route:
     def remove_charge_station_from_route(self, charge_station):
         self.route.remove(charge_station)
 
+    def remove_charge_station_from_route_at_certain_point(self, index):
+        self.route.pop(index)
+
     def find_item_index_in_solution(self, item):
         # Müşteriyi çözüm içinde ara ve indeksini bul
         for i in range(len(self.route)):
@@ -286,12 +289,10 @@ class Route:
                 return i
 
     def calculate_energy_consumption(self,from_node,to_node):
-        #TODO: Implement this method
         
         return (self.alpha*1+self.beta*(self.calculate_load_carried_until_customer(to_node)+3000))*self.calculate_time_between_nodes(from_node,to_node)
 
     def calculate_obj_function(self):
-        #TODO: Implement this method
         route_length = len(self.route)
         total_energy_used = 0
         for i in range(route_length - 1):
@@ -303,6 +304,12 @@ class Route:
     
     def appendcustomer_at_certain_point(self, customer, index):
         self.route.insert(index, customer)
+
+    def append_charge_station_at_certain_point(self, charge_station, index):
+        self.route.insert(index, charge_station)
+
+    def remove_charge_station_from_route_by_index(self, index):
+        self.route.remove(self.route[index])
 
     """
     Sonuç olarak, bu metot, "self" nesnesi ile "new_route" nesnesini birleştirerek yeni bir rota oluşturur. Bu, lojistik ve taşıma problemleri gibi alanlarda, farklı rotaları birleştirerek daha etkili ve optimize edilmiş rota planlaması yapmak için kullanışlı
@@ -437,5 +444,21 @@ class Route:
             id += 1
             plt.show()
 
+    def number_of_customers(self):
+        """
+        Returns the number of customers in the route.
 
+        Returns:
+            int: The number of customers in the route.
+        """
+        return len(self.get_customers())
+    
+    def number_of_charge_stations(self):
+        """
+        Returns the number of charge stations in the route.
+
+        Returns:
+            int: The number of charge stations in the route.
+        """
+        return len(self.get_charge_stations())
 
