@@ -1,12 +1,15 @@
 import copy
 import random
 from AlnsObjects.Route import Route
-from AlnsOperators.Operators import CustomerOperator
+from AlnsOperators.Operators import CustomerInsertionOperator, CustomerRemovalOperator
+
 
 # Customer removal operators
-class removeRandomCustomerOperator(CustomerOperator):
+class removeRandomCustomerOperator(CustomerRemovalOperator):
     def __init__(self):
         super().__init__()
+        self.score = 0.0
+
 
     def remove(self, solution):
         P = int(self.customerToBeRemoved(solution))
@@ -24,9 +27,10 @@ class removeRandomCustomerOperator(CustomerOperator):
         solution.removeEmptyRoutes()
         return solution
     
-class relatedCustomerRemovalOperator(CustomerOperator):
+class relatedCustomerRemovalOperator(CustomerRemovalOperator):
     def __init__(self):
         super().__init__()
+        self.score = 0.0
 
     def remove(self, solution):
         P = int(self.customerToBeRemoved(solution))
@@ -53,9 +57,11 @@ class relatedCustomerRemovalOperator(CustomerOperator):
         return solution
 
 
-class leastTimeWindowCustomerRemovalOperator(CustomerOperator):
+class leastTimeWindowCustomerRemovalOperator(CustomerRemovalOperator):
     def __init__(self):
         super().__init__()
+        self.score = 0.0
+
 
     def remove(self, solution):
         P = int(self.customerToBeRemoved(solution))
@@ -82,9 +88,11 @@ class leastTimeWindowCustomerRemovalOperator(CustomerOperator):
         return solution
 
 
-class worstDistanceCustomerRemovalOperator(CustomerOperator):
+class worstDistanceCustomerRemovalOperator(CustomerRemovalOperator):
     def __init__(self):
         super().__init__()
+        self.score = 0.0
+
 
     def calculate_removal_gain(self,customer, current_solution):
         # Müşterinin çözümde olup olmamasının getirisini hesapla
@@ -127,10 +135,11 @@ class worstDistanceCustomerRemovalOperator(CustomerOperator):
 
 
 # Customer insertion operators
-class greedyCustomerInsertionOperator(CustomerOperator):
+class greedyCustomerInsertionOperator(CustomerInsertionOperator):
     def __init__(self,stations=[]):
         super().__init__()
         self.stations = stations
+        self.score = 0.0
     
     def getStations(self,solution):
         return solution.getAllStationInProblemFile()
@@ -213,10 +222,12 @@ class greedyCustomerInsertionOperator(CustomerOperator):
         solution.served_customers.append(random_customer)
         return solution
 
-class greedyCustomerInsertionPerturbationOperator(CustomerOperator):
+class greedyCustomerInsertionPerturbationOperator(CustomerInsertionOperator):
     def __init__(self):
         super().__init__()
         self.perturbation_factor = 0.0
+        self.score = 0.0
+
 
     def find_best_insertion_point(self, route, customer):
             min_energy_consumption = float('inf')
@@ -263,11 +274,12 @@ class greedyCustomerInsertionPerturbationOperator(CustomerOperator):
         solution.routes[min_energy_route_index] = best_route
         return solution.routes
     
-class Regret_K_Insertion(CustomerOperator):
-    def __init__(self,k):
+class Regret_K_Insertion(CustomerInsertionOperator):
+    def __init__(self,k,score):
         super().__init__()
         self.k=k
-        
+        self.score = score
+
         
     def get_costs(self,customers,stations,solution):
         costs=[]

@@ -289,12 +289,10 @@ class Route:
                 return i
 
     def calculate_energy_consumption(self,from_node,to_node):
-        #TODO: Implement this method
         
         return (self.alpha*1+self.beta*(self.calculate_load_carried_until_customer(to_node)+3000))*self.calculate_time_between_nodes(from_node,to_node)
 
     def calculate_obj_function(self):
-        #TODO: Implement this method
         route_length = len(self.route)
         total_energy_used = 0
         for i in range(route_length - 1):

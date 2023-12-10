@@ -1,3 +1,4 @@
+from AlnsOperators.Operators import CustomerInsertionOperator
 from AlnsOperators.RouteOperators import greedyRouteRemovalOperator, randomRouteRemovalOperator
 from initialsolution import initial_solution
 from readProblemInstances import readProblemInstances
@@ -31,7 +32,8 @@ def main():
     leastTimeWindowCustomerRemovalOp=leastTimeWindowCustomerRemovalOperator()
     leastTimeWindowCustomerRemovalOp.remove(solution)
     #print("*********************************************************************************")
-    regret=Regret_K_Insertion(2)
+    score=0.0
+    regret=Regret_K_Insertion(k=3,score=score)
     regret.insert(solution)
     # greedyCustomerInsertionPerturbationOp=greedyCustomerInsertionPerturbationOperator()
     # greedyCustomerInsertionPerturbationOp.insert(solution)
@@ -40,7 +42,9 @@ def main():
     worstDistanceCustomerRemovalOp=worstDistanceCustomerRemovalOperator()
     greedyRouteRemovalOp=greedyRouteRemovalOperator()
     randomRouteRemovalOp=randomRouteRemovalOperator()
-    bestStationInsertionOp=bestStationInsertionOperator()
-    bestStationInsertionOp.insert(solution)
+    custop=CustomerInsertionOperator()
+    custop.selectOperator()
+
+    
 if __name__ == "__main__":
     main()

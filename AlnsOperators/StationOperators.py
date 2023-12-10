@@ -1,13 +1,14 @@
 
 import copy
-from AlnsOperators.Operators import StationOperator
+from AlnsOperators.Operators import StationInsertionOperator, StationRemovalOperator
+
 from DataObjects.Customer import Customer
 from DataObjects.ChargeStation import ChargeStation
 import random
 
 #CHARGE STATION REMOVAL OPERATORS
 
-class randomStationRemovalOperator(StationOperator):
+class randomStationRemovalOperator(StationRemovalOperator):
     def __init__(self):
         super().__init__()
 
@@ -22,7 +23,7 @@ class randomStationRemovalOperator(StationOperator):
         solution.removeEmptyRoutes()
         return solution.routes
     
-class  worstChargeUsageStationRemovalOperator(StationOperator):
+class  worstChargeUsageStationRemovalOperator(StationRemovalOperator):
     def __init__(self):
         super().__init__()
 
@@ -64,14 +65,14 @@ class  worstChargeUsageStationRemovalOperator(StationOperator):
         solution.removeEmptyRoutes()    
         return solution.routes
 
-#power required removal will be implemented
-class worstStationRemovalOperator(StationOperator):
+#TODO required removal will be implemented
+class worstStationRemovalOperator(StationRemovalOperator):
     def __init__(self):
         super().__init__()
 
 
 # CHARGE STATION INSERTION OPERATORS        
-class bestStationInsertionOperator(StationOperator):
+class bestStationInsertionOperator(StationInsertionOperator):
     def __init__(self):
         super().__init__()
 
