@@ -3,9 +3,9 @@ from AlnsOperators.Operators import RouteOperator
 
 
 class randomRouteRemovalOperator(RouteOperator):
-    def __init__(self):
+    def __init__(self,score=0.0):
         super().__init__()
-
+        self.score = score
     def remove(self, solution):
         W = self.routeToBeRemoved(solution)
         routes = solution.routes
@@ -19,8 +19,9 @@ class randomRouteRemovalOperator(RouteOperator):
     
 
 class greedyRouteRemovalOperator(RouteOperator):
-    def __init__(self):
+    def __init__(self,score=0.0):
         super().__init__()
+        self.score = score
 
     def remove(self, solution):
         W = self.routeToBeRemoved(solution)

@@ -6,9 +6,9 @@ from AlnsOperators.Operators import CustomerInsertionOperator, CustomerRemovalOp
 
 # Customer removal operators
 class removeRandomCustomerOperator(CustomerRemovalOperator):
-    def __init__(self):
+    def __init__(self,score=0.0):
         super().__init__()
-        self.score = 0.0
+        self.score = score
 
 
     def remove(self, solution):
@@ -28,9 +28,9 @@ class removeRandomCustomerOperator(CustomerRemovalOperator):
         return solution
     
 class relatedCustomerRemovalOperator(CustomerRemovalOperator):
-    def __init__(self):
+    def __init__(self,score=0.0):
         super().__init__()
-        self.score = 0.0
+        self.score = score
 
     def remove(self, solution):
         P = int(self.customerToBeRemoved(solution))
@@ -58,9 +58,9 @@ class relatedCustomerRemovalOperator(CustomerRemovalOperator):
 
 
 class leastTimeWindowCustomerRemovalOperator(CustomerRemovalOperator):
-    def __init__(self):
+    def __init__(self,score=0.0):
         super().__init__()
-        self.score = 0.0
+        self.score = score
 
 
     def remove(self, solution):
@@ -89,9 +89,9 @@ class leastTimeWindowCustomerRemovalOperator(CustomerRemovalOperator):
 
 
 class worstDistanceCustomerRemovalOperator(CustomerRemovalOperator):
-    def __init__(self):
+    def __init__(self,score=0.0):
         super().__init__()
-        self.score = 0.0
+        self.score = score
 
 
     def calculate_removal_gain(self,customer, current_solution):
@@ -136,10 +136,10 @@ class worstDistanceCustomerRemovalOperator(CustomerRemovalOperator):
 
 # Customer insertion operators
 class greedyCustomerInsertionOperator(CustomerInsertionOperator):
-    def __init__(self,stations=[]):
+    def __init__(self,stations=[],score=0.0):
         super().__init__()
         self.stations = stations
-        self.score = 0.0
+        self.score = score
     
     def getStations(self,solution):
         return solution.getAllStationInProblemFile()
@@ -222,60 +222,8 @@ class greedyCustomerInsertionOperator(CustomerInsertionOperator):
         solution.served_customers.append(random_customer)
         return solution
 
-class greedyCustomerInsertionPerturbationOperator(CustomerInsertionOperator):
-    def __init__(self):
-        super().__init__()
-        self.perturbation_factor = 0.0
-        self.score = 0.0
-
-
-    def find_best_insertion_point(self, route, customer):
-            min_energy_consumption = float('inf')
-            best_insertion_point = -1
-            temp_route = copy.copy(route)
-
-            for i in range(1, len(route.route)):
-                temp_route.route = route.route[:i] + [customer] + route.route[i:]
-                if(temp_route.is_feasible_all() == False):
-                    continue
-                else:
-                    # Energy consumption'ı hesapla
-                    energy_consumption = temp_route.calculate_obj_function()
-
-                    # Minimum energy consumption'ı kontrol et
-                    if energy_consumption < min_energy_consumption:
-                        min_energy_consumption = energy_consumption
-                        best_insertion_point = i
-
-            return best_insertion_point, min_energy_consumption
-
-    def insert(self, solution):
-        customers = solution.unserved_customers
-        random_customer = random.choice(customers)
-        best_insertion_info = {}
-
-        for i, route in enumerate(solution.routes):
-            # Generate a new perturbation factor for each iteration
-            perturbation_factor = random.uniform(0.8, 1.2)
-
-            best_insertion_point, min_energy_consumption = self.find_best_insertion_point(route, random_customer)
-            best_insertion_info[i] = {"point": best_insertion_point, "energy_consumption": min_energy_consumption * perturbation_factor}
-
-        # En düşük enerji tüketimine sahip rota ve ekleme noktasını bul
-        min_energy_route_index = min(best_insertion_info, key=lambda x: best_insertion_info[x]["energy_consumption"])
-        best_insertion_point = best_insertion_info[min_energy_route_index]["point"]
-
-        # En uygun rota ve noktaya müşteriyi ekleyin
-        best_route = solution.routes[min_energy_route_index]
-
-        solution.routes[min_energy_route_index].appendcustomer_at_certain_point(random_customer, best_insertion_point)
-        
-
-        solution.routes[min_energy_route_index] = best_route
-        return solution.routes
-    
 class Regret_K_Insertion(CustomerInsertionOperator):
-    def __init__(self,k,score):
+    def __init__(self,k,score=0.0):
         super().__init__()
         self.k=k
         self.score = score
