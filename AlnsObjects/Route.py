@@ -228,6 +228,21 @@ class Route:
             last = t
         return tank_capacity
 
+    def calculate_charge_required_between_nodes(self, from_node, to_node):
+        """
+        İki düğüm arasında seyahat etmek için gereken şarj miktarını hesaplar.
+
+        Args:
+            from_node (Node): Başlangıç düğümü.
+            to_node (Node): Hedef düğüm.
+
+        Returns:
+            float: İki düğüm arasında seyahat etmek için gereken şarj miktarı.
+        """
+        distance = from_node.distance_to(to_node)
+        consumption = distance * self.config.fuel_consumption_rate
+        return consumption
+
     """
     Bu kod parçası, bir rota üzerindeki toplam süreyi (duration) hesaplayan "calculate_total_duration" adlı bir metodu içerir. Bu metot, rota üzerindeki her bir noktanın hizmet süresi, yolculuk süresi ve bekleme süresi dahil olmak üzere toplam süreyi hesaplar. 
     """
