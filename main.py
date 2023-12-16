@@ -39,7 +39,7 @@ def main():
     # greedyCustomerInsertionPerturbationOp.insert(solution)
     randomStationRemovalOp=randomStationRemovalOperator()
     randomStationRemovalOp.remove(solution)
-    compare_k_charge_station_insertion=Compare_K_Insertion(k=1,score=score)
+    compare_k_charge_station_insertion=Compare_K_Insertion(k=1,score=0)
     compare_k_charge_station_insertion.insert(solution)
     worstChargeUsageStationRemovalOp=worstChargeUsageStationRemovalOperator()
     worstDistanceCustomerRemovalOp=worstDistanceCustomerRemovalOperator()
