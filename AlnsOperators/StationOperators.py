@@ -4,6 +4,7 @@ from AlnsOperators.Operators import StationInsertionOperator, StationRemovalOper
 
 from DataObjects.Customer import Customer
 from DataObjects.ChargeStation import ChargeStation
+from collections import defaultdict
 import random
 
 #CHARGE STATION REMOVAL OPERATORS
@@ -65,10 +66,24 @@ class  worstChargeUsageStationRemovalOperator(StationRemovalOperator):
         solution.removeEmptyRoutes()    
         return solution.routes
 
-#TODO required removal will be implemented
 class worstStationRemovalOperator(StationRemovalOperator):
     def __init__(self):
         super().__init__()
+    
+    def remove(self,solution):
+        Q = self.stationToBeRemoved(solution)
+        stations_to_remove = {}
+        for route_index,route in enumerate(solution.routes):
+            if route.get_charge_stations() != []:
+                for index, item in enumerate(route.route):
+                    if isinstance(item, ChargeStation):
+                        stations_to_remove[route_index]={'item': item,'energy':route.calculate_energy_consumption(route.route[index-1],item)}
+
+        sorted_stations = sorted(stations_to_remove.items(), key=lambda x: x[1]['energy'], reverse=True)
+        stations_to_remove = sorted_stations[:int(Q)]
+        for route_index, station in stations_to_remove:
+            solution.routes[route_index].remove_charge_station_from_route(station['item'])
+        return solution
 
 
 # CHARGE STATION INSERTION OPERATORS        
