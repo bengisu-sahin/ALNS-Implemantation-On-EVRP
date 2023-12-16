@@ -129,3 +129,41 @@ class bestStationInsertionOperator(StationInsertionOperator):
                                     route.remove_charge_station_from_route(min_distance[0])
         solution.removeEmptyRoutes()
         return solution
+    
+class Compare_K_Insertion(StationInsertionOperator):
+    def __init__(self,k,score):
+        super().__init__()
+        self.k=k
+        self.score=score
+    def insert(self, solution):
+        charge_stations = solution.getAllStationInProblemFile()
+        costs=[]
+        route_index=0
+        for route in solution.routes:
+            if(route.tank_capacity_constraint_violated()==True):
+                for customer in route.route:
+                    if isinstance(customer, Customer):
+                        
+                        available_charge=route.calculate_remaining_tank_capacity(customer)
+                        needed_charge=route.calculate_charge_required_between_nodes(customer,route.route[route.route.index(customer)+1])
+                        if(available_charge<needed_charge):
+                            get_closest_charge_station=sorted(charge_stations,key=lambda x:customer.distance_to(x))   
+                            route.append_charge_station_at_certain_point(get_closest_charge_station[0],route.route.index(customer)+1)
+                            if(route.is_feasible_all()==False):
+                                route.remove_charge_station_from_route(get_closest_charge_station[0])
+                            else:
+                                temp_route = copy.copy(route)
+                                temp_route.route = route.route.copy()
+                                costs.append((temp_route.calculate_obj_function(),temp_route,route_index))
+                                route.remove_charge_station_from_route(get_closest_charge_station[0])
+            route_index+=1
+            
+        tobeadded_route=costs[self.k][1]
+        tobeadded_route_index=costs[self.k][2]
+        solution.routes[tobeadded_route_index]=tobeadded_route
+        solution.removeEmptyRoutes()
+                
+                
+        return solution
+    
+        

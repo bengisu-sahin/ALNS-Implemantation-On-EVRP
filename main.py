@@ -5,7 +5,7 @@ from readProblemInstances import readProblemInstances
 from test_funcs import test_files_in_directory
 from visualize_solution import visualizeAllRoutes
 from AlnsOperators.CustomerOperators import Regret_K_Insertion, removeRandomCustomerOperator, leastTimeWindowCustomerRemovalOperator, relatedCustomerRemovalOperator,greedyCustomerInsertionOperator,greedyCustomerInsertionPerturbationOperator, worstDistanceCustomerRemovalOperator
-from AlnsOperators.StationOperators import bestStationInsertionOperator, randomStationRemovalOperator, worstChargeUsageStationRemovalOperator, worstStationRemovalOperator
+from AlnsOperators.StationOperators import Compare_K_Insertion, bestStationInsertionOperator, randomStationRemovalOperator, worstChargeUsageStationRemovalOperator, worstStationRemovalOperator
 
 def main(): 
     problemFile = readProblemInstances('SchneiderData/c101_21.txt')  # Değişken atama işlemi düzeltilmiş ve parantez eklendi.
@@ -38,12 +38,14 @@ def main():
     # greedyCustomerInsertionPerturbationOp=greedyCustomerInsertionPerturbationOperator()
     # greedyCustomerInsertionPerturbationOp.insert(solution)
     randomStationRemovalOp=randomStationRemovalOperator()
+    randomStationRemovalOp.remove(solution)
+    compare_k_charge_station_insertion=Compare_K_Insertion(k=1,score=score)
+    compare_k_charge_station_insertion.insert(solution)
     worstChargeUsageStationRemovalOp=worstChargeUsageStationRemovalOperator()
     worstDistanceCustomerRemovalOp=worstDistanceCustomerRemovalOperator()
     greedyRouteRemovalOp=greedyRouteRemovalOperator()
     randomRouteRemovalOp=randomRouteRemovalOperator()
-    custop=CustomerInsertionOperator()
-    custop.selectOperator()
+
 
     
 if __name__ == "__main__":
