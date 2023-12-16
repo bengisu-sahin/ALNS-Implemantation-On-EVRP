@@ -90,6 +90,19 @@ class Route:
             elapsed_time += self.route[i].service_time
 
         return False
+    
+    def cs_constraint_violated(self):
+        """
+        Checks if the same charge station is visited more then once in the route.
+
+        Returns:
+            bool: True if the charge station capacity constraints are violated, False otherwise.
+        """
+        charge_stations = [t for t in self.route if type(t) is ChargeStation]
+        for i in range(0, len(charge_stations)):
+            if charge_stations[i] in charge_stations[i+1:]:
+                return True
+        return False
 
     def node_count_in_route(self):
         """

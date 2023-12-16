@@ -277,7 +277,7 @@ def initial_solution(depot, customers, problem_instance):
                     print(customer.id)
     total_distance=0
     for route in routes:
-        if(route.is_feasible_all()==True):
+        if(route.is_feasible_all()==True and route.cs_constraint_violated()==False):
             print("Route is feasible",routes.index(route))
             total_distance+=route.calculate_total_distance()
                
