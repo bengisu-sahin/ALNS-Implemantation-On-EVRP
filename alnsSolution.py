@@ -29,20 +29,21 @@ def alns_iterate(
     max_iter_without_improvement = 2
     for i in range(maxIterations):
         if j == max_iter_without_improvement:
+            totalDistance = currentSolution.getTotalDistance()
+            print("Before Improvement: ", totalDistance)
             station_removeOp_index = StationRemovalOps.selectOperator()
             station_removeOp = alns.stationRemovalOps[station_removeOp_index]
             station_removeOp.remove(currentSolution)
 
             station_insertOp_index = 0
-
+            
             while currentSolution.isAllRoutesFeasible() == False:
                 unfeasibleRoutes = currentSolution.getUnfeasibleRoutes()
                 station_insertOp = alns.stationInsertionOps[station_insertOp_index]
                 station_insertOp.insert(currentSolution)
-
-            (
-                feasiblecount,
-                unfeasiblecount,
-            ) = currentSolution.getnumberofFeasibleAndUnfeasibleRoutes()
-
+            
+            print("After Improvement",currentSolution.getTotalDistance())
+            
+            
+        
             return currentSolution.routes

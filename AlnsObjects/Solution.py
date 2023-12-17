@@ -69,6 +69,12 @@ class Solution:
     def getAllCustomersInProblemFile(self):
         return self.problemFile.customers
     
+    def getTotalDistance(self):
+        totalDistance=0
+        for route in self.routes:
+            totalDistance+=route.calculate_total_distance()
+        return totalDistance
+    
     def removeEmptyRoutes(self):
         for route in self.routes:
             if not any(isinstance(item, Customer) for item in route.route):

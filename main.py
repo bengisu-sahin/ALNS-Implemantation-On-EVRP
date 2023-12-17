@@ -17,7 +17,7 @@ def main():
     K= 10 # Predefined iteration interval
     Z=1 #Weights update interval
 
-
+    
     alns_solution=alns_iterate(solution,j,maxIterations,N,K,Z)
 
 

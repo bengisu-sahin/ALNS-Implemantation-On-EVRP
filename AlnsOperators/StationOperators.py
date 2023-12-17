@@ -121,81 +121,64 @@ class bestStationInsertionOperator(StationInsertionOperator):
             ):  # if the tank capacity constraint is not violated, no need to add a charge station
                 continue
             else:  # if the tank capacity constraint is violated, add the best charge station to the route
-                if (
-                    route.number_of_charge_stations() == 0
-                ):  # if there is no charge station in the route
-                    added_customer = route.get_node_before_where_battery_is_negative()
-                    added_customer_index = route.route.index(added_customer) - 1
-                    get_closest_station = sorted(
-                        charge_stations,
-                        key=lambda station: station.distance_to(added_customer),
+                # if there is no charge station in the route
+                added_customer = route.get_node_before_where_battery_is_negative()
+                added_customer_index = route.route.index(added_customer) - 1
+                if added_customer_index == 0:
+                    added_customer_index = 1
+                get_closest_station = sorted(
+                    charge_stations,
+                    key=lambda station: station.distance_to(added_customer),
+                )
+                to_be_added_station = copy.deepcopy(get_closest_station)
+                x = to_be_added_station[0]
+                y = charge_stations[0]
+                if x.id == y.id:
+                    added_customer_index = len(route.route) - 1
+                    to_be_added_station = to_be_added_station[1:]
+
+                """
+                Burada şöyle düşündüm makalede " If no previous recharge station 
+                exists in solution, then the insertion is done between depot 
+                and customer." diye bir ifade vardı. Ancak hangi şarj istasyonunun depo ile müşteri arasına ekleneceği belirtilmemişti.
+                Bu yüzden burada şarj istasyonlarının depoya olan uzaklıklarını hesaplayıp en yakın olanı seçtim. 
+                """
+
+                for index, charge_station in enumerate(to_be_added_station):
+                    route.append_charge_station_at_certain_point(
+                        to_be_added_station[index], added_customer_index
                     )
-                    to_be_added_station = copy.deepcopy(get_closest_station)
-                    x = to_be_added_station[0]
-                    y = charge_stations[0]
-                    if x.id == y.id:
-                        to_be_added_station = to_be_added_station[1:]
+                    to_be_added_stationd = to_be_added_station[index]
+                    if route.is_feasible_all() == True:
+                        break
+                    else:
+                        route.remove_charge_station_from_route(to_be_added_stationd)
 
-                    """
-                    Burada şöyle düşündüm makalede " If no previous recharge station 
-                    exists in solution, then the insertion is done between depot 
-                    and customer." diye bir ifade vardı. Ancak hangi şarj istasyonunun depo ile müşteri arasına ekleneceği belirtilmemişti.
-                    Bu yüzden burada şarj istasyonlarının depoya olan uzaklıklarını hesaplayıp en yakın olanı seçtim. 
-                    """
-
-                    for index, charge_station in enumerate(to_be_added_station):
-                        route.append_charge_station_at_certain_point(
-                            to_be_added_station[index], added_customer_index
+                """
+                Seçim yapılıp eklendikten sonra ise feasible olup olmadığı kontrol ediliyor. Eğer feasible değilse eklenen şarj istasyonu siliniyor. " Both operators check for feasibility of solution 
+                after the station insertion. If no station can be inserted feasibly, the algorithm returns to the previous feasible solution." ifadesi makalede geçiyor diye bu şekilde kontrol ettim.
+                """
+                if route.is_feasible_all() == True:
+                    continue
+                else:
+                    for index, item in enumerate(route.route): 
+                        sorted_charge_stations = sorted(
+                            charge_stations[1:],
+                            key=lambda station: station.distance_to(route.route[index+1]),
                         )
-                        to_be_added_stationd = to_be_added_station[index]
+                        
+                        for charge_station in sorted_charge_stations:
+                            route.append_charge_station_at_certain_point(
+                                charge_station, index + 1
+                            )
+                            if route.is_feasible_all() == True:
+                                break
+                            else:
+                                route.remove_charge_station_from_route(charge_station)
                         if route.is_feasible_all() == True:
                             break
-                        else:
-                            route.remove_charge_station_from_route(
-                                to_be_added_stationd)
-                    """
-                    Seçim yapılıp eklendikten sonra ise feasible olup olmadığı kontrol ediliyor. Eğer feasible değilse eklenen şarj istasyonu siliniyor. " Both operators check for feasibility of solution 
-                    after the station insertion. If no station can be inserted feasibly, the algorithm returns to the previous feasible solution." ifadesi makalede geçiyor diye bu şekilde kontrol ettim.
-                    """
-                    if route.is_feasible_all() == True:
-                        continue
+                            
 
-                else:  # if there is at least one charge station in the route
-                    if (
-                        route.tank_capacity_constraint_violated() == True
-                    ):  # if the tank capacity constraint is violated, add the best charge station to the route
-                        for index, item in enumerate(route.route):
-                            remaining = route.calculate_remaining_tank_capacity(item)
-                            if (
-                                route.calculate_remaining_tank_capacity(item) < 0
-                            ):  # find the customer that violates the tank capacity constraint
-                                # find the closest charge station to the violating customer
-                                """
-                                Burada şöyle düşündüm makalede bu if e giren kısım şu demek bu item a ulaşınca tank capacity constraint i bozuluyor. Eksiye düşüyor. Demekki benim item dan önceki yere şarj istasyonu eklemem gerekiyor. En yakın şarj istasyonunu bulup ekliyorum.
-
-                                """
-                                min_distance.append(charge_stations[0])
-                                min_distance.append(
-                                    route.route[index].distance_to(charge_stations[0])
-                                )
-                                for station in charge_stations[1:]:
-                                    distance = route.route[index - 1].distance_to(
-                                        station
-                                    )
-                                    if distance < min_distance[1]:
-                                        min_distance[1] = distance
-                                        min_distance[0] = station
-                                route.append_charge_station_at_certain_point(
-                                    min_distance[0], index
-                                )  # add the closest charge station
-                                if (
-                                    route.is_feasible_all() == True
-                                ):  # check if the solution is feasible
-                                    continue
-                                else:  # if the solution is not feasible, remove the charge station
-                                    route.remove_charge_station_from_route(
-                                        min_distance[0]
-                                    )
         solution.removeEmptyRoutes()
         return solution
 

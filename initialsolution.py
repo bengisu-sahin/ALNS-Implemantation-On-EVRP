@@ -276,16 +276,16 @@ def initial_solution(depot, customers, problem_instance):
                 if(customer!=route.depot and charge_stations.count(customer)==0):
                     print(customer.id)
     total_distance=0
-    for route in routes:
-        if(route.is_feasible_all()==True and route.cs_constraint_violated()==False):
-            print("Route is feasible",routes.index(route))
-            total_distance+=route.calculate_total_distance()
+    # for route in routes:
+    #     if(route.is_feasible_all()==True and route.cs_constraint_violated()==False):
+    #         print("Route is feasible",routes.index(route))
+    #         total_distance+=route.calculate_total_distance()
                
-        else:
-            print("Infeasible Route",routes.index(route))
-            total_distance+=route.calculate_total_distance()
+    #     else:
+    #         print("Infeasible Route",routes.index(route))
+    #         total_distance+=route.calculate_total_distance()
     
-    print("Total Distance: ",total_distance)
+    # print("Total Distance: ",total_distance)
     
     return solution
 
