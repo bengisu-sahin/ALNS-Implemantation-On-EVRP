@@ -24,42 +24,77 @@ def alns_iterate(
     RouteOps = RouteOperator()
     bestSolution = copy.deepcopy(solution)
     currentSolution = copy.deepcopy(solution)
+    iSolution = copy.deepcopy(solution)
     alns = ALNS(bestSolution, currentSolution)
-    j = 3
-    pre_iter_interval = 3
-    max_iter_without_improvement = 2
-    totalDistance = currentSolution.getTotalDistance()
+    acceptance_rate = 0.05
+    totalDistance = iSolution.getTotalDistance()
     print("Before Improvement: ", totalDistance)
     for i in range(maxIterations):
+        iSolution = copy.deepcopy(currentSolution)
         if j == max_iter_without_improvement:
             print("Before Improvement: ", totalDistance)
             station_removeOp_index = StationRemovalOps.selectOperator()
             station_removeOp = alns.stationRemovalOps[station_removeOp_index]
-            station_removeOp.remove(currentSolution)
+            station_removeOp.remove(iSolution)
 
             station_insertOp_index = 0
 
-            while currentSolution.isAllRoutesFeasible() == False:
-                unfeasibleRoutes = currentSolution.getUnfeasibleRoutes()
+            while iSolution.isAllRoutesFeasible() == False:
+                unfeasibleRoutes = iSolution.getUnfeasibleRoutes()
+                # TODO: Add station insertion operator selection here
                 station_insertOp = alns.stationInsertionOps[station_insertOp_index]
-                station_insertOp.insert(currentSolution)
+                station_insertOp.insert(iSolution)
 
-            print("After Improvement", currentSolution.getTotalDistance())
+            print("After Improvement", iSolution.getTotalDistance())
         else:
             route_customer_insertOp_index = CustomerInsertionOps.selectOperator()
             route_customer_insertOp = alns.customerInsertionOps[1]
 
             if j % pre_iter_interval == 0:
                 # Call route removal 11
-                route_removeOp_index = RouteOps.selectOperator()
+                route_removeOp_index = 0
                 route_removeOp = alns.routeRemovalOps[route_removeOp_index]
-                route_removeOp.remove(currentSolution)
+                route_removeOp.remove(iSolution)
 
                 # Call customer insertion 12
-                while len(currentSolution.unserved_customers) != 0:
-                    unfeasibleRoutes = currentSolution.getUnfeasibleRoutes()
-                    route_customer_insertOp.insert(currentSolution)
-            
-            print("Unfeasible Routes: ", currentSolution.getUnfeasibleRoutes())
-            print(currentSolution.getTotalDistance())
-            return currentSolution.routes
+                while len(iSolution.unserved_customers) != 0:
+                    unfeasibleRoutes = iSolution.getUnfeasibleRoutes()
+                    route_customer_insertOp.insert(iSolution)
+            else:
+                # Call customer removal 14
+                customer_removeOp_index = CustomerRemovalOps.selectOperator()
+                customer_removeOp = alns.customerRemovalOps[customer_removeOp_index]
+                customer_removeOp.remove(iSolution)
+
+                # Call customer insertion 15
+                while len(iSolution.unserved_customers) != 0:
+                    unfeasibleRoutes = iSolution.getUnfeasibleRoutes()
+                    route_customer_insertOp.insert(iSolution)
+
+        if iSolution.get_Total_Objective_Function_Value() <= (
+            currentSolution.get_Total_Objective_Function_Value() * (1 + acceptance_rate)
+        ):
+            currentSolution = copy.deepcopy(iSolution)
+            j = 0
+            # TODO: Update Scores must be implemented here
+
+        elif j == max_iter_without_improvement:
+            currentSolution = copy.deepcopy(iSolution)
+            j = 0
+            # TODO: Update Scores must be implemented here
+        else:
+            j += 1
+
+        if (
+            currentSolution.get_Total_Objective_Function_Value()
+            < bestSolution.get_Total_Objective_Function_Value()
+        ):
+            bestSolution = copy.deepcopy(currentSolution)
+
+        if i % weights_update_interval == 0:
+            # TODO: Update Weights must be implemented here
+            pass
+        print("Iteration: ", i)
+        print("Unfeasible Routes: ", currentSolution.getUnfeasibleRoutes())
+        print(currentSolution.getTotalDistance())
+    return currentSolution.routes

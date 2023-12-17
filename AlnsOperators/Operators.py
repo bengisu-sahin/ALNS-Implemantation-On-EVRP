@@ -138,6 +138,7 @@ class RouteOperator():
             cumulative_prob += prob
             if r <= cumulative_prob:
                 return i  # Return the index corresponding to the selected probability
+            
         
     
     def routeToBeRemoved(self,solution):

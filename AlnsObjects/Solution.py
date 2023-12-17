@@ -55,7 +55,11 @@ class Solution:
             else:
                 feasible+=1
         return feasible,unfeasible
-    
+    def get_Total_Objective_Function_Value(self):
+        total=0
+        for route in self.routes:
+            total += route.calculate_obj_function()
+        return total
     def getUnfeasibleRoutes(self):
         unfeasibleRoutes=[]
         for route in self.routes:

@@ -13,9 +13,9 @@ def main():
     solution=initial_solution(problemFile.depot,problemFile.customers,problemFile)
     j=0 #- Number of iterations allowed without improvement
     maxIterations=25000
-    N = 10 # - Maximum iterations allowed without improvement
-    K= 10 # Predefined iteration interval
-    Z=1 #Weights update interval
+    N = maxIterations*0.1 # - Maximum iterations allowed without improvement
+    K= 1000# Predefined iteration interval
+    Z=500 #Weights update interval
 
     
     alns_solution=alns_iterate(solution,j,maxIterations,N,K,Z)
