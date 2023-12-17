@@ -2,7 +2,7 @@ import random
 
 
 class CustomerInsertionOperator():
-    def __init__(self, weights=[], probability=0.0,customerPool=[],score=0.0):
+    def __init__(self, weights=[1,1], probability=0.0,customerPool=[],score=0.0):
         self.weights = weights
         self.probability = probability
         self.customerPool = customerPool
@@ -20,8 +20,7 @@ class CustomerInsertionOperator():
     
     
     def rouletteWheelSelection(self):
-        #TODO : Burada weights değerleri değişecek.
-        weights=[15,25,10]
+        weights=self.weights
         sumOfWeights = sum(weights)
         probs = [weights[i]/sumOfWeights for i in range(len(weights))]
         return probs
@@ -37,7 +36,7 @@ class CustomerInsertionOperator():
 
 
 class CustomerRemovalOperator():
-    def __init__(self, weights=[], probability=0.0,customerPool=[],score=0.0):
+    def __init__(self, weights=[1,1,1], probability=0.0,customerPool=[],score=0.0):
         self.weights = weights
         self.probability = probability
         self.customerPool = customerPool
@@ -55,8 +54,7 @@ class CustomerRemovalOperator():
     
     
     def rouletteWheelSelection(self):
-        #TODO : Burada weights değerleri değişecek. weigts=self.weights olacak şekilde
-        weights=[15,25,10]
+        weights=self.weights
         sumOfWeights = sum(weights)
         probs = [weights[i]/sumOfWeights for i in range(len(weights))]
         return probs
@@ -69,15 +67,9 @@ class CustomerRemovalOperator():
             cumulative_prob += prob
             if r <= cumulative_prob:
                 return i  # Return the index corresponding to the selected probability
-
-                
             
-        
-    
-  
-
 class StationInsertionOperator():
-    def __init__(self, weights=[], probability=0.0):
+    def __init__(self, weights=[1,1], probability=0.0):
         self.weights = weights
         self.probability = probability
         self.Q = 0
@@ -87,8 +79,7 @@ class StationInsertionOperator():
         Q=min(0.4 * numOfStations, 10)
         return int(Q)
     def rouletteWheelSelection(self):
-        #TODO : Burada weights değerleri değişecek. weigts=self.weights olacak şekilde
-        weights=[15,25,10]
+        weights=self.weights
         sumOfWeights = sum(weights)
         probs = [weights[i]/sumOfWeights for i in range(len(weights))]
         return probs
@@ -103,7 +94,7 @@ class StationInsertionOperator():
                 return i  # Return the index corresponding to the selected probability
     
 class StationRemovalOperator():
-    def __init__(self, weights=[], probability=0.0):
+    def __init__(self, weights=[1,1], probability=0.0):
         self.weights = weights
         self.probability = probability
         self.Q = 0
@@ -113,12 +104,11 @@ class StationRemovalOperator():
         Q=min(0.4 * numOfStations, 10)
         return int(Q)
     def rouletteWheelSelection(self):
-        #TODO: Burada weights değerleri değişecek. weigts=self.weights olacak şekilde
-        weights=[15,25,10]
+        weights=self.weights
         sumOfWeights = sum(weights)
         probs = [weights[i]/sumOfWeights for i in range(len(weights))]
         return probs
-    #TODO: Burada kullanacağımız operatorün indexini verir kodun içinde ona göre istediğimizi seçecek şekilde düzenlenecek.
+    # Burada kullanacağımız operatorün indexini verir kodun içinde ona göre istediğimizi seçecek şekilde düzenlenecek.
     def selectOperator(self):
         probs=self.rouletteWheelSelection()
         r = random.uniform(0, 1)
@@ -130,18 +120,16 @@ class StationRemovalOperator():
     
     
 class RouteOperator():
-    #TODO: Buranın da weighti olması lazım
-    def __init__(self,weights=[]):
+    def __init__(self,weights=[1,1]):
         self.lowerBound = 0
         self.upperBound = 0
         self.weights = weights
     def rouletteWheelSelection(self):
-        #TODO: Burada weights değerleri değişecek. weigts=self.weights olacak şekilde
-        weights=[15,25,10]
+        weights=self.weights
         sumOfWeights = sum(weights)
         probs = [weights[i]/sumOfWeights for i in range(len(weights))]
         return probs
-    #TODO: Burada kullanacağımız operatorün indexini verir kodun içinde ona göre istediğimizi seçecek şekilde düzenlenecek.
+    # Burada kullanacağımız operatorün indexini verir kodun içinde ona göre istediğimizi seçecek şekilde düzenlenecek.
     def selectOperator(self):
         probs=self.rouletteWheelSelection()
         r = random.uniform(0, 1)
@@ -150,6 +138,7 @@ class RouteOperator():
             cumulative_prob += prob
             if r <= cumulative_prob:
                 return i  # Return the index corresponding to the selected probability
+            
         
     
     def routeToBeRemoved(self,solution):

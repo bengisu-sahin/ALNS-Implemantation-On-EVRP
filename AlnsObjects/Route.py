@@ -224,7 +224,6 @@ class Route:
 
                 if type(t) is ChargeStation:
                     tank_capacity = self.config.tank_capacity
-
             last = t
         return tank_capacity
 
@@ -301,6 +300,27 @@ class Route:
     def get_customers(self):
         return [t for t in self.route if type(t) is Customer]
 
+    def get_first_customer_where_battery_is_negative(self):
+        for t in self.route:
+            if type(t) is Customer:
+                if self.calculate_remaining_tank_capacity(t) < 0:
+                    return t
+    def get_node_before_where_battery_is_negative(self):
+        for index,t in enumerate(self.route[1:]):
+            if self.calculate_remaining_tank_capacity(t) < 0:
+                return self.route[index]
+            
+    def append_charge_station_at_certain_point_feasible(self, charge_station, indexa):
+        for charge in charge_station:
+            self.append_charge_station_at_certain_point(charge, indexa)
+            if(self.is_feasible_all()==True):
+                
+                break
+            else:
+                self.remove_charge_station_from_route_by_index(indexa)
+            
+            
+
     def remove_customer_from_route(self, customer):
         self.route.remove(customer)
 
@@ -314,7 +334,7 @@ class Route:
         # Müşteriyi çözüm içinde ara ve indeksini bul
         for i in range(len(self.route)):
             if self.route[i] == item:
-                return i
+                return int(i)
 
     def calculate_energy_consumption(self,from_node,to_node):
         
@@ -338,6 +358,16 @@ class Route:
 
     def remove_charge_station_from_route_by_index(self, index):
         self.route.remove(self.route[index])
+        
+    def remove_w_id_served(self, customer):
+        for item in self.served_customers:
+            if item.id == customer.id:
+                self.served_customers.remove(item)
+    
+    def remove_w_id_unserved(self, customer):
+        for item in self.unserved_customers:
+            if item.id == customer.id:
+                self.unserved_customers.remove(item)
 
     """
     Sonuç olarak, bu metot, "self" nesnesi ile "new_route" nesnesini birleştirerek yeni bir rota oluşturur. Bu, lojistik ve taşıma problemleri gibi alanlarda, farklı rotaları birleştirerek daha etkili ve optimize edilmiş rota planlaması yapmak için kullanışlı
