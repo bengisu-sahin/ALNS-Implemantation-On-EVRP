@@ -358,6 +358,16 @@ class Route:
 
     def remove_charge_station_from_route_by_index(self, index):
         self.route.remove(self.route[index])
+        
+    def remove_w_id_served(self, customer):
+        for item in self.served_customers:
+            if item.id == customer.id:
+                self.served_customers.remove(item)
+    
+    def remove_w_id_unserved(self, customer):
+        for item in self.unserved_customers:
+            if item.id == customer.id:
+                self.unserved_customers.remove(item)
 
     """
     Sonuç olarak, bu metot, "self" nesnesi ile "new_route" nesnesini birleştirerek yeni bir rota oluşturur. Bu, lojistik ve taşıma problemleri gibi alanlarda, farklı rotaları birleştirerek daha etkili ve optimize edilmiş rota planlaması yapmak için kullanışlı

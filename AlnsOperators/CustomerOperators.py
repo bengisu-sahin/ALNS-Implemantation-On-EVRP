@@ -19,14 +19,12 @@ class removeRandomCustomerOperator(CustomerRemovalOperator):
             for customer in customers_to_remove:
                 if customer in route.route:
                     route.remove_customer_from_route(customer)
+        
+        
+        for customer in customers_to_remove:
+            solution.unserved_customers.append(customer)
+            solution.remove_w_id_served(customer)      
 
-        self.customerPool.extend(customers_to_remove)
-        solution.unserved_customers.extend(self.customerPool)
-        solution.served_customers = [
-            customer
-            for customer in solution.served_customers
-            if customer not in self.customerPool
-        ]
         solution.removeEmptyRoutes()
         return solution
 
@@ -55,15 +53,10 @@ class relatedCustomerRemovalOperator(CustomerRemovalOperator):
 
         # sıralanmış mesafelerden P-1 tanesi seçiliyor.
         selected_customers = list(sorted_distances.keys())[: P - 1]
-        # seçilen müşteriler customerPool'a ekleniyor.
-        self.customerPool.extend(selected_customers)
-        # seçilen müşteriler unserved_customers'a ekleniyor.
-        solution.unserved_customers.extend(self.customerPool)
-        solution.served_customers = [
-            customer
-            for customer in solution.served_customers
-            if customer not in selected_customers
-        ]
+        for customer in selected_customers:
+            solution.unserved_customers.append(customer)
+            solution.remove_w_id_served(customer)
+        
         for route in solution.routes:
             for customer in selected_customers:
                 if customer in route.route:
@@ -97,13 +90,10 @@ class leastTimeWindowCustomerRemovalOperator(CustomerRemovalOperator):
                 if customer in route.route:
                     route.remove_customer_from_route(customer)
 
-        self.customerPool.extend(selected_customers)
-        solution.unserved_customers.extend(selected_customers)
-        solution.served_customers = [
-            customer
-            for customer in solution.served_customers
-            if customer not in selected_customers
-        ]
+        for customer in selected_customers:
+            solution.unserved_customers.append(customer)
+            solution.remove_w_id_served(customer)
+
         solution.removeEmptyRoutes()
         return solution
 
@@ -153,6 +143,13 @@ class worstDistanceCustomerRemovalOperator(CustomerRemovalOperator):
             for customer in removed_customers:
                 if customer in route.route:
                     route.remove_customer_from_route(customer)
+                    solution.unserved_customers.append(customer)
+                    solution.remove_w_id_unserved(customer)
+
+        for customer in removed_customers:
+            solution.unserved_customers.append(customer)
+            solution.remove_w_id_served(customer)
+                        
         solution.removeEmptyRoutes()
         return solution
 
@@ -286,7 +283,7 @@ class greedyCustomerInsertionOperator(CustomerInsertionOperator):
         )
         best_route = first_route_data["route"]
         solution.routes[first_route_key].route = best_route
-        solution.unserved_customers.remove(random_customer)
+        solution.unserved_customers.remove_w_id_unserved(random_customer)
         solution.served_customers.append(random_customer)
         return solution
 
@@ -480,7 +477,7 @@ class Regret_K_Insertion(CustomerInsertionOperator):
                                     station, index
                                 )
                                 if newRoute.is_feasible_all() == True:
-                                    solution.unserved_customers.remove(
+                                    solution.remove_w_id_unserved(
                                         unserved_customer
                                     )
                                     solution.served_customers.append(unserved_customer)
@@ -493,7 +490,7 @@ class Regret_K_Insertion(CustomerInsertionOperator):
                                     )
                                     continue
                         else:
-                            solution.unserved_customers.remove(unserved_customer)
+                            solution.remove_w_id_unserved(unserved_customer)
                             solution.served_customers.append(unserved_customer)
 
                             solution.routes.append(newRoute)
@@ -521,7 +518,7 @@ class Regret_K_Insertion(CustomerInsertionOperator):
             solution.routes[
                 to_be_added_route_index
             ].route = best_regret_customer_sorted[k_value][1].route
-            solution.unserved_customers.remove(best_regret_customer_sorted[k_value][2])
+            solution.remove_w_id_unserved(best_regret_customer_sorted[k_value][2])
             solution.served_customers.append(best_regret_customer_sorted[k_value][2])
 
         return solution

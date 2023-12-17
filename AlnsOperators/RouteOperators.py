@@ -11,15 +11,12 @@ class randomRouteRemovalOperator(RouteOperator):
         W = self.routeToBeRemoved(solution)
         routes = solution.routes
         routes_to_remove = random.sample(routes, int(W))
+        
         for route in routes_to_remove:
             customers = route.get_customers()
             for customer in customers:
                 solution.unserved_customers.append(customer)
-                print("served customers")
-                for served in solution.served_customers:
-                    print(served.id)
-                    print("-")
-                solution.served_customers.remove(customer)
+                solution.remove_w_id_served(customer)
             routes.remove(route)
         return solution
 
@@ -47,7 +44,7 @@ class greedyRouteRemovalOperator(RouteOperator):
         for route in routes_to_remove:
             for customer in route.get_customers():
                 solution.unserved_customers.append(customer)
-                solution.served_customers.remove(customer)
+                solution.remove_w_id_served(customer)
             solution.routes.remove(route)
 
         return solution

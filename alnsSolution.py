@@ -62,7 +62,7 @@ def alns_iterate(
                     route_customer_insertOp.insert(iSolution)
             else:
                 # Call customer removal 14
-                customer_removeOp_index = CustomerRemovalOps.selectOperator()
+                customer_removeOp_index = 1
                 customer_removeOp = alns.customerRemovalOps[customer_removeOp_index]
                 customer_removeOp.remove(iSolution)
 
@@ -95,6 +95,6 @@ def alns_iterate(
             # TODO: Update Weights must be implemented here
             pass
         print("Iteration: ", i)
-        print("Unfeasible Routes: ", currentSolution.getUnfeasibleRoutes())
-        print(currentSolution.getTotalDistance())
-    return currentSolution.routes
+        print("Unfeasible Routes: ", iSolution.getUnfeasibleRoutes())
+        print(bestSolution.getTotalDistance())
+    return bestSolution.routes

@@ -70,7 +70,8 @@ def initial_solution(depot, customers, problem_instance):
     """
    
     routes = []
-    served_customers = []
+    served_customers = customers.copy()
+    served_customers.clear()
     unserved_customers = customers.copy()
 
     last_position = min(unserved_customers, key=lambda n: n.distance_to(depot))
@@ -266,16 +267,16 @@ def initial_solution(depot, customers, problem_instance):
     
     solution=Solution(unserved_customers,served_customers,routes,problem_instance)
     
-    total_distance=0 
+    # total_distance=0 
         
-    for route in routes:
-        if(route.is_feasible_all()==True):
-            charge_stations=route.get_charge_stations()
-            total_distance+=route.calculate_total_distance()
-            for customer in route.route:
-                if(customer!=route.depot and charge_stations.count(customer)==0):
-                    print(customer.id)
-    total_distance=0
+    # for route in routes:
+    #     if(route.is_feasible_all()==True):
+    #         charge_stations=route.get_charge_stations()
+    #         total_distance+=route.calculate_total_distance()
+    #         for customer in route.route:
+    #             if(customer!=route.depot and charge_stations.count(customer)==0):
+    #                 print(customer.id)
+    # total_distance=0
     # for route in routes:
     #     if(route.is_feasible_all()==True and route.cs_constraint_violated()==False):
     #         print("Route is feasible",routes.index(route))

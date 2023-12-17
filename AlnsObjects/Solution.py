@@ -33,6 +33,17 @@ class Solution:
                 if(type(item) is ChargeStation):
                     numOfStations+=1
         return numOfStations
+    def remove_w_id_served(self, customer):
+        for item in self.served_customers:
+            if item.id == customer.id:
+                self.served_customers.remove(item)
+    
+    def remove_w_id_unserved(self, customer):
+        for item in self.unserved_customers:
+            if item.id == customer.id:
+                self.unserved_customers.remove(item)
+                
+        
     
     def getAllStations(self):
         allStations=[]
