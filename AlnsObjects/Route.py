@@ -310,7 +310,16 @@ class Route:
             if self.calculate_remaining_tank_capacity(t) < 0:
                 return self.route[index]
             
-    
+    def append_charge_station_at_certain_point_feasible(self, charge_station, indexa):
+        for charge in charge_station:
+            self.append_charge_station_at_certain_point(charge, indexa)
+            if(self.is_feasible_all()==True):
+                
+                break
+            else:
+                self.remove_charge_station_from_route_by_index(indexa)
+            
+            
 
     def remove_customer_from_route(self, customer):
         self.route.remove(customer)

@@ -17,7 +17,7 @@ class ALNS ():
 
         # Customer insertion operators
         self.greedyCustomerInsertionOp=greedyCustomerInsertionOperator()
-        self.Regret_K_InsertionOp=Regret_K_Insertion(k=3)
+        self.Regret_K_InsertionOp=Regret_K_Insertion(k=2)
         self.customerInsertionOps=[self.greedyCustomerInsertionOp,self.Regret_K_InsertionOp]
 
         #CHARGE STATION REMOVAL OPERATORS
