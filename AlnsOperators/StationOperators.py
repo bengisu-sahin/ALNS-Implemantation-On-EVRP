@@ -161,6 +161,7 @@ class bestStationInsertionOperator(StationInsertionOperator):
                 if route.is_feasible_all() == True:
                     continue
                 else:
+                    #TODO: Costlarını alıp en iyi costa göre ekleme yapılacak şekilde düzenlenecek.
                     for index, item in enumerate(route.route): 
                         sorted_charge_stations = sorted(
                             charge_stations[1:],

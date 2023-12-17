@@ -12,8 +12,8 @@ class randomRouteRemovalOperator(RouteOperator):
         routes_to_remove = random.sample(routes, int(W))
         for route in routes_to_remove:
             for customer in route.get_customers():
-                solution.routes.unserved_customers.append(customer)
-                solution.routes.served.remove(customer)
+                solution.unserved_customers.append(customer)
+                solution.served_customers.remove(customer)
             routes.remove(route)
         return solution
     
