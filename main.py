@@ -9,10 +9,10 @@ from AlnsOperators.CustomerOperators import Regret_K_Insertion, removeRandomCust
 from AlnsOperators.StationOperators import Compare_K_Insertion, bestStationInsertionOperator, randomStationRemovalOperator, worstChargeUsageStationRemovalOperator, worstStationRemovalOperator
 
 def main(): 
-    problemFile = readProblemInstances('SchneiderData/c101_21.txt')  # Değişken atama işlemi düzeltilmiş ve parantez eklendi.
+    problemFile = readProblemInstances('SchneiderData/c101C10.txt')  # Değişken atama işlemi düzeltilmiş ve parantez eklendi.
     solution=initial_solution(problemFile.depot,problemFile.customers,problemFile)
     j=0 #- Number of iterations allowed without improvement
-    maxIterations=100
+    maxIterations=25000
     N = maxIterations*0.1 # - Maximum iterations allowed without improvement
     K= 4# Predefined iteration interval
     Z=2 #Weights update interval

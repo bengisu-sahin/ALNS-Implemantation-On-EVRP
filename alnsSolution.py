@@ -1,4 +1,6 @@
 import copy
+
+from matplotlib import pyplot as plt
 from AlnsObjects.Alns import ALNS
 from AlnsOperators.Operators import (
     CustomerInsertionOperator,
@@ -28,8 +30,12 @@ def alns_iterate(
     alns = ALNS(bestSolution, currentSolution)
     acceptance_rate = 0.05
     totalDistance = iSolution.getTotalDistance()
+    iteration_list = []
+    total_distance_list = []
+    
     print("Before Improvement: ", totalDistance)
     for i in range(maxIterations):
+        iteration_list.append(i)
         iSolution = copy.deepcopy(currentSolution)
         if j == max_iter_without_improvement:
             print("Before Improvement: ", totalDistance)
@@ -94,7 +100,15 @@ def alns_iterate(
         if i % weights_update_interval == 0:
             # TODO: Update Weights must be implemented here
             pass
+        total_distance_list.append(bestSolution.getTotalDistance())
         print("Iteration: ", i)
         print("Unfeasible Routes: ", iSolution.getUnfeasibleRoutes())
         print(bestSolution.getTotalDistance())
+    plt.plot(iteration_list, total_distance_list, label='Best Solution')
+    plt.xlabel('Iteration')
+    plt.ylabel('Total Distance')
+    plt.title('ALNS Algorithm Progress')
+    plt.legend()
+    plt.show()
+
     return bestSolution.routes
