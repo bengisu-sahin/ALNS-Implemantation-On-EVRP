@@ -54,9 +54,28 @@ class Route:
             return False
         elif self.payload_capacity_constraint_violated():
             return False
+        elif self.is_complete()==False:
+            return False
+
+        elif self.cs_constraint_violated():
+            return False
         else:
             return True
+    def is_feasible_all_init(self):
+        """
+        Checks if the route satisfies all the constraints, including the tank capacity constraint.
 
+        Returns:
+            bool: True if the route is feasible, False otherwise.
+        """
+        if self.tw_constraint_violated():
+            return False
+        elif self.tank_capacity_constraint_violated():
+            return False
+        elif self.payload_capacity_constraint_violated():
+            return False
+        else:
+            return True
     def is_complete(self):
         """
         Checks if the route is complete, i.e., it starts and ends at the depot and the depot is not visited in between.
@@ -64,7 +83,7 @@ class Route:
         Returns:
             bool: True if the route is complete, False otherwise.
         """
-        return self.route[0] == self.depot and self.route[-1] == self.depot and self.depot not in self.route[1:-1]
+        return self.route[0].id == self.depot.id and self.route[-1].id == self.depot.id
 
     def tw_constraint_violated(self):
         """
@@ -98,11 +117,18 @@ class Route:
         Returns:
             bool: True if the charge station capacity constraints are violated, False otherwise.
         """
-        charge_stations = [t for t in self.route if type(t) is ChargeStation]
-        for i in range(0, len(charge_stations)):
-            if charge_stations[i] in charge_stations[i+1:]:
+        visited_cs_ids=self.get_visited_cs_ids()
+        
+        for cs_id in visited_cs_ids:
+            if visited_cs_ids.count(cs_id)>1:
                 return True
-        return False
+
+    def get_visited_cs_ids(self):
+        visited_cs_ids=[]
+        for route in self.route:
+            if type(route) is ChargeStation:
+                visited_cs_ids.append(route.id)
+        return visited_cs_ids
 
     def node_count_in_route(self):
         """

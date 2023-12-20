@@ -12,7 +12,7 @@ def main():
     problemFile = readProblemInstances('SchneiderData/c101C10.txt')  # Değişken atama işlemi düzeltilmiş ve parantez eklendi.
     solution=initial_solution(problemFile.depot,problemFile.customers,problemFile)
     j=0 #- Number of iterations allowed without improvement
-    maxIterations=25000
+    maxIterations=100
     N = maxIterations*0.1 # - Maximum iterations allowed without improvement
     K= 4# Predefined iteration interval
     Z=2 #Weights update interval

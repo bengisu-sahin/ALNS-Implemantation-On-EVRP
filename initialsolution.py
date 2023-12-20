@@ -46,7 +46,7 @@ def getFeasibleAfterChargeCustomers(unserved_customers, route: Route, problem_in
         route.route.append(closest_charge_station)
         route.route.append(customer)
         route.route.append(route.depot)
-        if route.is_feasible_all() == True:
+        if route.is_feasible_all_init() == True:
             feasibleCustomers.append(customer)
         route.route.pop()
         route.route.pop()
@@ -90,7 +90,7 @@ def initial_solution(depot, customers, problem_instance):
 
         if len(feasibleCustomers) == 0:
             initial_route.route.append(depot)
-            if initial_route.is_feasible_all() == True:
+            if initial_route.is_feasible_all_init() == True:
                 routes.append(initial_route)
 
                 initial_route = Route(problem_instance.config, problem_instance.depot)
@@ -99,7 +99,7 @@ def initial_solution(depot, customers, problem_instance):
                 for customer in sorted_unserved_customers:
                     initial_route.route.append(customer)
                     initial_route.route.append(depot)
-                    if initial_route.is_feasible_all() == True:
+                    if initial_route.is_feasible_all_init() == True:
                         initial_route.route.pop()
                         served_customers.append(customer)
                         unserved_customers.remove(customer)
@@ -113,7 +113,7 @@ def initial_solution(depot, customers, problem_instance):
                         initial_route.route.append(closest_charge_station)
                         initial_route.route.append(customer)
                         initial_route.route.append(depot)
-                        if initial_route.is_feasible_all() == True:
+                        if initial_route.is_feasible_all_init() == True:
                             initial_route.route.pop()
                             served_customers.append(customer)
                             unserved_customers.remove(customer)
@@ -129,7 +129,7 @@ def initial_solution(depot, customers, problem_instance):
                     initial_route = Route(problem_instance.config, problem_instance.depot)
                     initial_route.route.append(customer)
                     initial_route.route.append(depot)
-                    if initial_route.is_feasible_all() == True:
+                    if initial_route.is_feasible_all_init() == True:
                         initial_route.route.pop()
 
                         served_customers.append(customer)
@@ -144,7 +144,7 @@ def initial_solution(depot, customers, problem_instance):
                         initial_route.route.append(closest_charge_station)
                         initial_route.route.append(customer)
                         initial_route.route.append(depot)
-                        if initial_route.is_feasible_all() == True:
+                        if initial_route.is_feasible_all_init() == True:
                             initial_route.route.pop()
                             served_customers.append(customer)
                             unserved_customers.remove(customer)
@@ -155,7 +155,7 @@ def initial_solution(depot, customers, problem_instance):
                             initial_route.route.pop()
                             if(customer==unserved_customers[-1]):    
                                 initial_route.route.append(depot)
-                                if(initial_route.is_feasible_all()==True):
+                                if(initial_route.is_feasible_all_init()==True):
                                     initial_route.route.pop()
                                     served_customers.append(customer)
                                     unserved_customers.remove(customer)
@@ -171,7 +171,7 @@ def initial_solution(depot, customers, problem_instance):
                 initial_route.route.append(customer)
                 initial_route.route.append(depot)
                 if(initial_route.is_feasible()==True):
-                    if(initial_route.is_feasible_all()==True):
+                    if(initial_route.is_feasible_all_init()==True):
                         initial_route.route.pop()
                         served_customers.append(customer)
                         unserved_customers.remove(customer)
@@ -186,7 +186,7 @@ def initial_solution(depot, customers, problem_instance):
                         initial_route.route.append(closest_charge_station)
                         initial_route.route.append(customer)
                         initial_route.route.append(depot)
-                        if(initial_route.is_feasible_all()==True):
+                        if(initial_route.is_feasible_all_init()==True):
                             initial_route.route.pop()
                             served_customers.append(customer)
                             unserved_customers.remove(customer)
@@ -198,7 +198,7 @@ def initial_solution(depot, customers, problem_instance):
                             if(customer==sorted_feasibleCustomers[-1]):
                                 
                                 initial_route.route.append(depot)
-                                if(initial_route.is_feasible_all()==True and initial_route.node_count_in_route()>2):
+                                if(initial_route.is_feasible_all_init()==True and initial_route.node_count_in_route()>2):
                                     routes.append(initial_route)
                                 else:
                                     initial_route.route.pop()
@@ -208,7 +208,7 @@ def initial_solution(depot, customers, problem_instance):
                                     initial_route = Route(problem_instance.config,problem_instance.depot)    
                                     initial_route.route.append(customer)
                                     initial_route.route.append(depot)
-                                    if(initial_route.is_feasible_all()==True):
+                                    if(initial_route.is_feasible_all_init()==True):
                                         initial_route.route.pop()
                                         served_customers.append(customer)
                                         unserved_customers.remove(customer)
@@ -222,7 +222,7 @@ def initial_solution(depot, customers, problem_instance):
                                         initial_route.route.append(closest_charge_station)
                                         initial_route.route.append(customer)
                                         initial_route.route.append(depot) 
-                                        if(initial_route.is_feasible_all()==True):
+                                        if(initial_route.is_feasible_all_init()==True):
                                             initial_route.route.pop()
                                             served_customers.append(customer)
                                             unserved_customers.remove(customer)
@@ -233,7 +233,7 @@ def initial_solution(depot, customers, problem_instance):
                                             closest_charge_station=min(problem_instance.charging_stations, key=lambda n: n.distance_to(initial_route.get_last_object()))
                                             initial_route.route.append(closest_charge_station)
                                             initial_route.route.append(depot)
-                                            if(initial_route.is_feasible_all()==True):
+                                            if(initial_route.is_feasible_all_init()==True):
                                                 initial_route.route.pop()
                                                 served_customers.append(customer)
                                                 unserved_customers.remove(customer)
@@ -270,7 +270,7 @@ def initial_solution(depot, customers, problem_instance):
     # total_distance=0 
         
     # for route in routes:
-    #     if(route.is_feasible_all()==True):
+    #     if(route.is_feasible_all_init()==True):
     #         charge_stations=route.get_charge_stations()
     #         total_distance+=route.calculate_total_distance()
     #         for customer in route.route:
@@ -278,7 +278,7 @@ def initial_solution(depot, customers, problem_instance):
     #                 print(customer.id)
     # total_distance=0
     # for route in routes:
-    #     if(route.is_feasible_all()==True and route.cs_constraint_violated()==False):
+    #     if(route.is_feasible_all_init()==True and route.cs_constraint_violated()==False):
     #         print("Route is feasible",routes.index(route))
     #         total_distance+=route.calculate_total_distance()
                

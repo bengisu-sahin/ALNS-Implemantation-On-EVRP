@@ -104,6 +104,7 @@ def alns_iterate(
         print("Iteration: ", i)
         print("Unfeasible Routes: ", iSolution.getUnfeasibleRoutes())
         print(bestSolution.getTotalDistance())
+    print("Best solution unfeasible routes: ", bestSolution.getUnfeasibleRoutes())
     plt.plot(iteration_list, total_distance_list, label='Best Solution')
     plt.xlabel('Iteration')
     plt.ylabel('Total Distance')
