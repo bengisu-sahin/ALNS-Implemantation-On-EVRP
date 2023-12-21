@@ -127,7 +127,7 @@ class worstDistanceCustomerRemovalOperator(CustomerRemovalOperator):
         for route in solution.routes:
             for item in route.route:
                 if item in allCustomers:
-                    removal_gains[item.id] = self.calculate_removal_gain(item, route)
+                    removal_gains[item] = self.calculate_removal_gain(item, route)
 
         # Removal gain'e göre müşterileri sırala
         sorted_removal_gains = dict(

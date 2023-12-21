@@ -19,8 +19,6 @@ def writeSolution(routes, problem_instance):
             dosya.write(f"Route {i}: ")  # Her rotanın başlığı
             for location in route.route:
                 dosya.write(f"{location.id} ({location.x}, {location.y}) -> ")  # Her lokasyonun ID'si
-            
-            dosya.write("D0\n\n")  # Her rotanın sonu ve başlangıç noktası
 
     print(f"Dosya '{dosya_adı}' başarıyla oluşturuldu.")
 
