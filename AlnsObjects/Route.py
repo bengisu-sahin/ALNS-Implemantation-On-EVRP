@@ -83,8 +83,8 @@ class Route:
         Returns:
             bool: True if the route is complete, False otherwise.
         """
-        return self.route[0].id == self.depot.id and self.route[-1].id == self.depot.id
-
+        return self.route[0].id == self.depot.id and self.route[-1].id == self.depot.id and self.depot.id not in [node.id for node in self.route[1:-1]]
+    
     def tw_constraint_violated(self):
         """
         Checks if the time window constraints are violated in the route.
