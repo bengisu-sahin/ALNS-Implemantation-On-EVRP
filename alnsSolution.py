@@ -43,14 +43,15 @@ def alns_iterate(
             station_removeOp = alns.stationRemovalOps[station_removeOp_index]
             station_removeOp.remove(iSolution)
 
-            station_insertOp_index = 0
+            
 
-            while iSolution.isAllRoutesFeasible() == False:
+            for i in range(len(iSolution.getUnfeasibleRoutes())):
                 unfeasibleRoutes = iSolution.getUnfeasibleRoutes()
-                # TODO: Add station insertion operator selection here
-                station_insertOp = alns.stationInsertionOps[station_insertOp_index]
+                station_insertOp_index = StationInsertionOps.selectOperator()
+                station_insertOp = alns.stationInsertionOps[1]
                 station_insertOp.insert(iSolution)
-
+            if(iSolution.isAllRoutesFeasible() == False):
+                iSolution = copy.deepcopy(currentSolution)
             print("After Improvement", iSolution.getTotalDistance())
         else:
             route_customer_insertOp_index = CustomerInsertionOps.selectOperator()
@@ -68,7 +69,7 @@ def alns_iterate(
                     route_customer_insertOp.insert(iSolution)
             else:
                 # Call customer removal 14
-                customer_removeOp_index = 1
+                customer_removeOp_index = CustomerRemovalOps.selectOperator()
                 customer_removeOp = alns.customerRemovalOps[customer_removeOp_index]
                 customer_removeOp.remove(iSolution)
 
@@ -76,7 +77,7 @@ def alns_iterate(
                 while len(iSolution.unserved_customers) != 0:
                     unfeasibleRoutes = iSolution.getUnfeasibleRoutes()
                     route_customer_insertOp.insert(iSolution)
-
+        print("CurrentSolution before improvement total distance: ", currentSolution.getTotalDistance())
         if iSolution.get_Total_Objective_Function_Value() <= (
             currentSolution.get_Total_Objective_Function_Value() * (1 + acceptance_rate)
         ):
@@ -103,7 +104,10 @@ def alns_iterate(
         total_distance_list.append(bestSolution.getTotalDistance())
         print("Iteration: ", i)
         print("Unfeasible Routes: ", iSolution.getUnfeasibleRoutes())
-        print(bestSolution.getTotalDistance())
+        print("Best Solution total distance: ",bestSolution.getTotalDistance())
+        print("iSolution Solution total distance: ",iSolution.getTotalDistance())
+        print("İteration without improvement: ", j)
+        print("-----------------------------")
     print("Best solution unfeasible routes: ", bestSolution.getUnfeasibleRoutes())
     plt.plot(iteration_list, total_distance_list, label='Best Solution')
     plt.xlabel('Iteration')
