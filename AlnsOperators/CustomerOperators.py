@@ -9,7 +9,8 @@ class removeRandomCustomerOperator(CustomerRemovalOperator):
     def __init__(self, score=0.0):
         super().__init__()
         self.score = score
-
+    def resetScore(self):
+        self.score=0.0
     def remove(self, solution):
         P = int(self.customerToBeRemoved(solution))
         allCustomers = solution.getAllCustomers()
@@ -33,7 +34,8 @@ class relatedCustomerRemovalOperator(CustomerRemovalOperator):
     def __init__(self, score=0.0):
         super().__init__()
         self.score = score
-
+    def resetScore(self):
+        self.score=0.0
     def remove(self, solution):
         P = int(self.customerToBeRemoved(solution))
         allCustomers = solution.getAllCustomers()
@@ -69,7 +71,8 @@ class leastTimeWindowCustomerRemovalOperator(CustomerRemovalOperator):
     def __init__(self, score=0.0):
         super().__init__()
         self.score = score
-
+    def resetScore(self):
+        self.score=0.0
     def remove(self, solution):
         P = int(self.customerToBeRemoved(solution))
         allCustomers = solution.getAllCustomers()
@@ -102,7 +105,8 @@ class worstDistanceCustomerRemovalOperator(CustomerRemovalOperator):
     def __init__(self, score=0.0):
         super().__init__()
         self.score = score
-
+    def resetScore(self):
+        self.score=0.0
     def calculate_removal_gain(self, customer, current_solution):
         # Müşterinin çözümde olup olmamasının getirisini hesapla
         # Bu, müşteriyi çözümde bulundurmanın ve bulundurmamanın maliyet farkını içerir
@@ -160,7 +164,8 @@ class greedyCustomerInsertionOperator(CustomerInsertionOperator):
         super().__init__()
         self.stations = stations
         self.score = score
-
+    def resetScore(self):
+        self.score=0.0
     def getStations(self, solution):
         return solution.getAllStationInProblemFile()
 
@@ -293,7 +298,8 @@ class Regret_K_Insertion(CustomerInsertionOperator):
         super().__init__()
         self.k = k
         self.score = score
-
+    def resetScore(self):
+        self.score=0.0
     def get_costs(self, customers, stations, solution):
         costs = []
         route_index = 0

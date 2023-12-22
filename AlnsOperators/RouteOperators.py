@@ -6,7 +6,8 @@ class randomRouteRemovalOperator(RouteOperator):
     def __init__(self, score=0.0):
         super().__init__()
         self.score = score
-
+    def resetScore(self):
+        self.score=0.0
     def remove(self, solution):
         W = self.routeToBeRemoved(solution)
         routes = solution.routes
@@ -25,7 +26,9 @@ class greedyRouteRemovalOperator(RouteOperator):
     def __init__(self, score=0.0):
         super().__init__()
         self.score = score
-
+    def resetScore(self):
+        self.score=0.0
+    
     def remove(self, solution):
         W = self.routeToBeRemoved(solution)
         routes_to_remove = []

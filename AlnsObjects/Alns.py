@@ -36,4 +36,17 @@ class ALNS ():
         self.greedyRouteRemovalOp=greedyRouteRemovalOperator()
         self.routeRemovalOps=[self.randomRouteRemovalOp,self.greedyRouteRemovalOp]
         
+    def resetScoresForAllOperators(self):
+        for op in self.customerRemovalOps:
+            op.resetScore()
+        for op in self.customerInsertionOps:
+            op.resetScore()
+        for op in self.stationRemovalOps:
+            op.resetScore()
+        for op in self.stationInsertionOps:
+            op.resetScore()
+        for op in self.routeRemovalOps:
+            op.resetScore()
+
+        
 

@@ -36,7 +36,7 @@ class CustomerInsertionOperator():
 
 
 class CustomerRemovalOperator():
-    def __init__(self, weights=[1,1,1], probability=0.0,customerPool=[],score=0.0):
+    def __init__(self, weights=[1,1,1,1], probability=0.0,customerPool=[],score=0.0):
         self.weights = weights
         self.probability = probability
         self.customerPool = customerPool
@@ -94,7 +94,7 @@ class StationInsertionOperator():
                 return i  # Return the index corresponding to the selected probability
     
 class StationRemovalOperator():
-    def __init__(self, weights=[1,1], probability=0.0):
+    def __init__(self, weights=[1,1,1], probability=0.0):
         self.weights = weights
         self.probability = probability
         self.Q = 0

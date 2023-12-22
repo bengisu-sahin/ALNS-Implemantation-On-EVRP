@@ -15,7 +15,7 @@ def main():
     maxIterations=5000
     N = 2 # - Maximum iterations allowed without improvement
     K= 5# Predefined iteration interval
-    Z=2 #Weights update interval
+    Z=20 #Weights update interval
 
     
     alns_solution=alns_iterate(solution,j,maxIterations,N,K,Z)

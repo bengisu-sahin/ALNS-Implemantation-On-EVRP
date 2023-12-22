@@ -13,7 +13,8 @@ class randomStationRemovalOperator(StationRemovalOperator):
     def __init__(self, score=0.0):
         super().__init__()
         self.score = score
-
+    def resetScore(self):
+        self.score=0.0
     def remove(self, solution):
         Q = self.stationToBeRemoved(solution)
         charge_stations = solution.getAllStations()
@@ -30,7 +31,8 @@ class worstChargeUsageStationRemovalOperator(StationRemovalOperator):
     def __init__(self, score=0.0):
         super().__init__()
         self.score = score
-
+    def resetScore(self):
+        self.score=0.0
     def getChargeRemaining(self, station, selectedRoute):
         # Find the index of the station in the selectedRoute
         station_index = selectedRoute.route.index(station)
@@ -80,7 +82,8 @@ class worstStationRemovalOperator(StationRemovalOperator):
     def __init__(self, score=0.0):
         super().__init__()
         self.score = score
-
+    def resetScore(self):
+        self.score=0.0
     def remove(self, solution):
         Q = self.stationToBeRemoved(solution)
         stations_to_remove = {}
@@ -111,7 +114,8 @@ class bestStationInsertionOperator(StationInsertionOperator):
     def __init__(self, score=0.0):
         super().__init__()
         self.score = score
-
+    def resetScore(self):
+        self.score=0.0
     def insert(self, solution):
         charge_stations = solution.getAllStationInProblemFile()
         min_distance = []
@@ -179,7 +183,8 @@ class Compare_K_Insertion(StationInsertionOperator):
         super().__init__()
         self.k = k
         self.score = score
-
+    def resetScore(self):
+        self.score=0.0
     def insert(self, solution):
         charge_stations = solution.getAllStationInProblemFile()
         costs = []
