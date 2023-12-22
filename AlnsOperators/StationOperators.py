@@ -193,46 +193,83 @@ class Compare_K_Insertion(StationInsertionOperator):
     def insert(self, solution):
         charge_stations = solution.getAllStationInProblemFile()
         costs = []
-        route_index = 0
-        for route in solution.routes:
+        
+        get_unfeasible_routes = solution.getUnfeasibleRoutes()
+        for route in get_unfeasible_routes:
             if route.is_feasible_all() == False:
                 for customer in route.route:
                     if isinstance(customer, Customer):
                         available_charge = route.calculate_remaining_tank_capacity(
                             customer
                         )
+                        to_node=route.route[route.route.index(customer) + 1]
                         needed_charge = route.calculate_charge_required_between_nodes(
-                            customer, route.route[route.route.index(customer) + 1]
+                            customer, to_node
                         )
                         if available_charge < needed_charge:
+                            temp_route = copy.deepcopy(route)
                             get_closest_charge_station = sorted(
                                 charge_stations, key=lambda x: customer.distance_to(x)
                             )
-                            route.append_charge_station_at_certain_point(
-                                get_closest_charge_station[0],
-                                route.route.index(customer) + 1,
-                            )
-                            if route.is_feasible_all() == False:
-                                route.remove_charge_station_from_route(
-                                    get_closest_charge_station[0]
+                            for charge_station in get_closest_charge_station:
+                                temp_route.append_charge_station_at_certain_point(
+                                    charge_station,
+                                    route.route.index(customer)+1,
                                 )
-                            else:
-                                temp_route = copy.copy(route)
-                                temp_route.route = route.route.copy()
-                                costs.append(
-                                    (
-                                        temp_route.calculate_obj_function(),
-                                        temp_route,
-                                        route_index,
+                                if temp_route.is_feasible_all() == True:
+                                    costs.append(
+                                        (
+                                            copy.deepcopy(temp_route.calculate_obj_function()),
+                                            copy.deepcopy(temp_route),
+                                            solution.find_route_index_in_solution(route),
+                                        )
                                     )
-                                )
-                                route.remove_charge_station_from_route(
-                                    get_closest_charge_station[0]
-                                )
-            route_index += 1
+                                    temp_route.remove_charge_station_from_route(
+                                        charge_station
+                                    )
+                                else:
+                                    temp_route.remove_charge_station_from_route(
+                                        charge_station
+                                    )
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            # route.append_charge_station_at_certain_point(
+                            #     get_closest_charge_station[0],
+                            #     route.route.index(customer) + 1,
+                            # )
+                            # if route.is_feasible_all() == False:
+                            #     route.remove_charge_station_from_route(
+                            #         get_closest_charge_station[0]
+                            #     )
+                            # else:
+                            #     temp_route = copy.copy(route)
+                            #     temp_route.route = route.route.copy()
+                            #     costs.append(
+                            #         (
+                            #             temp_route.calculate_obj_function(),
+                            #             temp_route,
+                            #             route_index,
+                            #         )
+                            #     )
+                            #     route.remove_charge_station_from_route(
+                            #         get_closest_charge_station[0]
+                            #     )
+            
         k = self.k
         if len(costs) < k + 1:
             k = 0
+            
+        if(len(costs)==0):
+            return solution
+        
         tobeadded_route = costs[k][1]
         tobeadded_route_index = costs[k][2]
         solution.routes[tobeadded_route_index] = tobeadded_route

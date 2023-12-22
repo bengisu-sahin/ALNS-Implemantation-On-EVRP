@@ -77,6 +77,12 @@ class Solution:
             if route.is_feasible_all() == False:
                 unfeasibleRoutes.append(route)
         return unfeasibleRoutes
+    def find_route_index_in_solution(self,route):
+        for i in range(len(self.routes)):
+            if self.routes[i] == route:
+                return i
+        return -1
+    
     
     def getAllStationInProblemFile(self):
         return self.problemFile.charging_stations
