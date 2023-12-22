@@ -48,7 +48,7 @@ def alns_iterate(
             for i in range(len(iSolution.getUnfeasibleRoutes())):
                 unfeasibleRoutes = iSolution.getUnfeasibleRoutes()
                 station_insertOp_index = StationInsertionOps.selectOperator()
-                station_insertOp = alns.stationInsertionOps[1]
+                station_insertOp = alns.stationInsertionOps[0]
                 station_insertOp.insert(iSolution)
             if(iSolution.isAllRoutesFeasible() == False):
                 iSolution = copy.deepcopy(currentSolution)
