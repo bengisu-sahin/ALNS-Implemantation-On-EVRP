@@ -334,7 +334,7 @@ class Route:
     def get_node_before_where_battery_is_negative(self):
         for index,t in enumerate(self.route[1:]):
             if self.calculate_remaining_tank_capacity(t) < 0:
-                return self.route[index]
+                return self.route[index+1]
             
     def append_charge_station_at_certain_point_feasible(self, charge_station, indexa):
         for charge in charge_station:
