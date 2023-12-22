@@ -81,11 +81,29 @@ def alns_iterate(
         if iSolution.get_Total_Objective_Function_Value() <= (
             currentSolution.get_Total_Objective_Function_Value() * (1 + acceptance_rate)
         ):
+            if(j == max_iter_without_improvement):
+                alns.stationRemovalOps[station_removeOp_index].score += 5
+                alns.stationInsertionOps[station_insertOp_index].score += 5
+            else:
+                alns.customerInsertionOps[route_customer_insertOp_index].score += 5
+                if(j%pre_iter_interval == 0):
+                    alns.routeRemovalOps[route_removeOp_index].score += 5
+                else:
+                    alns.customerRemovalOps[customer_removeOp_index].score += 5
             currentSolution = copy.deepcopy(iSolution)
             j = 0
             # TODO: Update Scores must be implemented here
 
         elif j == max_iter_without_improvement:
+            if(j == max_iter_without_improvement):
+                alns.stationRemovalOps[station_removeOp_index].score += 1
+                alns.stationInsertionOps[station_insertOp_index].score +=1
+            else:
+                alns.customerInsertionOps[route_customer_insertOp_index].score += 1
+                if(j%pre_iter_interval == 0):
+                    alns.routeRemovalOps[route_removeOp_index].score += 1
+                else:
+                    alns.customerRemovalOps[customer_removeOp_index].score += 1
             currentSolution = copy.deepcopy(iSolution)
             j = 0
             # TODO: Update Scores must be implemented here
@@ -100,7 +118,25 @@ def alns_iterate(
 
         if i % weights_update_interval == 0:
             # TODO: Update Weights must be implemented here
-            pass
+            for idx, score in enumerate(alns.customerInsertionOps):
+                CustomerInsertionOps.weights[idx] += score.score
+            
+            for idx, score in enumerate(alns.customerRemovalOps):
+                CustomerRemovalOps.weights[idx] += score.score
+
+            # Update StationInsertionOps weights
+            for idx, score in enumerate(alns.stationInsertionOps):
+                StationInsertionOps.weights[idx] += score.score
+
+            # Update StationRemovalOps weights
+            for idx, score in enumerate(alns.stationRemovalOps):
+                StationRemovalOps.weights[idx] += score.score
+
+            # Update RouteOps weights
+            for idx, score in enumerate(alns.routeRemovalOps):
+                RouteOps.weights[idx] += score.score
+            alns.resetScoresForAllOperators()
+            
         total_distance_list.append(bestSolution.getTotalDistance())
         print("Iteration: ", i)
         print("Unfeasible Routes: ", iSolution.getUnfeasibleRoutes())
