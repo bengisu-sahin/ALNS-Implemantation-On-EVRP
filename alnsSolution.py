@@ -141,11 +141,11 @@ def alns_iterate(solution,j,maxIterations,max_iter_without_improvement,pre_iter_
         print("-----------------------------")
     print("Best solution unfeasible routes: ", bestSolution.getUnfeasibleRoutes())
     print("Unserviced Customers: ", bestSolution.getUnservedCustomers())
-    plt.plot(iteration_list, total_distance_list, label='Best Solution')
-    plt.xlabel('Iteration')
-    plt.ylabel('Total Distance')
-    plt.title('ALNS Algorithm Progress')
-    plt.legend()
-    plt.show()
+    # plt.plot(iteration_list, total_distance_list, label='Best Solution')
+    # plt.xlabel('Iteration')
+    # plt.ylabel('Total Distance')
+    # plt.title('ALNS Algorithm Progress')
+    # plt.legend()
+    # plt.show()
 
     return bestSolution
