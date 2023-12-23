@@ -145,5 +145,8 @@ class RouteOperator():
         Tr=len(solution.routes) #number of routes
         self.lowerBound= int(0.1 * Tr)
         self.upperBound = int(0.4 * Tr)
-        W=random.randint(self.lowerBound, self.upperBound)
+        if self.lowerBound==0 and self.upperBound==0:
+            W=1
+        else:
+            W=random.randint(self.lowerBound, self.upperBound)
         return W
