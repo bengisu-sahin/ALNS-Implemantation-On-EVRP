@@ -2,7 +2,7 @@
 from AlnsObjects.Route import Route
 
 
-def writeSolution(routes, problem_instance):
+def writeSolution(routes,solution, problem_instance,data_set_path):
     """
     Verilen rotaları bir çözüm dosyasına yazan fonksiyon.
 
@@ -10,16 +10,24 @@ def writeSolution(routes, problem_instance):
         routes (list): Rotaları içeren liste.
         problem_instance (RoutingProblemInstance): Rota problemi örneği.
     """
-    filePath = "/SolutionFiles"
+    filePath = "SolutionFiles/"
     dosya_adı = "solution.txt"
     # Dosyayı açıp içeriği yazma
-    with open(dosya_adı, 'w') as dosya:
+    with open(filePath+data_set_path+"_solution"+".txt", 'w') as dosya:
         # Her bir liste için döngü
-        for i, route in enumerate(routes, start=1):
-            dosya.write(f"Route {i}: ")  # Her rotanın başlığı
+        dosya.write(f"#{data_set_path}")
+        dosya.write("\n")
+        dosya.write(f"{solution.getTotalDistance()}")
+        dosya.write("\n")  # Her rotanın sonuna satır sonu karakteri
+        for i, route in enumerate(routes, start=0):
+            j=0
             for location in route.route:
-                dosya.write(f"{location.id}, ")  # Her lokasyonun ID'si
-            
+                #veri setinin adını yazdır
+                dosya.write(f"{location.id}")
+                # Son eleman değilse virgül koy
+                if j!=len(route.route)-1:
+                    dosya.write(", ")
+                j+=1
             dosya.write("\n")  # Her rotanın sonuna satır sonu karakteri
             
     print(f"Dosya '{dosya_adı}' başarıyla oluşturuldu.")
