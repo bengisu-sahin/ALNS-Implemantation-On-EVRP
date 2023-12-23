@@ -430,7 +430,7 @@ class Route:
     """
     Tüm rotaları tek bir grafikte görselleştirmek için kullanılır.
     """
-    def visualizeAllRoutes(self):
+    def visualizeAllRoutes(self,show=1):
         coordinates=[]
         rotaC=[]
         depot=[]
@@ -474,8 +474,10 @@ class Route:
         ax.set_title('Tüm Rotaların Birleştirilmiş Grafiği')
 
         ax.grid(True)
-        plt.show()
-        plt.close()
+        if(show==1):
+            plt.show()
+            plt.close()
+        
         return fig
 
     """

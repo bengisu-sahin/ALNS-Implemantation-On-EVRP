@@ -1,10 +1,11 @@
 
 from AlnsObjects.Route import Route
 import os
-from openpyxl import Workbook
 from matplotlib import pyplot as plt
-import pandas as pd
 import subprocess
+
+
+from readProblemInstances import readProblemInstances
 
 def writeSolution(routes,solution, problem_instance,data_set_path):
     """
@@ -16,7 +17,7 @@ def writeSolution(routes,solution, problem_instance,data_set_path):
     """
 
     filePath = "SolutionFiles/"
-    dosya_adı = "solution.txt"
+    dosya_adı = data_set_path+"_solution.txt"
 
     # Klasörü oluştur
     folder_path = os.path.join(filePath, data_set_path)
@@ -41,7 +42,7 @@ def writeSolution(routes,solution, problem_instance,data_set_path):
 
 
 
-def visualizeAllRoutes(routes, problem_instance, file_name):
+def saveVisualizeAllRoutes(routes, problem_instance, file_name):
     """
     Tüm rotaları görselleştiren fonksiyon.
 
@@ -51,15 +52,15 @@ def visualizeAllRoutes(routes, problem_instance, file_name):
     """
     route_manager = Route(problem_instance.config, problem_instance.depot) 
     route_manager.route = routes
-    route_manager.visualizeAllRoutes()
-    fig=route_manager.visualizeAllRoutes()
+    route_manager.visualizeAllRoutes(0)
+    fig=route_manager.visualizeAllRoutes(0)
 
     folder_path = os.path.join("SolutionFiles", file_name, "RouteGraphs")
     os.makedirs(folder_path, exist_ok=True) 
     img_path = os.path.join(folder_path, f"AllRoutes_{file_name}.png")
     fig.savefig(img_path)
 
-def visualizeRoutesSeperately(routes, problem_instance, file_name):
+def saveVisualizeRoutesSeperately(routes, problem_instance, file_name):
     """
     Rotaları ayrı ayrı görselleştiren fonksiyon.
 
@@ -92,8 +93,9 @@ def runEvrtpwVerifier(file_name):
     """
 
     jar_path = "EVRPTW_Verifier/evrptw-verifier-0.2.0.jar"
-    input_file = f"C:\\Users\\asus\\OneDrive\\Masaüstü\\Github_Repo\\ALNS-Implemantation-On-EVRP\\SchneiderData\\{file_name}.txt"
-    solution_file = f"C:\\Users\\asus\\OneDrive\\Masaüstü\\Github_Repo\\ALNS-Implemantation-On-EVRP\\SolutionFiles\\{file_name}_solution.txt"
+    input_file = f"./SchneiderData/{file_name}.txt"
+    solution_file = f"./SolutionFiles/{file_name}/{file_name}_solution.txt"
+
 
     # Java JAR dosyasını çalıştırma komutu
     command = ["java", "-jar", jar_path, input_file, solution_file]

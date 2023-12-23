@@ -36,13 +36,14 @@ def alns_iterate(solution,j,maxIterations,max_iter_without_improvement,pre_iter_
             station_removeOp = alns.stationRemovalOps[station_removeOp_index]
             station_removeOp.remove(iSolution)
 
-            
+            station_insertOp_index = StationInsertionOps.selectOperator()
+
 
             for i in range(len(iSolution.getUnfeasibleRoutes())):
                 unfeasibleRoutes = iSolution.getUnfeasibleRoutes()
-                station_insertOp_index = StationInsertionOps.selectOperator()
                 station_insertOp = alns.stationInsertionOps[station_insertOp_index]
                 station_insertOp.insert(iSolution)
+            
             if(iSolution.isAllRoutesFeasible() == False):
                 iSolution = copy.deepcopy(currentSolution)
             print("After Improvement", iSolution.getTotalDistance())
