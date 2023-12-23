@@ -12,10 +12,10 @@ def main():
     problemFile = readProblemInstances('SchneiderData/c101_21.txt')  # Değişken atama işlemi düzeltilmiş ve parantez eklendi.
     solution=initial_solution(problemFile.depot,problemFile.customers,problemFile)
     j=0 #- Number of iterations allowed without improvement
-    maxIterations=5000
-    N = 2 # - Maximum iterations allowed without improvement
-    K= 5# Predefined iteration interval
-    Z=20 #Weights update interval
+    maxIterations=1000 # - Maximum number of iterations
+    N =20  # - Maximum iterations allowed without improvement
+    K= 3# Predefined iteration interval
+    Z=50 #Weights update interval
 
     
     alns_solution=alns_iterate(solution,j,maxIterations,N,K,Z)
