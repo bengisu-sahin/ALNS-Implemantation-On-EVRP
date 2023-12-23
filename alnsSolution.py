@@ -11,14 +11,7 @@ from AlnsOperators.Operators import (
 )
 
 
-def alns_iterate(
-    solution,
-    j,
-    maxIterations,
-    max_iter_without_improvement,
-    pre_iter_interval,
-    weights_update_interval,
-):
+def alns_iterate(solution,j,maxIterations,max_iter_without_improvement,pre_iter_interval,weights_update_interval,):
     CustomerInsertionOps = CustomerInsertionOperator()
     CustomerRemovalOps = CustomerRemovalOperator()
     StationInsertionOps = StationInsertionOperator()
@@ -55,7 +48,7 @@ def alns_iterate(
             print("After Improvement", iSolution.getTotalDistance())
         else:
             route_customer_insertOp_index = CustomerInsertionOps.selectOperator()
-            route_customer_insertOp = alns.customerInsertionOps[1]
+            route_customer_insertOp = alns.customerInsertionOps[0]
 
             if j % pre_iter_interval == 0:
                 # Call route removal 11
@@ -143,9 +136,11 @@ def alns_iterate(
         print("Best Solution total distance: ",bestSolution.getTotalDistance())
         print("Best solution objective function value: ", bestSolution.get_Total_Objective_Function_Value())
         print("iSolution Solution total distance: ",iSolution.getTotalDistance())
+        print("Unserviced Customers: ", bestSolution.getUnservedCustomers())
         print("İteration without improvement: ", j)
         print("-----------------------------")
     print("Best solution unfeasible routes: ", bestSolution.getUnfeasibleRoutes())
+    print("Unserviced Customers: ", bestSolution.getUnservedCustomers())
     plt.plot(iteration_list, total_distance_list, label='Best Solution')
     plt.xlabel('Iteration')
     plt.ylabel('Total Distance')

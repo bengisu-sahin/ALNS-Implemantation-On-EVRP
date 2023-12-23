@@ -83,7 +83,9 @@ class Solution:
                 return i
         return -1
     
-    
+    def getUnservedCustomers(self):
+        return self.unserved_customers
+
     def getAllStationInProblemFile(self):
         return self.problemFile.charging_stations
     
