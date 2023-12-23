@@ -18,8 +18,10 @@ def writeSolution(routes, problem_instance):
         for i, route in enumerate(routes, start=1):
             dosya.write(f"Route {i}: ")  # Her rotanın başlığı
             for location in route.route:
-                dosya.write(f"{location.id} ({location.x}, {location.y}) -> ")  # Her lokasyonun ID'si
+                dosya.write(f"{location.id}, ")  # Her lokasyonun ID'si
+            
             dosya.write("\n")  # Her rotanın sonuna satır sonu karakteri
+            
     print(f"Dosya '{dosya_adı}' başarıyla oluşturuldu.")
 
 def visualizeAllRoutes(routes, problem_instance):

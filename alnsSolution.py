@@ -28,7 +28,7 @@ def alns_iterate(
     currentSolution = copy.deepcopy(solution)
     iSolution = copy.deepcopy(solution)
     alns = ALNS(bestSolution, currentSolution)
-    acceptance_rate = 0.05
+    acceptance_rate = 0.03
     totalDistance = iSolution.getTotalDistance()
     iteration_list = []
     total_distance_list = []
@@ -40,7 +40,7 @@ def alns_iterate(
         if j == max_iter_without_improvement:
             print("Before Improvement: ", totalDistance)
             station_removeOp_index = StationRemovalOps.selectOperator()
-            station_removeOp = alns.stationRemovalOps[station_removeOp_index]
+            station_removeOp = alns.stationRemovalOps[2]
             station_removeOp.remove(iSolution)
 
             
@@ -82,14 +82,14 @@ def alns_iterate(
             currentSolution.get_Total_Objective_Function_Value() * (1 + acceptance_rate)
         ):
             if(j == max_iter_without_improvement):
-                alns.stationRemovalOps[station_removeOp_index].score += 5
-                alns.stationInsertionOps[station_insertOp_index].score += 5
+                alns.stationRemovalOps[station_removeOp_index].score += 3
+                alns.stationInsertionOps[station_insertOp_index].score += 3
             else:
-                alns.customerInsertionOps[route_customer_insertOp_index].score += 5
+                alns.customerInsertionOps[route_customer_insertOp_index].score += 3
                 if(j%pre_iter_interval == 0):
-                    alns.routeRemovalOps[route_removeOp_index].score += 5
+                    alns.routeRemovalOps[route_removeOp_index].score += 3
                 else:
-                    alns.customerRemovalOps[customer_removeOp_index].score += 5
+                    alns.customerRemovalOps[customer_removeOp_index].score += 3
             currentSolution = copy.deepcopy(iSolution)
             j = 0
             # TODO: Update Scores must be implemented here
@@ -141,6 +141,7 @@ def alns_iterate(
         print("Iteration: ", i)
         print("Unfeasible Routes: ", iSolution.getUnfeasibleRoutes())
         print("Best Solution total distance: ",bestSolution.getTotalDistance())
+        print("Best solution objective function value: ", bestSolution.get_Total_Objective_Function_Value())
         print("iSolution Solution total distance: ",iSolution.getTotalDistance())
         print("İteration without improvement: ", j)
         print("-----------------------------")
