@@ -147,4 +147,5 @@ def alns_iterate(solution,j,maxIterations,max_iter_without_improvement,pre_iter_
     plt.title('ALNS Algorithm Progress')
     plt.legend()
     plt.show()
-    return bestSolution.routes
+
+    return bestSolution
