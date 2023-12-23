@@ -124,7 +124,7 @@ class bestStationInsertionOperator(StationInsertionOperator):
 
         for route in unfeasible_routes:
             if (
-                route.is_feasible_all() == True
+                route.tank_capacity_constraint_violated() == False
             ):  # if the tank capacity constraint is not violated, no need to add a charge station
                 continue
             else:  # if the tank capacity constraint is violated, add the best charge station to the route

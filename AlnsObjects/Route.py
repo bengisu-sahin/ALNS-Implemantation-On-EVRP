@@ -18,9 +18,10 @@ class Route:
         e = 0.8
         p = 1.2041
         g = 9.81
-        Cd = 0.4
-        Cr = 0.015
-        A = 7
+        Cd = 0.48
+        Cr = 0.01
+        self.M=1000
+        A = 2.33
         self.config = config
         self.route = [depot]
         self.depot = depot
@@ -211,7 +212,7 @@ class Route:
         Bu metot, bir müşteriye kadar olan toplam yükü hesaplamak için kullanılır. Bu yük, müşteriye kadar olan tüm müşterilerin taleplerinin toplamıdır.
         """
         total_demand = 0
-        for t in self.route:
+        for t in self.route[1:]:
             if t == customer:
                 break
             if type(t) is Customer:
@@ -364,7 +365,7 @@ class Route:
 
     def calculate_energy_consumption(self,from_node,to_node):
         
-        return (self.alpha*1+self.beta*(self.calculate_load_carried_until_customer(to_node)+3000))*self.calculate_time_between_nodes(from_node,to_node)
+        return (self.alpha*1+self.beta*(self.calculate_load_carried_until_customer(to_node)+self.M))*self.calculate_time_between_nodes(from_node,to_node)
 
     def calculate_obj_function(self):
         route_length = len(self.route)
