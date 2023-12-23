@@ -8,8 +8,9 @@ from visualize_solution import visualizeAllRoutes, visualizeRoutesSeperately, wr
 from AlnsOperators.CustomerOperators import Regret_K_Insertion, removeRandomCustomerOperator, leastTimeWindowCustomerRemovalOperator, relatedCustomerRemovalOperator,greedyCustomerInsertionOperator, worstDistanceCustomerRemovalOperator
 from AlnsOperators.StationOperators import Compare_K_Insertion, bestStationInsertionOperator, randomStationRemovalOperator, worstChargeUsageStationRemovalOperator, worstStationRemovalOperator
 
-def main(): 
-    problemFile = readProblemInstances('SchneiderData/c202C10.txt')  # Değişken atama işlemi düzeltilmiş ve parantez eklendi.
+def main():
+    data_set_path = "c202C10" 
+    problemFile = readProblemInstances('SchneiderData/'+data_set_path+'.txt')  # Değişken atama işlemi düzeltilmiş ve parantez eklendi.
     solution=initial_solution(problemFile.depot,problemFile.customers,problemFile)
     j=0 #- Number of iterations allowed without improvement
     maxIterations=1000 # - Maximum number of iterations
@@ -19,9 +20,9 @@ def main():
 
     
     alns_solution=alns_iterate(solution,j,maxIterations,N,K,Z)
-    visualizeAllRoutes(alns_solution,problemFile)
-    visualizeRoutesSeperately(alns_solution,problemFile)
-    writeSolution(alns_solution,problemFile)
+    visualizeAllRoutes(alns_solution.routes,problemFile)
+    visualizeRoutesSeperately(alns_solution.routes,problemFile)
+    writeSolution(alns_solution.routes,alns_solution,problemFile,data_set_path)
 
 
     

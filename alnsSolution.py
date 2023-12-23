@@ -153,4 +153,4 @@ def alns_iterate(
     plt.legend()
     plt.show()
 
-    return bestSolution.routes
+    return bestSolution
