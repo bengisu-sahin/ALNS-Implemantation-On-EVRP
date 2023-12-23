@@ -2,12 +2,9 @@
 from AlnsObjects.Route import Route
 import os
 from openpyxl import Workbook
+from matplotlib import pyplot as plt
 import pandas as pd
 import subprocess
-from alnsSolution import alns_iterate
-from initialsolution import initial_solution
-from readProblemInstances import readProblemInstances
-from visualize_solution import visualizeAllRoutes, visualizeRoutesSeperately, writeSolution
 
 def writeSolution(routes,solution, problem_instance,data_set_path):
     """
@@ -17,27 +14,34 @@ def writeSolution(routes,solution, problem_instance,data_set_path):
         routes (list): Rotaları içeren liste.
         problem_instance (RoutingProblemInstance): Rota problemi örneği.
     """
+
     filePath = "SolutionFiles/"
     dosya_adı = "solution.txt"
-    with open(filePath+data_set_path+"_solution"+".txt", 'w') as dosya:
+
+    # Klasörü oluştur
+    folder_path = os.path.join(filePath, data_set_path)
+    os.makedirs(folder_path, exist_ok=True)
+
+    # Dosya yolunu güncelle
+    file_path = os.path.join(folder_path, dosya_adı)
+
+    with open(file_path, 'w') as dosya:
         dosya.write(f"#{data_set_path}")
         dosya.write("\n")
         dosya.write(f"{solution.getTotalDistance()}")
-        dosya.write("\n") 
+        dosya.write("\n")
         for i, route in enumerate(routes, start=0):
-            j=0
+            j = 0
             for location in route.route:
-                #veri setinin adını yazdır
                 dosya.write(f"{location.id}")
-                # Son eleman değilse virgül koy
-                if j!=len(route.route)-1:
+                if j != len(route.route) - 1:
                     dosya.write(", ")
-                j+=1
-            dosya.write("\n")  # Her rotanın sonuna satır sonu karakteri
-            
-    print(f"Dosya '{dosya_adı}' başarıyla oluşturuldu.")
+                j += 1
+            dosya.write("\n")
 
-def visualizeAllRoutes(routes, problem_instance):
+
+
+def visualizeAllRoutes(routes, problem_instance, file_name):
     """
     Tüm rotaları görselleştiren fonksiyon.
 
@@ -48,8 +52,14 @@ def visualizeAllRoutes(routes, problem_instance):
     route_manager = Route(problem_instance.config, problem_instance.depot) 
     route_manager.route = routes
     route_manager.visualizeAllRoutes()
+    fig=route_manager.visualizeAllRoutes()
 
-def visualizeRoutesSeperately(routes, problem_instance):
+    folder_path = os.path.join("SolutionFiles", file_name, "RouteGraphs")
+    os.makedirs(folder_path, exist_ok=True) 
+    img_path = os.path.join(folder_path, f"AllRoutes_{file_name}.png")
+    fig.savefig(img_path)
+
+def visualizeRoutesSeperately(routes, problem_instance, file_name):
     """
     Rotaları ayrı ayrı görselleştiren fonksiyon.
 
@@ -59,7 +69,16 @@ def visualizeRoutesSeperately(routes, problem_instance):
     """
     route_manager = Route(problem_instance.config, problem_instance.depot) 
     route_manager.route = routes
-    route_manager.visualizeRoute()
+    figList=route_manager.visualizeRoute()
+    # Klasör yolu oluştur
+    folder_path = os.path.join("SolutionFiles", file_name, "RouteGraphs")
+    os.makedirs(folder_path, exist_ok=True)
+
+    # Her bir figürü ayrı bir dosyaya kaydet
+    for i, fig in enumerate(figList, start=1):
+        img_path = os.path.join(folder_path, f"Route_{i}.png")
+        fig.savefig(img_path)
+        plt.close(fig)  # plt.show() kullanılmışsa kapat
 
 def runEvrtpwVerifier(file_name):
     """
@@ -94,3 +113,17 @@ def runEvrtpwVerifier(file_name):
         return 'Valid'
     else:
         return 'Invalid'    
+    
+def visualizeAlgorithmProcess(iteration_list, total_distance_list):
+    filePath = "SolutionFiles/"
+    dosya_adı = "solution.txt"
+
+    # Klasörü oluştur
+    #folder_path = os.path.join(filePath, data_set_path)
+    # os.makedirs(folder_path, exist_ok=True)
+    # plt.plot(iteration_list, total_distance_list, label='Best Solution')
+    # plt.xlabel('Iteration')
+    # plt.ylabel('Total Distance')
+    # plt.title('ALNS Algorithm Progress')
+    # plt.legend()
+    # plt.show()

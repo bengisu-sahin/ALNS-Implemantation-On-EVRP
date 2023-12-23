@@ -475,6 +475,8 @@ class Route:
 
         ax.grid(True)
         plt.show()
+        plt.close()
+        return fig
 
     """
     Her bir rotayı ayrı ayrı görselleştirmek için kullanılır.
@@ -483,6 +485,7 @@ class Route:
         depot_x = 0
         depot_y = 0
         id = 1
+        figList=[]
         for route in self.route:
             fig, ax = plt.subplots(figsize=(10, 8))
             x_points = []
@@ -527,7 +530,10 @@ class Route:
             plt.annotate(', '.join(content), xy=(0.5, -0.12), xycoords='axes fraction', fontsize=12, ha='center')
 
             id += 1
-            plt.show()
+            #plt.show()
+            plt.close()
+            figList.append(fig)
+        return figList   
 
     def number_of_customers(self):
         """
