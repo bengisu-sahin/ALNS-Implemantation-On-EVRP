@@ -459,12 +459,6 @@ class Route:
         # [40, 50] noktasına bir işaret eklemek
         ax.annotate('[40, 50]', (40, 50), textcoords="offset points", xytext=(0, 10), ha='center')
 
-        # Eksenlerin kesişimi 0,0 olacak şekilde düzenleme
-        ax.spines['left'].set_position('zero')
-        ax.spines['bottom'].set_position('zero')
-        ax.spines['right'].set_color('none')
-        ax.spines['top'].set_color('none')
-
         # Eksenlerdeki noktaların yerleşimini ayarlama
         ax.xaxis.set_major_locator(plt.MultipleLocator(5))
         ax.yaxis.set_major_locator(plt.MultipleLocator(5))

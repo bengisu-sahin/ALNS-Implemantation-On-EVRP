@@ -50,8 +50,10 @@ def saveVisualizeAllRoutes(routes, problem_instance, file_name):
         routes (list): Rotaları içeren liste.
         problem_instance (RoutingProblemInstance): Rota problemi örneği.
     """
+    plt.ioff()
     route_manager = Route(problem_instance.config, problem_instance.depot) 
     route_manager.route = routes
+    plt.figure()
     route_manager.visualizeAllRoutes(0)
     fig=route_manager.visualizeAllRoutes(0)
 
@@ -74,9 +76,11 @@ def saveVisualizeRoutesSeperately(routes, problem_instance, file_name):
     # Klasör yolu oluştur
     folder_path = os.path.join("SolutionFiles", file_name, "RouteGraphs")
     os.makedirs(folder_path, exist_ok=True)
-
+    
     # Her bir figürü ayrı bir dosyaya kaydet
     for i, fig in enumerate(figList, start=1):
+        plt.ioff()
+        plt.figure()
         img_path = os.path.join(folder_path, f"Route_{i}.png")
         fig.savefig(img_path)
         plt.close(fig)  # plt.show() kullanılmışsa kapat
@@ -120,6 +124,8 @@ def saveALNSResultsDevelopment(alns_solution):
     filePath = "SolutionFiles/"
     folder_path = os.path.join(filePath, alns_solution.problemFile.fileName)
     os.makedirs(folder_path, exist_ok=True)
+    plt.ioff()
+    plt.figure()
     plt.plot(alns_solution.iteration_list, alns_solution.total_distance_list, label='Best Solution')
     plt.xlabel('Iteration')
     plt.ylabel('Total Distance')
@@ -127,4 +133,4 @@ def saveALNSResultsDevelopment(alns_solution):
     plt.legend()
     img_path = os.path.join(folder_path, f"{alns_solution.problemFile.fileName}_ALNS_Progress.png")
     plt.savefig(img_path)
-    plt.show()
+    plt.close()
