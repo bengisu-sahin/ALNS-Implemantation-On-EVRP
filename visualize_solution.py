@@ -1,6 +1,11 @@
 
 from AlnsObjects.Route import Route
+import os
+from matplotlib import pyplot as plt
+import subprocess
 
+
+from readProblemInstances import readProblemInstances
 
 def writeSolution(routes,solution, problem_instance,data_set_path):
     """
@@ -10,29 +15,34 @@ def writeSolution(routes,solution, problem_instance,data_set_path):
         routes (list): Rotaları içeren liste.
         problem_instance (RoutingProblemInstance): Rota problemi örneği.
     """
+
     filePath = "SolutionFiles/"
-    dosya_adı = "solution.txt"
-    # Dosyayı açıp içeriği yazma
-    with open(filePath+data_set_path+"_solution"+".txt", 'w') as dosya:
-        # Her bir liste için döngü
+    dosya_adı = data_set_path+"_solution.txt"
+
+    # Klasörü oluştur
+    folder_path = os.path.join(filePath, data_set_path)
+    os.makedirs(folder_path, exist_ok=True)
+
+    # Dosya yolunu güncelle
+    file_path = os.path.join(folder_path, dosya_adı)
+
+    with open(file_path, 'w') as dosya:
         dosya.write(f"#{data_set_path}")
         dosya.write("\n")
         dosya.write(f"{solution.getTotalDistance()}")
-        dosya.write("\n")  # Her rotanın sonuna satır sonu karakteri
+        dosya.write("\n")
         for i, route in enumerate(routes, start=0):
-            j=0
+            j = 0
             for location in route.route:
-                #veri setinin adını yazdır
                 dosya.write(f"{location.id}")
-                # Son eleman değilse virgül koy
-                if j!=len(route.route)-1:
+                if j != len(route.route) - 1:
                     dosya.write(", ")
-                j+=1
-            dosya.write("\n")  # Her rotanın sonuna satır sonu karakteri
-            
-    print(f"Dosya '{dosya_adı}' başarıyla oluşturuldu.")
+                j += 1
+            dosya.write("\n")
 
-def visualizeAllRoutes(routes, problem_instance):
+
+
+def saveVisualizeAllRoutes(routes, problem_instance, file_name):
     """
     Tüm rotaları görselleştiren fonksiyon.
 
@@ -40,11 +50,19 @@ def visualizeAllRoutes(routes, problem_instance):
         routes (list): Rotaları içeren liste.
         problem_instance (RoutingProblemInstance): Rota problemi örneği.
     """
+    plt.ioff()
     route_manager = Route(problem_instance.config, problem_instance.depot) 
     route_manager.route = routes
-    route_manager.visualizeAllRoutes()
+    plt.figure()
+    route_manager.visualizeAllRoutes(0)
+    fig=route_manager.visualizeAllRoutes(0)
 
-def visualizeRoutesSeperately(routes, problem_instance):
+    folder_path = os.path.join("SolutionFiles", file_name, "RouteGraphs")
+    os.makedirs(folder_path, exist_ok=True) 
+    img_path = os.path.join(folder_path, f"AllRoutes_{file_name}.png")
+    fig.savefig(img_path)
+
+def saveVisualizeRoutesSeperately(routes, problem_instance, file_name):
     """
     Rotaları ayrı ayrı görselleştiren fonksiyon.
 
@@ -54,4 +72,65 @@ def visualizeRoutesSeperately(routes, problem_instance):
     """
     route_manager = Route(problem_instance.config, problem_instance.depot) 
     route_manager.route = routes
-    route_manager.visualizeRoute()
+    figList=route_manager.visualizeRoute()
+    # Klasör yolu oluştur
+    folder_path = os.path.join("SolutionFiles", file_name, "RouteGraphs")
+    os.makedirs(folder_path, exist_ok=True)
+    
+    # Her bir figürü ayrı bir dosyaya kaydet
+    for i, fig in enumerate(figList, start=1):
+        plt.ioff()
+        plt.figure()
+        img_path = os.path.join(folder_path, f"Route_{i}.png")
+        fig.savefig(img_path)
+        plt.close(fig)  # plt.show() kullanılmışsa kapat
+
+def runEvrtpwVerifier(file_name):
+    """
+    The `runEvrtpwVerifier` function runs the EVRPTW Verifier tool on a given input file and solution
+    file, and returns whether the solution is valid or invalid.
+    
+    :param file_name: The `file_name` parameter is the name of the input file that will be used as input
+    for the EVRPTW Verifier. It should be a string without the file extension
+    :return: The function `runEvrtpwVerifier` returns either 'Valid' or 'Invalid' based on the output of
+    the EVRPTW Verifier tool.
+    """
+
+    jar_path = "EVRPTW_Verifier/evrptw-verifier-0.2.0.jar"
+    input_file = f"./SchneiderData/{file_name}.txt"
+    solution_file = f"./SolutionFiles/{file_name}/{file_name}_solution.txt"
+
+
+    # Java JAR dosyasını çalıştırma komutu
+    command = ["java", "-jar", jar_path, input_file, solution_file]
+
+    # Terminal komutunu çalıştırma
+    result = subprocess.run(command, capture_output=True, text=True)
+
+    # Çıktıları ekrana yazdırma
+    print(result.stdout)
+
+    # Hata mesajlarını ekrana yazdırma
+    if result.stderr:
+        print("Hata Mesajları:")
+        print(result.stderr)
+
+    if 'valid' in result.stdout.lower():
+        return 'Valid'
+    else:
+        return 'Invalid'    
+    
+def saveALNSResultsDevelopment(alns_solution):
+    filePath = "SolutionFiles/"
+    folder_path = os.path.join(filePath, alns_solution.problemFile.fileName)
+    os.makedirs(folder_path, exist_ok=True)
+    plt.ioff()
+    plt.figure()
+    plt.plot(alns_solution.iteration_list, alns_solution.total_distance_list, label='Best Solution')
+    plt.xlabel('Iteration')
+    plt.ylabel('Total Distance')
+    plt.title('ALNS Algorithm Progress')
+    plt.legend()
+    img_path = os.path.join(folder_path, f"{alns_solution.problemFile.fileName}_ALNS_Progress.png")
+    plt.savefig(img_path)
+    plt.close()

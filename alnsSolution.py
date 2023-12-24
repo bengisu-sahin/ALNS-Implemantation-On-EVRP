@@ -10,7 +10,6 @@ from AlnsOperators.Operators import (
     StationRemovalOperator,
 )
 
-
 def alns_iterate(solution,j,maxIterations,max_iter_without_improvement,pre_iter_interval,weights_update_interval,):
     CustomerInsertionOps = CustomerInsertionOperator()
     CustomerRemovalOps = CustomerRemovalOperator()
@@ -35,14 +34,13 @@ def alns_iterate(solution,j,maxIterations,max_iter_without_improvement,pre_iter_
             station_removeOp_index = StationRemovalOps.selectOperator()
             station_removeOp = alns.stationRemovalOps[station_removeOp_index]
             station_removeOp.remove(iSolution)
-
-            
+            station_insertOp_index = StationInsertionOps.selectOperator()
 
             for i in range(len(iSolution.getUnfeasibleRoutes())):
                 unfeasibleRoutes = iSolution.getUnfeasibleRoutes()
-                station_insertOp_index = StationInsertionOps.selectOperator()
                 station_insertOp = alns.stationInsertionOps[station_insertOp_index]
                 station_insertOp.insert(iSolution)
+            
             if(iSolution.isAllRoutesFeasible() == False):
                 iSolution = copy.deepcopy(currentSolution)
             print("After Improvement", iSolution.getTotalDistance())
@@ -51,22 +49,21 @@ def alns_iterate(solution,j,maxIterations,max_iter_without_improvement,pre_iter_
             route_customer_insertOp = alns.customerInsertionOps[route_customer_insertOp_index]
 
             if j % pre_iter_interval == 0 and j != 0:
-                # Call route removal 11
+
                 route_removeOp_index = RouteOps.selectOperator()
                 route_removeOp = alns.routeRemovalOps[route_removeOp_index]
                 route_removeOp.remove(iSolution)
 
-                # Call customer insertion 12
                 while len(iSolution.unserved_customers) != 0:
                     unfeasibleRoutes = iSolution.getUnfeasibleRoutes()
                     route_customer_insertOp.insert(iSolution)
             else:
-                # Call customer removal 14
+                
                 customer_removeOp_index = CustomerRemovalOps.selectOperator()
                 customer_removeOp = alns.customerRemovalOps[customer_removeOp_index]
                 customer_removeOp.remove(iSolution)
 
-                # Call customer insertion 15
+                
                 while len(iSolution.unserved_customers) != 0:
                     unfeasibleRoutes = iSolution.getUnfeasibleRoutes()
                     route_customer_insertOp.insert(iSolution)
@@ -85,8 +82,6 @@ def alns_iterate(solution,j,maxIterations,max_iter_without_improvement,pre_iter_
                     alns.customerRemovalOps[customer_removeOp_index].score += 3
             currentSolution = copy.deepcopy(iSolution)
             j = 0
-            # TODO: Update Scores must be implemented here
-
         elif j == max_iter_without_improvement:
             if(j == max_iter_without_improvement):
                 alns.stationRemovalOps[station_removeOp_index].score += 1
@@ -99,10 +94,8 @@ def alns_iterate(solution,j,maxIterations,max_iter_without_improvement,pre_iter_
                     alns.customerRemovalOps[customer_removeOp_index].score += 1
             currentSolution = copy.deepcopy(iSolution)
             j = 0
-            # TODO: Update Scores must be implemented here
         else:
             j += 1
-
         if (
             currentSolution.get_Total_Objective_Function_Value()
             < bestSolution.get_Total_Objective_Function_Value()
@@ -110,22 +103,19 @@ def alns_iterate(solution,j,maxIterations,max_iter_without_improvement,pre_iter_
             bestSolution = copy.deepcopy(currentSolution)
 
         if i % weights_update_interval == 0 and i!=0:
-            # TODO: Update Weights must be implemented here
+
             for idx, score in enumerate(alns.customerInsertionOps):
                 CustomerInsertionOps.weights[idx] += score.score
             
             for idx, score in enumerate(alns.customerRemovalOps):
                 CustomerRemovalOps.weights[idx] += score.score
-
-            # Update StationInsertionOps weights
+            
             for idx, score in enumerate(alns.stationInsertionOps):
                 StationInsertionOps.weights[idx] += score.score
 
-            # Update StationRemovalOps weights
             for idx, score in enumerate(alns.stationRemovalOps):
                 StationRemovalOps.weights[idx] += score.score
 
-            # Update RouteOps weights
             for idx, score in enumerate(alns.routeRemovalOps):
                 RouteOps.weights[idx] += score.score
             alns.resetScoresForAllOperators()
@@ -141,11 +131,6 @@ def alns_iterate(solution,j,maxIterations,max_iter_without_improvement,pre_iter_
         print("-----------------------------")
     print("Best solution unfeasible routes: ", bestSolution.getUnfeasibleRoutes())
     print("Unserviced Customers: ", bestSolution.getUnservedCustomers())
-    plt.plot(iteration_list, total_distance_list, label='Best Solution')
-    plt.xlabel('Iteration')
-    plt.ylabel('Total Distance')
-    plt.title('ALNS Algorithm Progress')
-    plt.legend()
-    plt.show()
-
+    bestSolution.setIterationList(iteration_list)
+    bestSolution.setTotalDistanceList(total_distance_list)
     return bestSolution

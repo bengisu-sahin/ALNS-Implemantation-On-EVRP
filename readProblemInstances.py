@@ -1,3 +1,4 @@
+import os
 from DataObjects.ChargeStation import ChargeStation
 from DataObjects.Customer import Customer
 from DataObjects.Target import Target
@@ -28,14 +29,14 @@ def readProblemInstances(file):
 
             if stl[1] == 'd':
                 depot = Target(stl[0], idx, int(float(stl[2])), int(float(stl[3])), int(float(stl[5])),
-                               int(float(stl[6])), int(float(stl[7])))
+                            int(float(stl[6])), int(float(stl[7])))
             elif stl[1] == 'f':
                 new_target = ChargeStation(stl[0], idx, int(float(stl[2])), int(float(stl[3])), int(float(stl[5])),
                                             int(float(stl[6])), int(float(stl[7])))
                 fuel_stations.append(new_target)
             elif stl[1] == 'c':
                 new_target = Customer(stl[0], idx, int(float(stl[2])), int(float(stl[3])), int(float(stl[4])),
-                                      int(float(stl[5])), int(float(stl[6])), int(float(stl[7])))
+                                    int(float(stl[5])), int(float(stl[6])), int(float(stl[7])))
                 customers.append(new_target)
 
             target_line = f.readline()
@@ -54,7 +55,6 @@ def readProblemInstances(file):
 
         configuration_line = f.readline()
         velocity = float(configuration_line.split('/')[1])  # v average Velocity
-
+        fileName = os.path.splitext(os.path.basename(file))[0]
         return RoutingProblemInstance(RoutingProblemConfiguration(tank_capacity, load_capacity, fuel_consumption_rate,
-                                                                  charging_rate, velocity), depot, customers,
-                                      fuel_stations)
+                                                                charging_rate, velocity), depot, customers,fuel_stations,fileName)
