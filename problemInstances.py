@@ -33,7 +33,7 @@ class RoutingProblemInstance:
         cust_cs_dist (numpy.ndarray): Müşteriler ile şarj istasyonları arasındaki mesafe matrisi.
         vertices (dict): Noktaları ID'leri üzerinden hızlıca bulmak için kullanılan sözlük.
     """
-    def __init__(self, config, depot, customers, charging_stations):
+    def __init__(self, config, depot, customers, charging_stations,fileName):
         self.config = config
         self.depot = depot
         self.customers = customers
@@ -42,6 +42,7 @@ class RoutingProblemInstance:
         self.cust_cust_dist = np.zeros((len(self.customers), len(self.customers)))
         self.cust_cs_dist = np.zeros((len(self.customers), len(self.charging_stations)))
         self.vertices = dict()
+        self.fileName=fileName
 
         # Nokta mesafe matrislerinin başlatılması
         for i in range(0, len(self.customers)):

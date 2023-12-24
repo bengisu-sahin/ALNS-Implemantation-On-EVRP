@@ -9,6 +9,14 @@ class Solution:
         self.served_customers = served_customers
         self.routes = routes
         self.problemFile = problemFile
+        self.iteration_list=[]
+        self.total_distance_list=[]
+
+    def setIterationList(self,iteration_list):
+        self.iteration_list=iteration_list
+
+    def setTotalDistanceList(self,total_distance_list):
+        self.total_distance_list=total_distance_list
     
     def getNumberOfCustomers(self):
         totalCustomers=0
@@ -43,8 +51,6 @@ class Solution:
             if item.id == customer.id:
                 self.unserved_customers.remove(item)
                 
-        
-    
     def getAllStations(self):
         allStations=[]
         for route in self.routes:

@@ -3,7 +3,7 @@ from alnsSolution import alns_iterate
 
 from initialsolution import initial_solution
 from readProblemInstances import readProblemInstances
-from visualize_solution import runEvrtpwVerifier, saveVisualizeAllRoutes, saveVisualizeRoutesSeperately, writeSolution
+from visualize_solution import runEvrtpwVerifier, saveALNSResultsDevelopment, saveVisualizeAllRoutes, saveVisualizeRoutesSeperately, writeSolution
 
 def process_test_file(file_path,j,maxIterations,N,K,Z):
     
@@ -13,9 +13,10 @@ def process_test_file(file_path,j,maxIterations,N,K,Z):
 
     file_name = os.path.splitext(os.path.basename(file_path))[0]
     alns_solution=alns_iterate(solution,j,maxIterations,N,K,Z)
-    saveVisualizeAllRoutes(alns_solution.routes,problemFile,file_name)
-    saveVisualizeRoutesSeperately(alns_solution.routes,problemFile,file_name)
-    writeSolution(alns_solution.routes,alns_solution,problemFile,file_name)
+    #saveVisualizeAllRoutes(alns_solution.routes,problemFile,file_name)
+    #saveVisualizeRoutesSeperately(alns_solution.routes,problemFile,file_name)
+    saveALNSResultsDevelopment(alns_solution)
+    #writeSolution(alns_solution.routes,alns_solution,problemFile,file_name)
     evrtpw_verifier_result=runEvrtpwVerifier(file_name)
     
     return alns_solution,evrtpw_verifier_result
@@ -36,7 +37,3 @@ def test_files_in_directory(directory):
     file_paths = [os.path.join(directory, file) for file in file_list]
     print(file_paths)
     return file_paths
-
-            
-
-

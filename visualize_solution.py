@@ -116,16 +116,15 @@ def runEvrtpwVerifier(file_name):
     else:
         return 'Invalid'    
     
-def visualizeAlgorithmProcess(iteration_list, total_distance_list):
+def saveALNSResultsDevelopment(alns_solution):
     filePath = "SolutionFiles/"
-    dosya_adı = "solution.txt"
-
-    # Klasörü oluştur
-    #folder_path = os.path.join(filePath, data_set_path)
-    # os.makedirs(folder_path, exist_ok=True)
-    # plt.plot(iteration_list, total_distance_list, label='Best Solution')
-    # plt.xlabel('Iteration')
-    # plt.ylabel('Total Distance')
-    # plt.title('ALNS Algorithm Progress')
-    # plt.legend()
-    # plt.show()
+    folder_path = os.path.join(filePath, alns_solution.problemFile.fileName)
+    os.makedirs(folder_path, exist_ok=True)
+    plt.plot(alns_solution.iteration_list, alns_solution.total_distance_list, label='Best Solution')
+    plt.xlabel('Iteration')
+    plt.ylabel('Total Distance')
+    plt.title('ALNS Algorithm Progress')
+    plt.legend()
+    img_path = os.path.join(folder_path, f"{alns_solution.problemFile.fileName}_ALNS_Progress.png")
+    plt.savefig(img_path)
+    plt.show()
