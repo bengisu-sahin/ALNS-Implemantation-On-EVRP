@@ -1,3 +1,5 @@
+import colorsys
+import numpy as np
 from DataObjects.ChargeStation import ChargeStation
 from DataObjects.Customer import Customer
 import matplotlib.pyplot as plt
@@ -430,49 +432,61 @@ class Route:
     """
     Tüm rotaları tek bir grafikte görselleştirmek için kullanılır.
     """
-    def visualizeAllRoutes(self,show=1):
-        coordinates=[]
-        rotaC=[]
-        depot=[]
+    def visualizeAllRoutes(self, show=1):
+        coordinates = []
+        rotaC = []
+
         for route in self.route:
             for location in route.route:
-                coord=[]
-                coord.append(location.x)
-                coord.append(location.y)
+                coord = [location.x, location.y]
                 coordinates.append(coord)
             rotaC.append(coordinates)
-            coordinates=[]
-        print(rotaC)
+            coordinates = []
 
-        # Bir figure oluşturun
-        # Grafik boyutunu ayarla
-        fig, ax = plt.subplots(figsize=(10, 8))  # Genişlik: 10 birim, Yükseklik: 8 birim
+        # Create a figure
+        # Set the size of the plot
+        fig, ax = plt.subplots(figsize=(10, 8))
 
         for route in rotaC:
             x, y = zip(*route)
-            ax.plot(x, y, marker='o', linestyle='-')
+            ax.scatter(x, y, marker='o', color='blue', label='Nodes')
+            ax.scatter(self.depot.x, self.depot.y, marker='o', s=75, color='black', label='Depot',zorder=10)
+            # Connect the points with arrows
+            dx = np.diff(x)
+            dy = np.diff(y)
+            # Fix the saturation and brightness
+            saturation = 0.4
+            brightness = 0.3
+            random_hue = np.random.uniform(0, 360)
+            # Convert HSL to RGB
+            random_color = colorsys.hls_to_rgb(random_hue/360, saturation, brightness)
 
-            # Depot noktasına daire eklemek
-            depot_x, depot_y = route[0]
-            ax.plot(depot_x, depot_y, marker='o', markersize=10, markeredgecolor='r', markerfacecolor='none')
+            # Plot the lines with a unique random color for each route
+            ax.quiver(x[:-1], y[:-1], dx, dy, scale_units='xy', angles='xy', scale=1, color=random_color,
+                    label='Route Path', width=0.003, headwidth=4)
+            charge_station_indices = [i for i, location in enumerate(self.route) if isinstance(location, ChargeStation)]
+            ax.scatter([x[i] for i in charge_station_indices], [y[i] for i in charge_station_indices],
+                   marker='o', color='red', label='Charge Stations')
 
-        # [40, 50] noktasına bir işaret eklemek
+
+        # [40, 50] Add a mark to the point
         ax.annotate('[40, 50]', (40, 50), textcoords="offset points", xytext=(0, 10), ha='center')
 
-        # Eksenlerdeki noktaların yerleşimini ayarlama
+        # Set the placement of points on the axes
         ax.xaxis.set_major_locator(plt.MultipleLocator(5))
         ax.yaxis.set_major_locator(plt.MultipleLocator(5))
 
-        ax.set_xlabel('X Koordinatı')
-        ax.set_ylabel('Y Koordinatı')
-        ax.set_title('Tüm Rotaların Birleştirilmiş Grafiği')
+        ax.set_xlabel('X Coordinate')
+        ax.set_ylabel('Y Coordinate')
+        ax.set_title('Combined Graph of All Routes')
 
         ax.grid(True)
-        if(show==1):
+        if show == 1:
             plt.show()
             plt.close()
-        
+
         return fig
+
 
     """
     Her bir rotayı ayrı ayrı görselleştirmek için kullanılır.
@@ -481,7 +495,7 @@ class Route:
         depot_x = 0
         depot_y = 0
         id = 1
-        figList=[]
+        figList = []
         for route in self.route:
             fig, ax = plt.subplots(figsize=(10, 8))
             x_points = []
@@ -497,10 +511,17 @@ class Route:
                 content.append(label)
 
             # Determine the marker style based on the location type
-            markers = ['o' if isinstance(location, Customer) else 's' if isinstance(location, ChargeStation) else 'D' for location in route.route]
+            markers = ['o' if isinstance(location, Customer) else 's' if isinstance(location, ChargeStation) else 'D' for
+                    location in route.route]
+            ax.scatter(x_points, y_points, marker='o', color='blue', label='Customers')
 
-            # Connect the points with lines
-            ax.plot(x_points, y_points, '-b', marker='o', markersize=8, markerfacecolor='blue', label='Customers')
+            # Connect the points with arrows
+            dx = np.diff(x_points)
+            dy = np.diff(y_points)
+            ax.quiver(x_points[:-1], y_points[:-1], dx, dy, scale_units='xy', angles='xy', scale=1, color='#20590b',
+                  label='Route Path',width=0.005, headwidth=5)
+
+
 
             # Plot charge stations with a different marker
             charge_station_indices = [i for i, location in enumerate(route.route) if isinstance(location, ChargeStation)]
@@ -512,7 +533,7 @@ class Route:
             depot_indices = [i for i, location in enumerate(route.route) if location.id == 'D0']
             depot_x = [x_points[i] for i in depot_indices]
             depot_y = [y_points[i] for i in depot_indices]
-            ax.plot(depot_x, depot_y, 'gD', markersize=8, markerfacecolor='green', label='Depot (D0)')
+            ax.plot(depot_x, depot_y, 'gD', markersize=8, markerfacecolor='#d94800', label='Depot (D0)')
 
             # Annotate each point with its label
             for x, y, label in zip(x_points, y_points, labels):
@@ -526,10 +547,9 @@ class Route:
             plt.annotate(', '.join(content), xy=(0.5, -0.12), xycoords='axes fraction', fontsize=12, ha='center')
 
             id += 1
-            #plt.show()
             plt.close()
             figList.append(fig)
-        return figList   
+        return figList
 
     def number_of_customers(self):
         """
