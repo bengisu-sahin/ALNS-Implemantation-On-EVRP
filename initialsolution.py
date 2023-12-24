@@ -106,7 +106,8 @@ def initial_solution(depot, customers, problem_instance):
                         break
                     else:
                         initial_route.route.pop()
-                        closest_charge_station = min(problem_instance.charging_stations, key=lambda n: n.distance_to(initial_route.get_last_object()))
+                        available_charge_stations = [cs for cs in problem_instance.charging_stations if cs not in initial_route.get_charge_stations()]
+                        closest_charge_station = min(available_charge_stations, key=lambda n: n.distance_to(initial_route.get_last_object()))
 
                         initial_route.route.pop()
 
@@ -137,7 +138,8 @@ def initial_solution(depot, customers, problem_instance):
                         break
                     else:
                         initial_route.route.pop()
-                        closest_charge_station = min(problem_instance.charging_stations, key=lambda n: n.distance_to(initial_route.get_last_object()))
+                        available_charge_stations = [cs for cs in problem_instance.charging_stations if cs not in initial_route.get_charge_stations()]
+                        closest_charge_station = min(available_charge_stations, key=lambda n: n.distance_to(initial_route.get_last_object()))
 
                         initial_route.route.pop()
 
@@ -178,7 +180,8 @@ def initial_solution(depot, customers, problem_instance):
                         break
                     else:
                         initial_route.route.pop()
-                        closest_charge_station=min(problem_instance.charging_stations, key=lambda n: n.distance_to(initial_route.get_last_object()))
+                        available_charge_stations = [cs for cs in problem_instance.charging_stations if cs not in initial_route.get_charge_stations()]
+                        closest_charge_station=min(available_charge_stations, key=lambda n: n.distance_to(initial_route.get_last_object()))
 
                         initial_route.route.pop()
 
@@ -215,7 +218,8 @@ def initial_solution(depot, customers, problem_instance):
                                         break
                                     else:
                                         initial_route.route.pop()
-                                        closest_charge_station=min(problem_instance.charging_stations, key=lambda n: n.distance_to(initial_route.get_last_object()))
+                                        available_charge_stations = [cs for cs in problem_instance.charging_stations if cs not in initial_route.get_charge_stations()]
+                                        closest_charge_station=min(available_charge_stations, key=lambda n: n.distance_to(initial_route.get_last_object()))
 
                                         initial_route.route.pop()
 
@@ -230,7 +234,9 @@ def initial_solution(depot, customers, problem_instance):
                                         else:
                                             
                                             initial_route.route.pop()
-                                            closest_charge_station=min(problem_instance.charging_stations, key=lambda n: n.distance_to(initial_route.get_last_object()))
+                                            available_charge_stations = [cs for cs in problem_instance.charging_stations if cs not in initial_route.get_charge_stations()]
+                                            
+                                            closest_charge_station=min(available_charge_stations, key=lambda n: n.distance_to(initial_route.get_last_object()))
                                             initial_route.route.append(closest_charge_station)
                                             initial_route.route.append(depot)
                                             if(initial_route.is_feasible_all_init()==True):
