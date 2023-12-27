@@ -1,6 +1,6 @@
 import os
 from alnsSolution import alns_iterate
-
+import time
 from initialsolution import initial_solution
 from readProblemInstances import readProblemInstances
 from visualize_solution import runEvrtpwVerifier, saveALNSResultsDevelopment, saveVisualizeAllRoutes, saveVisualizeRoutesSeperately, writeSolution
@@ -12,7 +12,11 @@ def process_test_file(file_path,j,maxIterations,N,K,Z):
     solution = initial_solution(problemFile.depot, problemFile.customers, problemFile)
 
     file_name = os.path.splitext(os.path.basename(file_path))[0]
+    start_time = time.time()
+
     alns_solution=alns_iterate(solution,j,maxIterations,N,K,Z)
+    end_time = time.time()
+    elapsed_time = end_time - start_time
     saveVisualizeAllRoutes(alns_solution.routes,problemFile,file_name)
     saveVisualizeRoutesSeperately(alns_solution.routes,problemFile,file_name)
     saveALNSResultsDevelopment(alns_solution)
