@@ -9,9 +9,9 @@ import time
 def main():
     #GLOBAL VARIABLES FOR ALNS
     j=0 #- Number of iterations allowed without improvement
-    maxIterations=5000 # - Maximum number of iterations
+    maxIterations=25000 # - Maximum number of iterations
     N = 10  # - Maximum iterations allowed without improvement
-    K = 5# Predefined iteration interval
+    K = 5  #Predefined iteration interval
     Z=50
     folder_path = 'SchneiderData/'
     test_path = 'SchneiderData/test/'

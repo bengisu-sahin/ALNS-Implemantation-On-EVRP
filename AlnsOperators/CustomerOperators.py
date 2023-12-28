@@ -401,7 +401,7 @@ class Regret_K_Insertion(CustomerInsertionOperator):
                         for station in charging_stations_sorted:
                             newRoute.append_charge_station_at_certain_point(station, index)
                             if newRoute.is_feasible_all() == True:
-                                costs.append((copy.deepcopy(newRoute.calculate_obj_function()),copy.deepcopy(newRoute),unserved_customer,route_index,))
+                                costs.append((copy.deepcopy(newRoute.calculate_obj_function()),copy.deepcopy(newRoute),unserved_customer))
                                 newRoute.remove_charge_station_from_route_at_certain_point(index)
                             else:
                                 if newRoute.is_feasible_all() == False:
@@ -410,7 +410,7 @@ class Regret_K_Insertion(CustomerInsertionOperator):
                                     for station in charging_stations_sorted2:
                                         newRoute.append_charge_station_at_certain_point(station, index2)
                                         if newRoute.is_feasible_all() == True:
-                                            costs.append((copy.deepcopy(newRoute.calculate_obj_function()),copy.deepcopy(newRoute),unserved_customer,route_index,))
+                                            costs.append((copy.deepcopy(newRoute.calculate_obj_function()),copy.deepcopy(newRoute),unserved_customer))
                                             newRoute.remove_charge_station_from_route_at_certain_point(index2)
                                         else:
                                             newRoute.remove_charge_station_from_route_at_certain_point(index2)
@@ -419,15 +419,19 @@ class Regret_K_Insertion(CustomerInsertionOperator):
                                 continue
                         
                     else:
-                        costs.append((copy.deepcopy(newRoute.calculate_obj_function()),copy.deepcopy(newRoute),unserved_customer,route_index,))
+                        costs.append((copy.deepcopy(newRoute.calculate_obj_function()),copy.deepcopy(newRoute),unserved_customer))
                 
         if(len(costs) != 0):
             
             
             best_cost = min(costs, key=lambda x: x[0])
             regret_values = []
-            for cost, route, customer, route_index in costs:
-                regret_values.append((best_cost[0] - cost, route, customer, route_index))
+            if(boola==True):
+                for cost, route, customer in costs:
+                    regret_values.append((best_cost[0] - cost, route, customer))
+            else:
+                for cost, route, customer, route_index in costs:
+                    regret_values.append((best_cost[0] - cost, route, customer, route_index))
             # get the 2nd best regret value
             best_regret_customer_sorted = sorted(regret_values, key=lambda x: x[0], reverse=True)
             k_value = self.k
