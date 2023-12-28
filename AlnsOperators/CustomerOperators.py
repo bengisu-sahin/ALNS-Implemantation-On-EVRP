@@ -436,9 +436,9 @@ class Regret_K_Insertion(CustomerInsertionOperator):
                 if len(best_regret_customer_sorted) == 1:
                     k_value = 0
             if boola==True:
-                solution.routes.append(best_regret_customer_sorted[k_value][1])
-                solution.remove_w_id_unserved(best_regret_customer_sorted[k_value][2])
-                solution.served_customers.append(best_regret_customer_sorted[k_value][2])
+                solution.routes.append(best_cost[1])
+                solution.remove_w_id_unserved(best_cost[2])
+                solution.served_customers.append(best_cost[2])
             else:
                 to_be_added_route_index = best_regret_customer_sorted[k_value][3]
                 solution.routes[to_be_added_route_index].route = best_regret_customer_sorted[k_value][1].route

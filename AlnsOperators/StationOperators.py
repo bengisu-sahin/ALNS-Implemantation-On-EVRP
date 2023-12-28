@@ -130,7 +130,7 @@ class bestStationInsertionOperator(StationInsertionOperator):
             else:  # if the tank capacity constraint is violated, add the best charge station to the route
                 # if there is no charge station in the route
                 added_customer = route.get_node_before_where_battery_is_negative()
-                added_customer_index = route.route.index(added_customer)
+                added_customer_index = route.route.index(added_customer)-1
                 if(added_customer_index==0):
                     added_customer_index=len(route.route)-1
                 get_closest_station = sorted(
@@ -188,10 +188,15 @@ class Compare_K_Insertion(StationInsertionOperator):
     def insert(self, solution):
         charge_stations = solution.getAllStationInProblemFile()
         costs = []
+        k = self.k
         
         get_unfeasible_routes = solution.getUnfeasibleRoutes()
         for route in get_unfeasible_routes:
             if route.is_feasible_all() == False:
+                if(len(route.route)<4):
+                    k=1
+                elif(len(route.route)<5):
+                    k=2
                 for customer in route.route:
                     if isinstance(customer, Customer):
                         available_charge = route.calculate_remaining_tank_capacity(
@@ -209,7 +214,7 @@ class Compare_K_Insertion(StationInsertionOperator):
                             for charge_station in get_closest_charge_station:
                                 temp_route.append_charge_station_at_certain_point(
                                     charge_station,
-                                    route.route.index(customer)+1,
+                                    route.route.index(customer)+1-k,
                                 )
                                 if temp_route.is_feasible_all() == True:
                                     costs.append(
@@ -258,15 +263,13 @@ class Compare_K_Insertion(StationInsertionOperator):
                             #         get_closest_charge_station[0]
                             #     )
             
-        k = self.k
-        if len(costs) < k + 1:
-            k = 0
+ 
             
         if(len(costs)==0):
             return solution
-        
-        tobeadded_route = costs[k][1]
-        tobeadded_route_index = costs[k][2]
+        min_cost = min(costs, key=lambda x: x[0])
+        tobeadded_route = min_cost[1]
+        tobeadded_route_index = min_cost[2]
         solution.routes[tobeadded_route_index] = tobeadded_route
         solution.removeEmptyRoutes()
 

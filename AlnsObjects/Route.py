@@ -455,8 +455,8 @@ class Route:
             dx = np.diff(x)
             dy = np.diff(y)
             # Fix the saturation and brightness
-            saturation = 0.5
-            brightness = 0.3
+            saturation = 0.7
+            brightness = 0.7
             random_hue = np.random.uniform(0, 360)
             # Convert HSL to RGB
             random_color = colorsys.hls_to_rgb(random_hue, saturation, brightness)
