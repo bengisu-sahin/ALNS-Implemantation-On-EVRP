@@ -265,7 +265,7 @@ class greedyCustomerInsertionOperator(CustomerInsertionOperator):
                         for station in charging_stations_sorted:
                             newRoute.append_charge_station_at_certain_point(station, index)
                             if newRoute.is_feasible_all() == True:
-                                costs.append((copy.deepcopy(newRoute.calculate_obj_function()),copy.deepcopy(newRoute),unserved_customer,route_index,))
+                                costs.append((copy.deepcopy(newRoute.calculate_obj_function()),copy.deepcopy(newRoute),unserved_customer))
                                 newRoute.remove_charge_station_from_route_at_certain_point(index)
                             else:
                                 if newRoute.is_feasible_all() == False:
@@ -274,7 +274,7 @@ class greedyCustomerInsertionOperator(CustomerInsertionOperator):
                                     for station in charging_stations_sorted2:
                                         newRoute.append_charge_station_at_certain_point(station, index2)
                                         if newRoute.is_feasible_all() == True:
-                                            costs.append((copy.deepcopy(newRoute.calculate_obj_function()),copy.deepcopy(newRoute),unserved_customer,route_index,))
+                                            costs.append((copy.deepcopy(newRoute.calculate_obj_function()),copy.deepcopy(newRoute),unserved_customer))
                                             newRoute.remove_charge_station_from_route_at_certain_point(index2)
                                         else:
                                             newRoute.remove_charge_station_from_route_at_certain_point(index2)
@@ -283,7 +283,7 @@ class greedyCustomerInsertionOperator(CustomerInsertionOperator):
                                 continue
                         
                     else:
-                        costs.append((copy.deepcopy(newRoute.calculate_obj_function()),copy.deepcopy(newRoute),unserved_customer,route_index,))
+                        costs.append((copy.deepcopy(newRoute.calculate_obj_function()),copy.deepcopy(newRoute),unserved_customer))
         if(len(costs) != 0):
             if(boola==True):
                 best_cost = min(costs, key=lambda x: x[0])

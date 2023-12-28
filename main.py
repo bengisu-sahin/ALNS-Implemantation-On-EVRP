@@ -9,7 +9,7 @@ import time
 def main():
     #GLOBAL VARIABLES FOR ALNS
     j=0 #- Number of iterations allowed without improvement
-    maxIterations=10 # - Maximum number of iterations
+    maxIterations=5000 # - Maximum number of iterations
     N = 10  # - Maximum iterations allowed without improvement
     K = 5# Predefined iteration interval
     Z=50
