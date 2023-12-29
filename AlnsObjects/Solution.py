@@ -104,6 +104,13 @@ class Solution:
             totalDistance+=route.calculate_total_distance()
         return totalDistance
     
+    def getUnfeasibleRoutes_indexes(self):
+        unfeasibleRoutes=[]
+        for i in range(len(self.routes)):
+            if self.routes[i].is_feasible_all() == False:
+                unfeasibleRoutes.append(i)
+        return unfeasibleRoutes
+    
     def removeEmptyRoutes(self):
         for route in self.routes:
             if not any(isinstance(item, Customer) for item in route.route):

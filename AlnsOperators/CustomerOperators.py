@@ -224,7 +224,7 @@ class greedyCustomerInsertionOperator(CustomerInsertionOperator):
         stations = solution.problemFile.charging_stations
         random_customer = random.choice(customers)
         costs = self.get_costs(random_customer, stations, solution)
-        
+        boola=False
         if len(costs) == 0:
             for unserved_customer in solution.unserved_customers:
                 for route_index, route in enumerate(solution.routes):
@@ -251,37 +251,50 @@ class greedyCustomerInsertionOperator(CustomerInsertionOperator):
                                     costs.append((temp_route.calculate_obj_function(),copy.deepcopy(temp_route),unserved_customer,route_index,))
                                     temp_route.route.remove(unserved_customer)
         if len(costs) == 0:
-            while len(solution.unserved_customers) != 0:
-                for unserved_customer in solution.unserved_customers:
-                    newRoute = Route(solution.problemFile.config, solution.problemFile.depot)
-                    newRoute.route.append(unserved_customer)
-                    newRoute.route.append(solution.problemFile.depot)
-                    if newRoute.is_feasible() == False:
-                        continue
+            boola=True
+            for unserved_customer in solution.unserved_customers:
+                newRoute = Route(solution.problemFile.config, solution.problemFile.depot)
+                newRoute.route.append(unserved_customer)
+                newRoute.route.append(solution.problemFile.depot)
+                if newRoute.is_feasible() == False:
+                    continue
+                else:
+                    if newRoute.is_feasible_all() == False:
+                        charging_stations_sorted = sorted(stations,key=lambda station: station.distance_to(unserved_customer),)
+                        index = newRoute.route.index(unserved_customer)
+                        for station in charging_stations_sorted:
+                            newRoute.append_charge_station_at_certain_point(station, index)
+                            if newRoute.is_feasible_all() == True:
+                                costs.append((copy.deepcopy(newRoute.calculate_obj_function()),copy.deepcopy(newRoute),unserved_customer))
+                                newRoute.remove_charge_station_from_route_at_certain_point(index)
+                            else:
+                                if newRoute.is_feasible_all() == False:
+                                    charging_stations_sorted2 = sorted(stations,key=lambda station: station.distance_to(unserved_customer),)
+                                    index2 = newRoute.route.index(unserved_customer)+1
+                                    for station in charging_stations_sorted2:
+                                        newRoute.append_charge_station_at_certain_point(station, index2)
+                                        if newRoute.is_feasible_all() == True:
+                                            costs.append((copy.deepcopy(newRoute.calculate_obj_function()),copy.deepcopy(newRoute),unserved_customer))
+                                            newRoute.remove_charge_station_from_route_at_certain_point(index2)
+                                        else:
+                                            newRoute.remove_charge_station_from_route_at_certain_point(index2)
+                                            
+                                newRoute.remove_charge_station_from_route_at_certain_point(index)
+                                continue
+                        
                     else:
-                        if newRoute.is_feasible_all() == False:
-                            charging_stations_sorted = sorted(stations,key=lambda station: station.distance_to(unserved_customer),)
-                            index = newRoute.route.index(unserved_customer)
-                            for station in charging_stations_sorted:
-                                newRoute.append_charge_station_at_certain_point(station, index)
-                                if newRoute.is_feasible_all() == True:
-                                    solution.remove_w_id_unserved(unserved_customer)
-                                    solution.served_customers.append(unserved_customer)
-                                    solution.routes.append(newRoute)
-                                    break
-                                else:
-                                    newRoute.remove_charge_station_from_route_at_certain_point(index)
-                                    continue
-                        else:
-                            solution.remove_w_id_unserved(unserved_customer)
-                            solution.served_customers.append(unserved_customer)
-                            solution.routes.append(newRoute)
-                return solution
-        else:
-            best_cost = min(costs, key=lambda x: x[0])
-            solution.routes[best_cost[3]].route = best_cost[1].route
-            solution.remove_w_id_unserved(best_cost[2])
-            solution.served_customers.append(best_cost[2])
+                        costs.append((copy.deepcopy(newRoute.calculate_obj_function()),copy.deepcopy(newRoute),unserved_customer))
+        if(len(costs) != 0):
+            if(boola==True):
+                best_cost = min(costs, key=lambda x: x[0])
+                solution.routes.append(best_cost[1])
+                solution.remove_w_id_unserved(best_cost[2])
+                solution.served_customers.append(best_cost[2])
+            else:
+                best_cost = min(costs, key=lambda x: x[0])
+                solution.routes[best_cost[3]].route = best_cost[1].route
+                solution.remove_w_id_unserved(best_cost[2])
+                solution.served_customers.append(best_cost[2])
         return solution
 
 
@@ -345,7 +358,7 @@ class Regret_K_Insertion(CustomerInsertionOperator):
     def insert(self, solution):
         customers = solution.unserved_customers
         stations = solution.problemFile.charging_stations
-
+        boola=False
         costs = self.get_costs(customers, stations, solution)
         
         if len(costs) == 0:
@@ -363,7 +376,7 @@ class Regret_K_Insertion(CustomerInsertionOperator):
                                 for station in charging_stations_sorted:
                                     temp_route.append_charge_station_at_certain_point(station, index)
                                     if temp_route.is_feasible_all() == True:
-                                        costs.append((temp_route.calculate_obj_function(),copy.deepcopy(temp_route),unserved_customer,route_index,))
+                                        costs.append((copy.deepcopy(temp_route.calculate_obj_function()),copy.deepcopy(temp_route),unserved_customer,route_index,))
                                         temp_route.remove_charge_station_from_route_at_certain_point(index)
                                     else:
                                         temp_route.remove_charge_station_from_route_at_certain_point(index)
@@ -371,40 +384,54 @@ class Regret_K_Insertion(CustomerInsertionOperator):
                                 if temp_route.is_feasible_all() == False:
                                     temp_route.route.remove(unserved_customer)
                                 else:
-                                    costs.append((temp_route.calculate_obj_function(),copy.deepcopy(temp_route),unserved_customer,route_index,))
+                                    costs.append((copy.deepcopy(temp_route.calculate_obj_function()),copy.deepcopy(temp_route),unserved_customer,route_index,))
                                     temp_route.route.remove(unserved_customer)
         if len(costs) == 0:
-            while len(solution.unserved_customers) != 0:
-                for unserved_customer in solution.unserved_customers:
-                    newRoute = Route(solution.problemFile.config, solution.problemFile.depot)
-                    newRoute.route.append(unserved_customer)
-                    newRoute.route.append(solution.problemFile.depot)
-                    if newRoute.is_feasible() == False:
-                        continue
+            boola=True
+            for unserved_customer in solution.unserved_customers:
+                newRoute = Route(solution.problemFile.config, solution.problemFile.depot)
+                newRoute.route.append(unserved_customer)
+                newRoute.route.append(solution.problemFile.depot)
+                if newRoute.is_feasible() == False:
+                    continue
+                else:
+                    if newRoute.is_feasible_all() == False:
+                        charging_stations_sorted = sorted(stations,key=lambda station: station.distance_to(unserved_customer),)
+                        index = newRoute.route.index(unserved_customer)
+                        for station in charging_stations_sorted:
+                            newRoute.append_charge_station_at_certain_point(station, index)
+                            if newRoute.is_feasible_all() == True:
+                                costs.append((copy.deepcopy(newRoute.calculate_obj_function()),copy.deepcopy(newRoute),unserved_customer))
+                                newRoute.remove_charge_station_from_route_at_certain_point(index)
+                            else:
+                                if newRoute.is_feasible_all() == False:
+                                    charging_stations_sorted2 = sorted(stations,key=lambda station: station.distance_to(unserved_customer),)
+                                    index2 = newRoute.route.index(unserved_customer)+1
+                                    for station in charging_stations_sorted2:
+                                        newRoute.append_charge_station_at_certain_point(station, index2)
+                                        if newRoute.is_feasible_all() == True:
+                                            costs.append((copy.deepcopy(newRoute.calculate_obj_function()),copy.deepcopy(newRoute),unserved_customer))
+                                            newRoute.remove_charge_station_from_route_at_certain_point(index2)
+                                        else:
+                                            newRoute.remove_charge_station_from_route_at_certain_point(index2)
+                                            
+                                newRoute.remove_charge_station_from_route_at_certain_point(index)
+                                continue
+                        
                     else:
-                        if newRoute.is_feasible_all() == False:
-                            charging_stations_sorted = sorted(stations,key=lambda station: station.distance_to(unserved_customer),)
-                            index = newRoute.route.index(unserved_customer)
-                            for station in charging_stations_sorted:
-                                newRoute.append_charge_station_at_certain_point(station, index)
-                                if newRoute.is_feasible_all() == True:
-                                    solution.remove_w_id_unserved(unserved_customer)
-                                    solution.served_customers.append(unserved_customer)
-                                    solution.routes.append(newRoute)
-                                    break
-                                else:
-                                    newRoute.remove_charge_station_from_route_at_certain_point(index)
-                                    continue
-                        else:
-                            solution.remove_w_id_unserved(unserved_customer)
-                            solution.served_customers.append(unserved_customer)
-                            solution.routes.append(newRoute)
-                return solution
-        else:
+                        costs.append((copy.deepcopy(newRoute.calculate_obj_function()),copy.deepcopy(newRoute),unserved_customer))
+                
+        if(len(costs) != 0):
+            
+            
             best_cost = min(costs, key=lambda x: x[0])
             regret_values = []
-            for cost, route, customer, route_index in costs:
-                regret_values.append((best_cost[0] - cost, route, customer, route_index))
+            if(boola==True):
+                for cost, route, customer in costs:
+                    regret_values.append((best_cost[0] - cost, route, customer))
+            else:
+                for cost, route, customer, route_index in costs:
+                    regret_values.append((best_cost[0] - cost, route, customer, route_index))
             # get the 2nd best regret value
             best_regret_customer_sorted = sorted(regret_values, key=lambda x: x[0], reverse=True)
             k_value = self.k
@@ -412,8 +439,13 @@ class Regret_K_Insertion(CustomerInsertionOperator):
                 k_value = 1
                 if len(best_regret_customer_sorted) == 1:
                     k_value = 0
-            to_be_added_route_index = best_regret_customer_sorted[k_value][3]
-            solution.routes[to_be_added_route_index].route = best_regret_customer_sorted[k_value][1].route
-            solution.remove_w_id_unserved(best_regret_customer_sorted[k_value][2])
-            solution.served_customers.append(best_regret_customer_sorted[k_value][2])
+            if boola==True:
+                solution.routes.append(best_cost[1])
+                solution.remove_w_id_unserved(best_cost[2])
+                solution.served_customers.append(best_cost[2])
+            else:
+                to_be_added_route_index = best_regret_customer_sorted[k_value][3]
+                solution.routes[to_be_added_route_index].route = best_regret_customer_sorted[k_value][1].route
+                solution.remove_w_id_unserved(best_regret_customer_sorted[k_value][2])
+                solution.served_customers.append(best_regret_customer_sorted[k_value][2])
         return solution
