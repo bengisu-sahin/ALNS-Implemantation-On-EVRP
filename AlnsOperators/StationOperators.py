@@ -15,14 +15,18 @@ class randomStationRemovalOperator(StationRemovalOperator):
         self.score = score
     def resetScore(self):
         self.score=0.0
-    def remove(self, solution):
+        
+    def getRandomStationsToBeRemoved(self, solution):
         Q = self.stationToBeRemoved(solution)
-        charge_stations = solution.getAllStations()
-        stations_to_remove = random.sample(charge_stations, int(Q))
-        for route in solution.routes:
-            for station in stations_to_remove:
-                if station in route.route:
-                    route.remove_customer_from_route(station)
+        charge_stations = solution.getAllStationsWithRouteIndexAndStationIndex()
+        random_stations = random.sample(charge_stations, int(Q))
+        return random_stations
+    def remove(self, solution):
+        random_stations = self.getRandomStationsToBeRemoved(solution)
+        for station in random_stations:
+            solution.routes[station[1]].remove_charge_station_from_route_at_certain_point(
+                station[0]
+            )
         solution.removeEmptyRoutes()
         return solution.routes
 

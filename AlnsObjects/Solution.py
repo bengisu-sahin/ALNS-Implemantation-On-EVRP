@@ -58,6 +58,15 @@ class Solution:
                 if type(item) is ChargeStation and item not in allStations:
                     allStations.append(item)
         return allStations
+    
+    def getAllStationsWithRouteIndexAndStationIndex(self):
+        allStations=[]
+        for route in self.routes:
+            for station in route.route:
+                if type(station) is ChargeStation and station not in allStations:
+                    allStations.append([route.route.index(station),self.routes.index(route),station])
+        return allStations
+
     def isAllRoutesFeasible(self):
         for route in self.routes:
             if route.is_feasible_all() == False:
