@@ -20,7 +20,7 @@ def alns_iterate(solution,j,maxIterations,max_iter_without_improvement,pre_iter_
     currentSolution = copy.deepcopy(solution)
     iSolution = copy.deepcopy(solution)
     alns = ALNS(bestSolution, currentSolution)
-    acceptance_rate = 0.001
+    acceptance_rate = 0.01
     totalDistance = iSolution.getTotalDistance()
     iteration_list = []
     total_distance_list = []
