@@ -148,11 +148,8 @@ class worstDistanceCustomerRemovalOperator(CustomerRemovalOperator):
                 if customer in route.route:
                     route.remove_customer_from_route(customer)
                     solution.unserved_customers.append(customer)
-                    solution.remove_w_id_unserved(customer)
+                    solution.remove_w_id_served(customer)
 
-        for customer in removed_customers:
-            solution.unserved_customers.append(customer)
-            solution.remove_w_id_served(customer)
                         
         solution.removeEmptyRoutes()
         return solution

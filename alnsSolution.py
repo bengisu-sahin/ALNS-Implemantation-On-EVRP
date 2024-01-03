@@ -65,7 +65,7 @@ def alns_iterate(solution,j,maxIterations,max_iter_without_improvement,pre_iter_
             else:
                 
                 customer_removeOp_index = CustomerRemovalOps.selectOperator()
-                customer_removeOp = alns.customerRemovalOps[customer_removeOp_index]
+                customer_removeOp = alns.customerRemovalOps[3]
                 customer_removeOp.remove(iSolution)
 
                 
