@@ -23,10 +23,14 @@ class randomStationRemovalOperator(StationRemovalOperator):
         return random_stations
     def remove(self, solution):
         random_stations = self.getRandomStationsToBeRemoved(solution)
+        
+        if len(random_stations) == 0:
+            return solution.routes
+        
         for station in random_stations:
-            solution.routes[station[1]].remove_charge_station_from_route_at_certain_point(
-                station[0]
-            )
+            charge_station = solution.routes[station[1]].route[station[0]]
+            solution.routes[station[1]].remove_charge_station_from_route(
+            charge_station)
         solution.removeEmptyRoutes()
         return solution.routes
 

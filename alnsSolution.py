@@ -32,7 +32,7 @@ def alns_iterate(solution,j,maxIterations,max_iter_without_improvement,pre_iter_
         if j == max_iter_without_improvement:
             print("Before Improvement: ", totalDistance)
             station_removeOp_index = StationRemovalOps.selectOperator()
-            station_removeOp = alns.stationRemovalOps[station_removeOp_index]
+            station_removeOp = alns.stationRemovalOps[0]
             station_removeOp.remove(iSolution)
             station_insertOp_index = StationInsertionOps.selectOperator()
 

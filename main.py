@@ -11,7 +11,7 @@ def main():
     j=0 #- Number of iterations allowed without improvement
     maxIterations=25000 # - Maximum number of iterations
     N = 1  # - Maximum iterations allowed without improvement
-    K = 1  #Predefined iteration interval
+    K = 10  #Predefined iteration interval
     Z=50
     folder_path = 'SchneiderData/'
     test_path = 'SchneiderData/test/'
