@@ -351,7 +351,9 @@ class Route:
             
 
     def remove_customer_from_route(self, customer):
-        self.route.remove(customer)
+        for item in self.route:
+            if item.id == customer.id:
+                self.route.remove(item)
 
     def remove_charge_station_from_route(self, charge_station):
         self.route.remove(charge_station)
@@ -435,10 +437,10 @@ class Route:
     def visualizeAllRoutes(self, show=1):
         coordinates = []
         rotaC = []
-
+       
         for route in self.route:
             for location in route.route:
-                coord = [location.x, location.y]
+                coord = [location.x, location.y,location.id]
                 coordinates.append(coord)
             rotaC.append(coordinates)
             coordinates = []
@@ -446,11 +448,13 @@ class Route:
         # Create a figure
         # Set the size of the plot
         fig, ax = plt.subplots(figsize=(10, 8))
-
+        "abi".startswith("a")
         for route in rotaC:
-            x, y = zip(*route)
-            ax.scatter(x, y, marker='o', color='blue', label='Nodes')
-            ax.scatter(self.depot.x, self.depot.y, marker='o', s=75, color='black', label='Depot',zorder=10)
+            x, y,id = zip(*route)
+            node_colors = ['blue' if location[2].startswith("C")  else 'red' if location[2].startswith("S") else 'black' for location in route]
+
+            ax.scatter(x, y, marker='o', color=node_colors, label='Nodes')
+
             # Connect the points with arrows
             dx = np.diff(x)
             dy = np.diff(y)
@@ -464,17 +468,19 @@ class Route:
             # Plot the lines with a unique random color for each route
             ax.quiver(x[:-1], y[:-1], dx, dy, scale_units='xy', angles='xy', scale=1, color=random_color,
                     label='Route Path', width=0.003, headwidth=4)
-            charge_station_indices = [i for i, location in enumerate(self.route) if isinstance(location, ChargeStation)]
-            ax.scatter([x[i] for i in charge_station_indices], [y[i] for i in charge_station_indices],
-                   marker='o', color='red', label='Charge Stations')
 
 
+            # Annotate each point with its label
+        for route in rotaC:
+            for location in route:
+                ax.annotate(location[2], (location[0], location[1]), textcoords="offset points", xytext=(0, 10), ha='center')
         # [40, 50] Add a mark to the point
-        ax.annotate('[40, 50]', (40, 50), textcoords="offset points", xytext=(0, 10), ha='center')
+        ax.scatter(self.depot.x, self.depot.y, marker='o', s=75, color='black', label='Depot', zorder=10)
 
+        
         # Set the placement of points on the axes
-        ax.xaxis.set_major_locator(plt.MultipleLocator(5))
-        ax.yaxis.set_major_locator(plt.MultipleLocator(5))
+        ax.xaxis.set_major_locator(plt.AutoLocator())
+        ax.yaxis.set_major_locator(plt.AutoLocator())
 
         ax.set_xlabel('X Coordinate')
         ax.set_ylabel('Y Coordinate')

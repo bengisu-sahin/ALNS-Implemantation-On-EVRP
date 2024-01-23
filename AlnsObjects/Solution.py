@@ -30,8 +30,13 @@ class Solution:
         allCustomers=[]
         for route in self.routes:
             for customer in route.route:
-                if(type(customer) is Customer):
-                    allCustomers.append(customer)
+                if(customer.id.startswith("C")):
+                    allCustomers.extend(customer)
+                else:
+                    if(customer.id.startswith("S") or customer.id.startswith("D")):
+                        continue
+                    else:
+                        print(customer.id)
         return allCustomers
     
     def getNumberOfStation(self):
@@ -58,6 +63,13 @@ class Solution:
                 if type(item) is ChargeStation and item not in allStations:
                     allStations.append(item)
         return allStations
+    
+    def getMissingCustomersInSolution(self):
+        missingCustomers=[]
+        for customer in self.problemFile.customers:
+            if customer not in self.served_customers:
+                missingCustomers.append(customer.id)
+        return missingCustomers
     
     def getAllStationsWithRouteIndexAndStationIndex(self):
         allStations=[]
@@ -120,7 +132,26 @@ class Solution:
                 unfeasibleRoutes.append(i)
         return unfeasibleRoutes
     
+    def doesContainAnyCustomer(self):
+        for route in self.routes:
+            for item in route.route:
+                if type(item) is Customer:
+                    return True
+                
+    def removeRouteByIndex(self,index):
+        self.routes.remove(self.routes[index])
+    
     def removeEmptyRoutes(self):
         for route in self.routes:
-            if not any(isinstance(item, Customer) for item in route.route):
-                self.routes.remove(route)
+            route_index=self.find_route_index_in_solution(route)
+            iterate=0
+            for item in route.route:
+                if type(item) is Customer:
+                    break
+                elif(type(item) is not Customer and iterate == len(route.route)-1):
+                    self.removeRouteByIndex(route_index)
+                    break
+                iterate+=1
+        return self.routes        
+                
+            
