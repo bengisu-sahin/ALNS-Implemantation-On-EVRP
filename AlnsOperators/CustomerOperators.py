@@ -174,7 +174,9 @@ class greedyCustomerInsertionOperator(CustomerInsertionOperator):
         costs = []
         route_index = 0
         for route in solution.routes:
-            for i in range(1, len(route.route)):
+            check_route=copy.deepcopy(route)
+            length=len(check_route.route)-2
+            for i in range(1, length):
                 route.appendcustomer_at_certain_point(customer, i)
                 if route.is_feasible() == False:
                     route.remove_customer_from_route(customer)
@@ -183,7 +185,7 @@ class greedyCustomerInsertionOperator(CustomerInsertionOperator):
                     temp_route = copy.copy(route)
                     temp_route.route = route.route.copy()
                     if temp_route.tank_capacity_constraint_violated() == True:
-                        get_closest_station = sorted(stations,key=lambda station: station.distance_to_avg_of_two(temp_route.route[i], temp_route.route[i - 1]),)
+                        get_closest_station = sorted(stations,key=lambda station: station.distance_to(temp_route.route[i - 1]),)
                         route.append_charge_station_at_certain_point(get_closest_station[0], i)
                         temp_route = copy.copy(route)
                         temp_route.route = route.route.copy()
@@ -191,7 +193,7 @@ class greedyCustomerInsertionOperator(CustomerInsertionOperator):
                             route.remove_charge_station_from_route_at_certain_point(i)
                             temp_route = copy.copy(route)
                             temp_route.route = route.route.copy()
-                            get_closest_station = sorted(stations,key=lambda station: station.distance_to_avg_of_two(temp_route.route[i + 1], temp_route.route[i]),)
+                            get_closest_station = sorted(stations,key=lambda station: station.distance_to(temp_route.route[i]),)
                             route.append_charge_station_at_certain_point(get_closest_station[0], i + 1)
                             temp_route = copy.copy(route)
                             temp_route.route = route.route.copy()
@@ -313,8 +315,11 @@ class Regret_K_Insertion(CustomerInsertionOperator):
         for customer in customers:
             route_index = 0
             for route in solution.routes:
-                for i in range(1, len(route.route)-1):
-                    check_route=copy.deepcopy(route)
+                check_route=copy.deepcopy(route)
+                length=len(check_route.route)-2
+                for i in range(1, length):
+                    
+                    
 
                     route.appendcustomer_at_certain_point(customer, i)
                     
@@ -325,7 +330,7 @@ class Regret_K_Insertion(CustomerInsertionOperator):
                         temp_route = copy.copy(route)
                         temp_route.route = route.route.copy()
                         if temp_route.tank_capacity_constraint_violated() == True:
-                            get_closest_station = sorted(stations,key=lambda station: station.distance_to_avg_of_two(temp_route.route[i], temp_route.route[i - 1]),)
+                            get_closest_station = sorted(stations,key=lambda station: station.distance_to(temp_route.route[i - 1]),)
                             route.append_charge_station_at_certain_point(get_closest_station[0], i)
                             temp_route = copy.copy(route)
                             temp_route.route = route.route.copy()
@@ -335,7 +340,7 @@ class Regret_K_Insertion(CustomerInsertionOperator):
                                 temp_route.route = route.route.copy()
                                 if(i>=len(route.route)-1):
                                     print("buraya girdi")
-                                get_closest_station = sorted(stations,key=lambda station: station.distance_to_avg_of_two(temp_route.route[i + 1], temp_route.route[i]),)
+                                get_closest_station = sorted(stations,key=lambda station: station.distance_to(temp_route.route[i]),)
                                 route.append_charge_station_at_certain_point(get_closest_station[0], i + 1)
                                 temp_route = copy.copy(route)
                                 temp_route.route = route.route.copy()

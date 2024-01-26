@@ -108,7 +108,7 @@ def runEvrtpwVerifier(file_name):
     result = subprocess.run(command, capture_output=True, text=True)
 
     # Çıktıları ekrana yazdırma
-    print(result.stdout)
+    
 
     # Hata mesajlarını ekrana yazdırma
     if result.stderr:

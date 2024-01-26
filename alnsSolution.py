@@ -73,7 +73,6 @@ def alns_iterate(solution,j,maxIterations,max_iter_without_improvement,pre_iter_
                     unfeasibleRoutes = iSolution.getUnfeasibleRoutes()
                     route_customer_insertOp.insert(iSolution)
         print("CurrentSolution before improvement total distance: ", currentSolution.getTotalDistance())
-        print("Missing Customers: ", iSolution.getMissingCustomersInSolution())
         if iSolution.get_Total_Objective_Function_Value() <= (
             currentSolution.get_Total_Objective_Function_Value() * (1 + acceptance_rate)
         ):

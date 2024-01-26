@@ -9,7 +9,7 @@ import time
 def main():
     #GLOBAL VARIABLES FOR ALNS
     j=0 #- Number of iterations allowed without improvement
-    maxIterations=25000 # - Maximum number of iterations
+    maxIterations=1000 # - Maximum number of iterations
     N = 20  # - Maximum iterations allowed without improvement
     K = 10 #Predefined iteration interval
     Z=100
@@ -22,7 +22,7 @@ def main():
             file_path = os.path.join(folder_path, filename)
             print(filename)
             start_time = time.time()
-            result,evrtpw_verifier_result = process_esogu_test_file(file_path,j,maxIterations,N,K,Z)
+            result,evrtpw_verifier_result = process_test_file(file_path,j,maxIterations,N,K,Z)
             end_time = time.time()
             elapsed_time = end_time - start_time
             results.append({'File': filename, 'Objective Function Value': result.get_Total_Objective_Function_Value(),"Total Distance":result.getTotalDistance(),"Evrtpw Verifier Result":evrtpw_verifier_result,'j':j,'maxIterations':maxIterations,'N':N,'K':K,'Z':Z,'Elapsed Time':elapsed_time})
