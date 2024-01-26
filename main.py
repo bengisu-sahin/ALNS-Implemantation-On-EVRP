@@ -1,7 +1,7 @@
 import os
 from openpyxl import Workbook
 import pandas as pd
-from test_funcs import process_test_file
+from test_funcs import process_test_file,process_esogu_test_file
 from pandas import DataFrame
 import time
 
@@ -9,10 +9,10 @@ import time
 def main():
     #GLOBAL VARIABLES FOR ALNS
     j=0 #- Number of iterations allowed without improvement
-    maxIterations=25000 # - Maximum number of iterations
-    N = 1  # - Maximum iterations allowed without improvement
-    K = 10  #Predefined iteration interval
-    Z=50
+    maxIterations=1000 # - Maximum number of iterations
+    N = 20  # - Maximum iterations allowed without improvement
+    K = 10 #Predefined iteration interval
+    Z=100
     folder_path = 'SchneiderData/'
     test_path = 'SchneiderData/test/'
     results = []

@@ -2,7 +2,7 @@ import os
 from alnsSolution import alns_iterate
 import time
 from initialsolution import initial_solution
-from readProblemInstances import readProblemInstances
+from readProblemInstances import readESOGUProblemInstances, readProblemInstances
 from visualize_solution import runEvrtpwVerifier, saveALNSResultsDevelopment, saveVisualizeAllRoutes, saveVisualizeRoutesSeperately, writeSolution
 
 def process_test_file(file_path,j,maxIterations,N,K,Z):
@@ -41,3 +41,23 @@ def test_files_in_directory(directory):
     file_paths = [os.path.join(directory, file) for file in file_list]
     print(file_paths)
     return file_paths
+
+def process_esogu_test_file(file_path,j,maxIterations,N,K,Z):
+    
+
+    problemFile = readESOGUProblemInstances(file_path)
+    solution = initial_solution(problemFile.depot, problemFile.customers, problemFile)
+
+    file_name = os.path.splitext(os.path.basename(file_path))[0]
+    start_time = time.time()
+
+    alns_solution=alns_iterate(solution,j,maxIterations,N,K,Z)
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    saveVisualizeAllRoutes(alns_solution.routes,problemFile,file_name)
+    saveVisualizeRoutesSeperately(alns_solution.routes,problemFile,file_name)
+    saveALNSResultsDevelopment(alns_solution)
+    writeSolution(alns_solution.routes,alns_solution,problemFile,file_name)
+    evrtpw_verifier_result=runEvrtpwVerifier(file_name)
+    
+    return alns_solution,evrtpw_verifier_result

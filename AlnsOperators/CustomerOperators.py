@@ -2,6 +2,7 @@ import copy
 import random
 from AlnsObjects.Route import Route
 from AlnsOperators.Operators import CustomerInsertionOperator, CustomerRemovalOperator
+from DataObjects.Customer import Customer
 
 
 # Customer removal operators
@@ -13,7 +14,7 @@ class removeRandomCustomerOperator(CustomerRemovalOperator):
         self.score=0.0
     def remove(self, solution):
         P = int(self.customerToBeRemoved(solution))
-        allCustomers = solution.getAllCustomers()
+        allCustomers = solution.served_customers
         customers_to_remove = random.sample(allCustomers, int(P))
 
         for route in solution.routes:
@@ -38,7 +39,7 @@ class relatedCustomerRemovalOperator(CustomerRemovalOperator):
         self.score=0.0
     def remove(self, solution):
         P = int(self.customerToBeRemoved(solution))
-        allCustomers = solution.getAllCustomers()
+        allCustomers = solution.served_customers
         # tüm müşterileri döndüren bir fonksiyon yazılmalı rota ya da solution içinde
         seed_customer = random.choice(allCustomers)
         distances = {}
@@ -75,7 +76,7 @@ class leastTimeWindowCustomerRemovalOperator(CustomerRemovalOperator):
         self.score=0.0
     def remove(self, solution):
         P = int(self.customerToBeRemoved(solution))
-        allCustomers = solution.getAllCustomers()
+        allCustomers = solution.served_customers
         time_window_gaps = {}
         for customer in allCustomers:
             gap = customer.due_date - customer.ready_time
@@ -126,21 +127,22 @@ class worstDistanceCustomerRemovalOperator(CustomerRemovalOperator):
 
     def remove(self, solution):
         P = int(self.customerToBeRemoved(solution))
-        allCustomers = solution.getAllCustomers()
+        allCustomers = solution.served_customers
         removal_gains = {}
         for route in solution.routes:
             for item in route.route:
-                if item in allCustomers:
+                if type(item) is Customer:
                     removal_gains[item] = self.calculate_removal_gain(item, route)
 
         # Removal gain'e göre müşterileri sırala
         sorted_removal_gains = dict(
             sorted(removal_gains.items(), key=lambda x: x[1], reverse=True)
         )
+        k=random.randint(0, 1)
 
         # İlk P müşteriyi çözümden çıkar
         removed_customers = [
-            customer for customer in list(sorted_removal_gains.keys())[:P]
+            customer for customer in list(sorted_removal_gains.keys())[k:k+P]
         ]
         # Müşterileri çözümden çıkar
         for route in solution.routes:
@@ -172,7 +174,9 @@ class greedyCustomerInsertionOperator(CustomerInsertionOperator):
         costs = []
         route_index = 0
         for route in solution.routes:
-            for i in range(1, len(route.route)):
+            check_route=copy.deepcopy(route)
+            length=len(check_route.route)-2
+            for i in range(1, length):
                 route.appendcustomer_at_certain_point(customer, i)
                 if route.is_feasible() == False:
                     route.remove_customer_from_route(customer)
@@ -181,7 +185,7 @@ class greedyCustomerInsertionOperator(CustomerInsertionOperator):
                     temp_route = copy.copy(route)
                     temp_route.route = route.route.copy()
                     if temp_route.tank_capacity_constraint_violated() == True:
-                        get_closest_station = sorted(stations,key=lambda station: station.distance_to_avg_of_two(temp_route.route[i], temp_route.route[i - 1]),)
+                        get_closest_station = sorted(stations,key=lambda station: station.distance_to(temp_route.route[i - 1]),)
                         route.append_charge_station_at_certain_point(get_closest_station[0], i)
                         temp_route = copy.copy(route)
                         temp_route.route = route.route.copy()
@@ -189,7 +193,7 @@ class greedyCustomerInsertionOperator(CustomerInsertionOperator):
                             route.remove_charge_station_from_route_at_certain_point(i)
                             temp_route = copy.copy(route)
                             temp_route.route = route.route.copy()
-                            get_closest_station = sorted(stations,key=lambda station: station.distance_to_avg_of_two(temp_route.route[i + 1], temp_route.route[i]),)
+                            get_closest_station = sorted(stations,key=lambda station: station.distance_to(temp_route.route[i]),)
                             route.append_charge_station_at_certain_point(get_closest_station[0], i + 1)
                             temp_route = copy.copy(route)
                             temp_route.route = route.route.copy()
@@ -292,6 +296,9 @@ class greedyCustomerInsertionOperator(CustomerInsertionOperator):
                 solution.routes[best_cost[3]].route = best_cost[1].route
                 solution.remove_w_id_unserved(best_cost[2])
                 solution.served_customers.append(best_cost[2])
+                
+        else:
+            print("No feasible solution found")
         return solution
 
 
@@ -308,8 +315,14 @@ class Regret_K_Insertion(CustomerInsertionOperator):
         for customer in customers:
             route_index = 0
             for route in solution.routes:
-                for i in range(1, len(route.route)):
+                check_route=copy.deepcopy(route)
+                length=len(check_route.route)-2
+                for i in range(1, length):
+                    
+                    
+
                     route.appendcustomer_at_certain_point(customer, i)
+                    
                     if route.is_feasible() == False:
                         route.remove_customer_from_route(customer)
                         continue
@@ -317,7 +330,7 @@ class Regret_K_Insertion(CustomerInsertionOperator):
                         temp_route = copy.copy(route)
                         temp_route.route = route.route.copy()
                         if temp_route.tank_capacity_constraint_violated() == True:
-                            get_closest_station = sorted(stations,key=lambda station: station.distance_to_avg_of_two(temp_route.route[i], temp_route.route[i - 1]),)
+                            get_closest_station = sorted(stations,key=lambda station: station.distance_to(temp_route.route[i - 1]),)
                             route.append_charge_station_at_certain_point(get_closest_station[0], i)
                             temp_route = copy.copy(route)
                             temp_route.route = route.route.copy()
@@ -325,7 +338,9 @@ class Regret_K_Insertion(CustomerInsertionOperator):
                                 route.remove_charge_station_from_route_at_certain_point(i)
                                 temp_route = copy.copy(route)
                                 temp_route.route = route.route.copy()
-                                get_closest_station = sorted(stations,key=lambda station: station.distance_to_avg_of_two(temp_route.route[i + 1], temp_route.route[i]),)
+                                if(i>=len(route.route)-1):
+                                    print("buraya girdi")
+                                get_closest_station = sorted(stations,key=lambda station: station.distance_to(temp_route.route[i]),)
                                 route.append_charge_station_at_certain_point(get_closest_station[0], i + 1)
                                 temp_route = copy.copy(route)
                                 temp_route.route = route.route.copy()

@@ -32,7 +32,7 @@ def alns_iterate(solution,j,maxIterations,max_iter_without_improvement,pre_iter_
         if j == max_iter_without_improvement:
             print("Before Improvement: ", totalDistance)
             station_removeOp_index = StationRemovalOps.selectOperator()
-            station_removeOp = alns.stationRemovalOps[0]
+            station_removeOp = alns.stationRemovalOps[station_removeOp_index]
             station_removeOp.remove(iSolution)
             station_insertOp_index = StationInsertionOps.selectOperator()
 
@@ -51,7 +51,7 @@ def alns_iterate(solution,j,maxIterations,max_iter_without_improvement,pre_iter_
             print("After Improvement", iSolution.getTotalDistance())
         else:
             route_customer_insertOp_index = CustomerInsertionOps.selectOperator()
-            route_customer_insertOp = alns.customerInsertionOps[route_customer_insertOp_index]
+            route_customer_insertOp = alns.customerInsertionOps[1]
 
             if j % pre_iter_interval == 0 and j != 0:
 
@@ -65,7 +65,7 @@ def alns_iterate(solution,j,maxIterations,max_iter_without_improvement,pre_iter_
             else:
                 
                 customer_removeOp_index = CustomerRemovalOps.selectOperator()
-                customer_removeOp = alns.customerRemovalOps[3]
+                customer_removeOp = alns.customerRemovalOps[customer_removeOp_index]
                 customer_removeOp.remove(iSolution)
 
                 
@@ -77,26 +77,26 @@ def alns_iterate(solution,j,maxIterations,max_iter_without_improvement,pre_iter_
             currentSolution.get_Total_Objective_Function_Value() * (1 + acceptance_rate)
         ):
             if(j == max_iter_without_improvement):
-                alns.stationRemovalOps[station_removeOp_index].score += 3
-                alns.stationInsertionOps[station_insertOp_index].score += 3
+                alns.stationRemovalOps[station_removeOp_index].score += 0.5
+                alns.stationInsertionOps[station_insertOp_index].score += 0.5
             else:
-                alns.customerInsertionOps[route_customer_insertOp_index].score += 3
+                alns.customerInsertionOps[route_customer_insertOp_index].score += 0.5
                 if(j%pre_iter_interval == 0 and j != 0):
-                    alns.routeRemovalOps[route_removeOp_index].score += 3
+                    alns.routeRemovalOps[route_removeOp_index].score += 0.5
                 else:
-                    alns.customerRemovalOps[customer_removeOp_index].score += 3
+                    alns.customerRemovalOps[customer_removeOp_index].score += 0.5
             currentSolution = copy.deepcopy(iSolution)
             j = 0
         elif j == max_iter_without_improvement:
             if(j == max_iter_without_improvement):
-                alns.stationRemovalOps[station_removeOp_index].score += 1
-                alns.stationInsertionOps[station_insertOp_index].score +=1
+                alns.stationRemovalOps[station_removeOp_index].score += 0.1
+                alns.stationInsertionOps[station_insertOp_index].score +=0.1
             else:
-                alns.customerInsertionOps[route_customer_insertOp_index].score += 1
+                alns.customerInsertionOps[route_customer_insertOp_index].score += 0.1
                 if(j%pre_iter_interval == 0  and j != 0):
-                    alns.routeRemovalOps[route_removeOp_index].score += 1
+                    alns.routeRemovalOps[route_removeOp_index].score += 0.1
                 else:
-                    alns.customerRemovalOps[customer_removeOp_index].score += 1
+                    alns.customerRemovalOps[customer_removeOp_index].score += 0.1
             currentSolution = copy.deepcopy(iSolution)
             j = 0
         else:
